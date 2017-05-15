@@ -1,5 +1,5 @@
 package heroes_and_monsters;
 
-public class Element {
+public abstract class Element {
  
 }
