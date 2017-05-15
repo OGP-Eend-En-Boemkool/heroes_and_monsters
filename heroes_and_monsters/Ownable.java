@@ -1,5 +1,5 @@
 package heroes_and_monsters;
 
-public abstract class Ownable extends Element{
+public abstract class Ownable{
  //**
 }
