@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> refs/heads/Lotte
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
@@ -10,24 +6,7 @@
 			<attribute name="javadoc_location" value="http://www.cs.kuleuven.be/books/OOPWithJava/doc/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-<<<<<<< HEAD
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/AnnotationsDoclets.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://www.cs.kuleuven.be/books/OOPWithJava/doc/"/>
-		</attributes>
-	</classpathentry>
-=======
->>>>>>> refs/heads/Lotte
 	<classpathentry kind="output" path="bin"/>
 </classpath>
