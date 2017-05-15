@@ -11,7 +11,7 @@ import be.kuleuven.cs.som.annotate.*;
  * 
  */
 
-qs
+
 public abstract class Element {
 	
 	
