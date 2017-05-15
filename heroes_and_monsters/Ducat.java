@@ -2,7 +2,6 @@ package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
 
-
 /**
  * A class of ducats with a numeral and a weight.
  * 
