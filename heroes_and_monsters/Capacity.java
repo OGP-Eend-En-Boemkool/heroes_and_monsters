@@ -1,7 +1,5 @@
 package heroes_and_monsters;
 
-
-import java.math.*;
 import be.kuleuven.cs.som.annotate.*;
 
 /**
@@ -21,7 +19,7 @@ public interface Capacity {
 	 * @return the resulting number cannot be negative
 	 * 		   | result >= 0
 	 */
-	float getMaximumCapacity();
+	public float getMaximumCapacity();
 	
 	/**
 	 * Return the used part of the total capacity of the object.
@@ -31,7 +29,7 @@ public interface Capacity {
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
 	 * 		   | result <= this.getMaximumCapacity()
 	 */
-	float getUsedCapacity();
+	public float getUsedCapacity();
 	
 	/**
 	 * Checks whether or not a certain given capacity is a valid capacity.
@@ -39,6 +37,6 @@ public interface Capacity {
 	 * @return returns true if the capacity is not negative, false otherwise.
 	 * 		   | result == (capacity >= 0)
 	 */
-	boolean isValidCapacity(float capacity);
+	public boolean isValidCapacity(Number capacity);
 
 }
