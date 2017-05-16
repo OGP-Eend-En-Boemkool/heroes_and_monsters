@@ -1,6 +1,8 @@
 package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -12,16 +14,19 @@ import java.util.*;
 public class Hero extends Creature {
 
 	/**
-	 * Initialize this new hero with the given name as name
+	 * Initialize this new hero with the given name as name and the given strength
+	 * as strength.
 	 * 
 	 * @param 	name
 	 * 			The name of this hero.
-	 * @effect	This hero is initialized as a creature with the given name.
-	 * 			| super(name)		
+	 * @param	strength
+	 * 			The strength of this hero.
+	 * @effect	This hero is initialized as a creature with the given name and strength.
+	 * 			| super(name, strength)		
 	 */
 	@Raw
-	public Hero(String name) throws IllegalArgumentException {
-		super(name);
+	public Hero(String name, BigDecimal strength) throws IllegalArgumentException {
+		super(name, strength);
 	}
 	
 	/**
