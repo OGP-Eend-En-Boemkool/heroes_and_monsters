@@ -2,6 +2,7 @@ package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
 import java.math.*;
+import java.util.*;
 
 /**
  * A class of creatures with a name and a strength.
@@ -320,5 +321,14 @@ public abstract class Creature{
 		}
 		setStrength(this.getStrength().divide(new BigDecimal(number), RoundingMode.HALF_UP));
 	}
+	
+	/**************************************
+	 * anchors
+	 **************************************/
+	
+	/**
+	 * Variable referencing the anchors with their object of a creature.
+	 */
+	protected HashMap<String, Object> anchors = new HashMap<String, Object>();
 	
 }
