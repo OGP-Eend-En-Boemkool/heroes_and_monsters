@@ -3,6 +3,12 @@ package heroes_and_monsters;
 import be.kuleuven.cs.som.annotate.*;
 import java.util.*;
 
+/**
+ * A class of heroes.
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public class Hero extends Creature {
 
 	/**
