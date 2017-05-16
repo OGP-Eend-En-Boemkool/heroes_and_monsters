@@ -68,10 +68,31 @@ public enum Unit {
 	 */
 	public double convertToKilogram (double amount) throws IllegalArgumentException{
 		if (amount < 0){
-			throw new IllegalArgumentException("You can't have a weight less than zero.");
+			throw new IllegalArgumentException("You cannot weigh less than zero.");
 		}
 		else
 			return amount*this.getConstant();
+	}
+	
+	/**
+	 * Return the corresponding amount of this weight unit for the given amount of kilograms.
+	 * 
+	 * @param  amount
+	 * 		   the given amount of kilograms
+	 * @post   the converted amount is correct
+	 * 		   | result == amount/this.getConstant()
+	 * @return the result cannot be negative
+	 * 		   | result >= 0
+	 * @throws IllegalArgumentException
+	 * 		   when the given amount is negative
+	 * 		   | if (amount < 0) throw new IllegalArgumentException
+	 */
+	public double convertFromKilogram (double amount) throws IllegalArgumentException{
+		if (amount < 0){
+			throw new IllegalArgumentException("You cannot weigh less than zero.");
+		}
+		else
+			return amount/this.getConstant();
 	}
 	
 	/**
