@@ -14,18 +14,22 @@ import java.util.*;
 public class Monster extends Creature {
 
 	/**
-	 * Initialize this new monster with the given name as name and the given strength
-	 * as strength.
+	 * Initialize this new monster with a name, a strength, a maximum hitpoints and the
+	 * current hitpoints set to the maximum.
 	 * 
 	 * @param 	name
 	 * 			The name of this monster.
 	 * @param	strength
 	 * 			The strength of this monster.
-	 * @effect	This monster is initialized as a creature with the given name and strength.		
+	 * @param	maxHitpoints
+	 * 			The maximum and current hitpoints of this monster.
+	 * @effect	This monster is initialized as a creature with the given name, strength,
+	 * 			current hitpoints and maximum hitpoints..		
 	 */
 	@Raw
-	public Monster(String name, BigDecimal strength) throws IllegalArgumentException {
-		super(name, strength);
+	public Monster(String name, BigDecimal strength, int maxHitpoints)
+			throws IllegalArgumentException {
+		super(name, strength, maxHitpoints);
 	}
 	
 	/**

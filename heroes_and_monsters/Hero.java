@@ -14,19 +14,23 @@ import java.util.*;
 public class Hero extends Creature {
 
 	/**
-	 * Initialize this new hero with the given name as name and the given strength
-	 * as strength.
+	 * Initialize this new hero with a name, a strength, a maximum hitpoints and the current
+	 * hitpoints set to the maximum.
 	 * 
 	 * @param 	name
 	 * 			The name of this hero.
 	 * @param	strength
 	 * 			The strength of this hero.
-	 * @effect	This hero is initialized as a creature with the given name and strength.
-	 * 			| super(name, strength)		
+	 * @param	maxHitpoints
+	 * 			The maximum and current hitpoints of this hero.
+	 * @effect	This hero is initialized as a creature with the given name, strength, 
+	 * 			current hitpoints and maximum hitpoints.
+	 * 			| super(name, strength, maxHitpoints)		
 	 */
 	@Raw
-	public Hero(String name, BigDecimal strength) throws IllegalArgumentException {
-		super(name, strength);
+	public Hero(String name, BigDecimal strength, int maxHitpoints)
+			throws IllegalArgumentException {
+		super(name, strength, maxHitpoints);
 	}
 	
 	/**

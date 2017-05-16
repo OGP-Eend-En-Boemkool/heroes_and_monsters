@@ -22,19 +22,37 @@ public abstract class Creature{
 	 * 
 	 * @param	name
 	 * 			The name of this creature.
+	 * @param	strength
+	 * 			The strength of this creature.
+	 * @param	maxHitpoints
+	 * 			The maximum and current hitpoints of this creature.
+	 * @pre 	MaxHitpoints must be a valid value for hitpoints when the creature is
+	 * 			not fighting.
+	 * 			| canHaveAsHitpointsNotFighting(maxHitpoints)
 	 * @post	The name of this creature is set to the given name.
 	 * 			| new.getName() == name
 	 * @post	The strength of this creature is set to the given strength.
 	 * 			| new.getStrength() == strength
+	 * @post	The current hitpoints of this creature is set to the given maxHitpoints.
+	 * 			| new.getHitpoints() == maxHitpoints
+	 * @post	The maximum hitpoints of this creature is set to the given maxHitpoints.
+	 * 			| new.gteMaxHitpoints() == maxHitpoints
 	 * @throws	IllegalArgumentException()
 	 * 			This creature can't have this name.
 	 * 			| !canHaveAsName(name)
 	 */
 	@Raw
-	protected Creature(String name, BigDecimal strength) throws IllegalArgumentException {
+	protected Creature(String name, BigDecimal strength, int maxHitpoints)
+			throws IllegalArgumentException {
 		setName(name);
 		setStrength(strength);
+		setHitpoints(maxHitpoints);
+		setMaxHitpoints(maxHitpoints);
 	}
+	
+	/**********************************
+	 * name
+	 **********************************
 	
 	/**
 	 * Variable referencing the name of a creature.
@@ -82,6 +100,124 @@ public abstract class Creature{
 			return true;
 		}
 	}
+	
+	/************************************
+	 * hitpoints
+	 ************************************/
+	
+	/**
+	 * Variable referencing the current hitpoints of a creature.
+	 */
+	protected int hitpoints;
+	
+	/**
+	 * Variable referencing the maximum hitpoints of this creature.
+	 */
+	protected int maxHitpoints;
+	
+	/**
+	 * Return the current hitpoints of this creature.
+	 */
+	@Basic @Raw
+	public int getHitpoints(){
+		return this.hitpoints;
+	}
+	
+	/**
+	 * Return the maximum hitpoints of this creature.
+	 */
+	@Basic @Raw
+	public int getMaxHitpoints(){
+		return this.maxHitpoints;
+	}
+	
+	/**
+	 * Set the hitpoints to the given hitpoints.
+	 * 
+	 * @param 	hitpoints
+	 * 			The hitpoints of this creature.
+	 * @pre		The hitpoints must be valid, if the creature is fighting or not.
+	 * 			| if (isFighting()){
+	 * 			|		canHaveAsHitpointsFighting(hitpoints) }
+	 * 			| if (!isFighting()){
+	 * 			|		canHaveAsHitpointsNotFighting(hitpoints) }
+	 * @post	The hitpoints are set to the given hitpoints.
+	 * 			| new.getHitpoints() = hitpoints
+	 */
+	@Raw
+	protected void setHitpoints(int hitpoints){
+		this.hitpoints = hitpoints;
+	}
+	
+	/**
+	 * Check whether the hitpoints are valid when the creature is fighting.
+	 * 
+	 * @param 	hitpoints
+	 * 			The hitpoints to check.
+	 * @return	True if and only if the hitpoints are not negative.
+	 * 			| result == hitpoints >= 0
+	 */
+	@Raw
+	public boolean canHaveAsHitpointsFighting(int hitpoints){
+		return (hitpoints >= 0);
+	}
+	
+	/**
+	 * Check whether the hitpoints are valid when the creature is not fighting.
+	 * 
+	 * @param 	hitpoints
+	 * 			The hitpoints to check.
+	 * @return	True if and only if the hitpoints is a prime number.
+	 * 			| result == (hitpoints is prime)
+	 */
+	@Raw
+	public boolean canHaveAsHitpointsNotFighting(int hitpoints){
+		if (hitpoints < 0){
+			return false;
+		}
+		boolean prime = true;
+		for (int i=1; i <= Math.round(Math.sqrt(hitpoints)); i++){
+			if (hitpoints % i == 0){
+				prime = false;
+				break;
+			}
+		}
+		return prime;
+	}
+	
+	/**
+	 * Set the maximum hitpoints to the given maxHitpoints.
+	 * 
+	 * @param	maxHitpoints
+	 * 			The maximum hitpoints of this creature.
+	 * @pre		The maxHitpoints must be valid for a creature who is not fighting.
+	 * 			| canHaveAsHitpointsNotFighting(maxHitpoints)
+	 * @post	The maxHitpoints is set to maxHitpoints
+	 * 			| new.getMaxHitpoints() = maxHitpoints
+	 */
+	@Raw
+	protected void setMaxHitpoints(int maxHitpoints){
+		this.maxHitpoints = maxHitpoints;
+	}
+	
+	/**
+	 * Change the maximum hitpoints to the given maxHitpoints.
+	 * 
+	 * @param	maxHitpoints
+	 * 			The new maximum hitpoints of this creature.
+	 * @pre		The maxHitpoints must be valid for a creature who is fighting or not fighting
+	 * 			| canHaveAsHitpointsFighting(maxHitpoints) ||
+	 * 			|		canHaveAsHitpointsNotFighting(maxHitpoints)
+	 * @post	The maxHitpoints is set to maxHitpoints
+	 * 			| new.getMaxHitpoints() = maxHitpoints
+	 */
+	protected void changeMaxHitpoints(int maxHitpoints){
+		
+	}
+	
+	/************************************
+	 * strength
+	 ************************************
 	
 	/**
 	 * Variable referencing the strength of a creature.
