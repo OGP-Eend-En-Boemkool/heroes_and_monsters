@@ -47,7 +47,7 @@ public enum Unit {
      * for a unit.
      *
      * @return	True if the given double is a positive number.
-     * 			| result == constant > 0
+     * 			| result == (constant > 0)
      */
 	public static boolean isValidConstant(double constant){
       return (constant>0) ;
@@ -59,10 +59,12 @@ public enum Unit {
 	 * @param  amount
 	 * 		   the given amount of this weight unit
 	 * @post   the converted amount is correct
-	 * 		   | result = amount*this.getConstant()
+	 * 		   | result == amount*this.getConstant()
 	 * @throws IllegalArgumentException
 	 * 		   when the given amount is negative
 	 * 		   | if (amount < 0) throw new IllegalArgumentException
+	 * @return the result can not be negative
+	 * 		   | result >= 0
 	 */
 	public double convertToKilogram (double amount) throws IllegalArgumentException{
 		if (amount < 0){
