@@ -16,7 +16,7 @@ public class Monster extends Creature implements Damage {
 	
 	/******************************************
 	 * Constructors
-	 ******************************************
+	 ******************************************/
 
 	/**
 	 * Initialize this new monster with a name, a strength, a maximum hitpoints a
@@ -46,7 +46,7 @@ public class Monster extends Creature implements Damage {
 	
 	/******************************************
 	 * name
-	 ******************************************
+	 ******************************************/
 	
 	/**
 	 * Set the name of this monster to the given name.
