@@ -165,4 +165,29 @@ public class Hero extends Creature {
 		this.anchors.put("Body", anchorObjects.get(3));
 		this.anchors.put("Belt", anchorObjects.get(4));
 	}
+	
+	/**********************************
+	 * heal
+	 **********************************/
+	
+	/**
+	 * A hero can heal and get more hitpoints.
+	 * 
+	 * @post	The hitpoints are increased with a random percentage of the difference
+	 * 			between the maximum hitpoints and the current hitpoints.
+	 * 			| new.getHitpoints() == this.getHitpoints + 
+	 * 			|						Math.round(randomNumber() * 0.01 *
+	 * 			|						(this.getMaxHitpoints() - this.getHitpoints()))
+	 */
+	private void heal(){
+		int difference = this.getMaxHitpoints() - this.getHitpoints();
+		int extra = Math.round(randomNumber() * (float)0.01 * difference);
+		if (this.getHitpoints() + extra > this.getMaxHitpoints()){
+			this.setHitpoints(this.getMaxHitpoints());
+		}
+		else {
+			this.setHitpoints(this.getHitpoints() + extra);
+		}
+		
+	}
 }
