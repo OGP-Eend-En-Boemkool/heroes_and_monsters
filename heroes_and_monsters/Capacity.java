@@ -14,10 +14,10 @@ import be.kuleuven.cs.som.annotate.*;
 public interface Capacity {
 	
 	/**
-	 * Return the maximumcapacity of the object.
+	 * Return the maximum capacity of the object.
 	 * 
 	 * @return the resulting number cannot be negative
-	 * 		   | result >= 0
+	 * 		   | result > 0
 	 */
 	public float getMaximumCapacity();
 	
@@ -25,7 +25,7 @@ public interface Capacity {
 	 * Return the used part of the total capacity of the object.
 	 * 
 	 * @return the resulting number cannot be negative
-	 * 		   | result >= 0
+	 * 		   | result > 0
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
 	 * 		   | result <= this.getMaximumCapacity()
 	 */
@@ -39,6 +39,6 @@ public interface Capacity {
 	 * 		   |		return false
 	 * @note   this return must be left open because some of the subclasses might change it.
 	 */
-	public boolean isValidCapacity(Number capacity);
+	public boolean isValidCapacity(int capacity);
 
 }

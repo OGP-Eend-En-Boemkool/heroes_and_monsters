@@ -348,4 +348,48 @@ public class Monster extends Creature implements Damage, Protection {
 		return ((protection >= 1)&&(protection <= this.maxProtection));
 	}
 
+	
+	/**************************************
+	 * Capacity
+	 **************************************/
+	
+	/**
+	 * Return the maximum capacity of the monster.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 * @return the resulting number must be the strength multiplied by 9.
+	 * 		   | result == (this.getStrength.floatValue() * 9)
+	 */
+	@Override
+	public float getMaximumCapacity() {
+		float strength = this.getStrength().floatValue();
+		return (strength * 9);
+	}
+
+	/**
+	 * Return the used part of the total capacity of the monster.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 * @return the resulting number cannot be bigger than the maximum capacity of the object.
+	 * 		   | result <= this.getMaximumCapacity()
+	 */
+	@Override
+	public float getUsedCapacity() {
+		// TODO
+		return 0;
+	}
+
+	/**
+	 * Checks whether or not a certain given capacity is a valid capacity.
+	 * 
+	 * @return returns False if the capacity is negative, True otherwise.
+	 * 		   | (capacity >= 0)
+	 */
+	@Override
+	public boolean isValidCapacity(int capacity) {
+		return (capacity >= 0);
+	}
+
 }
