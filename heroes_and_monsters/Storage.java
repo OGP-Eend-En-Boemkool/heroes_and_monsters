@@ -1,6 +1,6 @@
 package heroes_and_monsters;
 
-public abstract class Storage extends Ownable {
+public abstract class Storage extends Ownable implements Capacity {
 
 	protected Storage(){
 		
@@ -8,3 +8,4 @@ public abstract class Storage extends Ownable {
 	
 	protected abstract void setIdentification(long identification);
 }
+

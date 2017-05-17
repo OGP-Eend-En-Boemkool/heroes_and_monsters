@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Linde en Lotte
  * @version 1.0
  */
-public abstract class Creature{
+public abstract class Creature implements Capacity{
 
 	/******************************************
 	 * Constructors
