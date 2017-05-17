@@ -412,4 +412,10 @@ public abstract class Creature{
 	 */
 	public abstract boolean effectiveHit();
 	
+	/*************************************
+	 * collect treasures
+	 *************************************/
+	
+	protected abstract void collectTreasures();
+	
 }
