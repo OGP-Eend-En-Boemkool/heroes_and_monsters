@@ -1,9 +1,16 @@
 package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
+import java.math.*;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Weapon extends Ownable implements Damage{
 
+	
+	public Weapon(){
+		
+	}
 	
 	/**********************************************************
 	 * Damage - nominaal
@@ -98,6 +105,44 @@ public class Weapon extends Ownable implements Damage{
 	@Override
 	public boolean isValidMaximumDamage(int damage) {
 		return (damage >= 1);
+	}
+	
+	/******************************
+	 * identification
+	 ******************************
+	
+	/**
+	 * 
+	 */
+	@Raw
+	private long calculateValidIdentification(){
+		long id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+		if (idListWeapons.size() >= 1000){
+			while (id%6 != 0){
+				id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+			}
+		}
+		else {
+			while (id%6 != 0 || idListWeapons.contains(id)){
+				id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+			}
+		}
+		return id;
+	}
+	
+	/**
+	 * Set the identification of a weapon to an even positive number that can be divided
+	 * by 3. The first thousand weapons have a unique number.
+	 * 
+	 * @param 	identification
+	 * 			The identification of this weapon.
+	 * @post	The identification is set to a positive even number that can be divided
+	 * 			by 3.
+	 */
+	@Override @Raw
+	protected void setIdentification(long identification){
+		this.identification = identification;
+		idListWeapons.add(identification);
 	}
 
 }

@@ -1,5 +1,10 @@
 package heroes_and_monsters;
 
+import be.kuleuven.cs.som.annotate.*;
+import java.math.*;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Armor extends Ownable implements Protection{
 	
 	/******************************************
@@ -7,6 +12,7 @@ public class Armor extends Ownable implements Protection{
 	 ******************************************/
 	
 	public Armor(){
+		super();
 		}
 	
 	/******************************************
@@ -137,4 +143,67 @@ public class Armor extends Ownable implements Protection{
 		return ((protection >= 1)&&(protection <= type.getMaxProtection()));
 	}
 	
+	/*******************************
+	 * identification
+	 *******************************/
+	
+	/**
+	 * Check whether the given identification is valid.
+	 *  
+	 * @param 	identification
+	 * 			The identification to check.
+	 * @return	True if and only if the identification is positive, prime and if it is one
+	 * 			of the first 1000 armors, it must also be unique.
+	 */
+	@Raw
+	public boolean canHaveAsIdentification(long identification){
+		if (identification < 0){
+			return false;
+		}
+		else {
+			boolean prime = true;
+			for (int i=1; i <= Math.round(Math.sqrt(identification)); i++){
+				if (identification % i == 0){
+					prime = false;
+					break;
+				}
+			}
+			if (!prime){
+				return false;
+			}
+			else if (idListArmors.size() < 1000){
+				if (idListArmors.contains(identification)){
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+			else {
+				return true;
+			}
+		}
+	}
+	
+	/**
+	 * Set the identification to the given identification if it is valid, otherwise it will
+	 * be set to a random valid value.
+	 * 
+	 * @param 	identification
+	 * 			The identification of this armor.
+	 * @post	If the given identification is unvalid, the identification is set to a
+	 * 			random valid identification. If it is valid, it is set to the given
+	 * 			identification.
+	 */
+	@Raw @Override
+	protected void setIdentification(long identification){
+		if (!canHaveAsIdentification(identification)){
+			identification = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+			while (!canHaveAsIdentification(identification)){
+				identification = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+			}
+		}
+		this.identification = identification;
+		this.idListArmors.add(identification);
+	}
 }
