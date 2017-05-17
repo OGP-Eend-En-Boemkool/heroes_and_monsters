@@ -30,15 +30,5 @@ public interface Capacity {
 	 * 		   | result <= this.getMaximumCapacity()
 	 */
 	public double getUsedCapacity(Unit unit);
-	
-	/**
-	 * Checks whether or not a certain given capacity is a valid capacity.
-	 * 
-	 * @return returns false if the capacity is negative.
-	 * 		   | if (capacity < 0) then 
-	 * 		   |		return false
-	 * @note   this return must be left open because some of the subclasses might change it.
-	 */
-	public boolean isValidCapacity(double capacity);
 
 }
