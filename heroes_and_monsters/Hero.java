@@ -2,7 +2,7 @@ package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
 
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.*;
 
 /**
@@ -221,6 +221,68 @@ public class Hero extends Creature {
 		else {
 			return this.standardProtection;
 		}
-	}	
+	}
+
+	/**********************************
+	 * Capacity -  totaal
+	 **********************************/
+	
+	/**
+	 * The list of capacities between 10 and 20 of a hero.
+	 */
+	private static ArrayList<Integer> capacities = new ArrayList<Integer>(Arrays.asList(115, 130, 150, 175, 200, 230, 260, 300, 350, 400));
+	
+	/**
+	 * Return the maximum capacity of the hero.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 */
+	@Override
+	public float getMaximumCapacity() {
+		float strength = this.getStrength().floatValue();
+		int constant = 1;
+		float capacity = 0;
+		while (strength > 20){
+			constant = constant * 4;
+			strength = strength - 10;
+		}
+		if (strength < 1.00){
+			capacity =  0;
+		}
+		else if (strength <= 10){
+			capacity = (strength * 10);
+		}
+		else if (strength <= 20){
+			int i = (int)Math.floor(strength);
+			capacity =  capacities.get(i);			
+		}
+		return (constant*capacity);
+	}
+
+	/**
+	 * Return the used part of the total capacity of the object.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 * @return the resulting number cannot be larger than the maximum capacity of the object.
+	 * 		   | result <= this.getMaximumCapacity()
+	 */
+	@Override
+	public float getUsedCapacity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * Checks whether or not a certain given capacity is a valid capacity.
+	 * 
+	 * @return returns False if the capacity is negative, True otherwise.
+	 * 		   | (capacity >= 0) 
+	 */
+	@Override
+	public boolean isValidCapacity(int capacity) {
+		return (capacity >= 0);
+	}
 	
 }

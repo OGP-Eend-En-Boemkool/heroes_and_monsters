@@ -350,7 +350,7 @@ public class Monster extends Creature implements Damage, Protection {
 
 	
 	/**************************************
-	 * Capacity
+	 * Capacity - totaal
 	 **************************************/
 	
 	/**
