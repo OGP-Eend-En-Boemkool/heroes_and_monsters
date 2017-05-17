@@ -15,12 +15,12 @@ public class Weapon extends Ownable implements Damage{
 	public int damage = 7;
 	
 	/**
-	 * Variable registering the maximum value of the object.
+	 * Variable registering the maximum value of the weapon.
 	 */
 	public static int maxDamage = 100;
 	
 	/**
-	 * Returns the current value for the damage of an object.
+	 * Returns the current value for the damage of a weapon.
 	 * 
 	 * @return The resulting number must be bigger than 1 and smaller than the maximum damage.
 	 * 		   | result >= 1 && result <= maximumDamage
@@ -33,14 +33,14 @@ public class Weapon extends Ownable implements Damage{
 	}
 
 	/**
-	 * Returns the maximum integer allowed for the damage of an object.
+	 * Returns the maximum integer allowed for the damage of the weapon.
 	 * 
 	 * @return The resulting number must be bigger than 1.
 	 * 		   | result >= 1
 	 */
 	@Override
 	public int getMaximumDamage() {
-		return this.maxDamage;
+		return Weapon.maxDamage;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Weapon extends Ownable implements Damage{
 	 */
 	@Override
 	public void setMaximumDamage(int damage) {
-		this.maxDamage=damage;		
+		Weapon.maxDamage=damage;		
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class Weapon extends Ownable implements Damage{
 	 * 		   the number that needs to be checked.
 	 * @return true if the integer is bigger than 1 and smaller than the maximum damage and it's a 
 	 * 		   multiple of 7, false otherwise.
-	 * 		   | result == ((damage >= 1) && (damage <= maximumDamage) && (damage % 7 = 0))
+	 * 		   | result == ((damage >= 1) && (damage <= maximumDamage) && (damage % 7 == 0))
 	 */
 	@Override
 	public boolean canHaveAsDamage(int damage) {
