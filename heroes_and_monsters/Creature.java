@@ -3,6 +3,7 @@ package heroes_and_monsters;
 import be.kuleuven.cs.som.annotate.*;
 import java.math.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A class of creatures with a name and a strength.
@@ -389,5 +390,22 @@ public abstract class Creature{
 	@Raw
 	protected abstract void setAnchorObjects(ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException;
+	
+	/*************************************
+	 * hit
+	 *************************************/
+	
+	/**
+	 * Return random number between 0 and 100.
+	 */
+	protected static int randomNumber(){
+		return ThreadLocalRandom.current().nextInt(0, 101);
+	}
+	
+	/**
+	 * Check whether the punch that was given is effective or not.
+	 * @return
+	 */
+	public abstract boolean effectiveHit();
 	
 }
