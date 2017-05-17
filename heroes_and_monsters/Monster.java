@@ -13,6 +13,10 @@ import java.util.*;
  * @version 1.0
  */
 public class Monster extends Creature implements Damage {
+	
+	/******************************************
+	 * Constructors
+	 ******************************************
 
 	/**
 	 * Initialize this new monster with a name, a strength, a maximum hitpoints a
