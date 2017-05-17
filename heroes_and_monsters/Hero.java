@@ -12,6 +12,10 @@ import java.util.*;
  * @version 1.0
  */
 public class Hero extends Creature {
+	
+	/******************************************
+	 * Constructors
+	 ******************************************
 
 	/**
 	 * Initialize this new hero with a name, a strength, a maximum hitpoints a
