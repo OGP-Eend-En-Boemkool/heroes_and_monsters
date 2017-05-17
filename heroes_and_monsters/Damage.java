@@ -63,7 +63,7 @@ public interface Damage {
 	 * 		   the number that needs to be checked.
 	 * @return true if the integer is bigger than 1 and smaller than the maximum damage and it's a 
 	 * 		   multiple of 7, false otherwise.
-	 * 		   | result == ((damage >= 1) && (damage <= maximumDamage) && (damage % 7 = 0))
+	 * 		   | result == ((damage >= 1) && (damage <= maximumDamage) && (damage % 7 == 0))
 	 */
 	boolean canHaveAsDamage(int damage);
 	
