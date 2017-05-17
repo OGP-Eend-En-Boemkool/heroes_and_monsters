@@ -27,6 +27,10 @@ public abstract class Creature{
 	 * 			The strength of this creature.
 	 * @param	maxHitpoints
 	 * 			The maximum and current hitpoints of this creature.
+	 * @param	anchors
+	 * 			The anchors of a creature.
+	 * @param	anchorObjects
+	 * 			The objects that must go in the anchors.
 	 * @pre 	MaxHitpoints must be a valid value for hitpoints when the creature is
 	 * 			not fighting.
 	 * 			| canHaveAsHitpointsNotFighting(maxHitpoints)
@@ -37,18 +41,31 @@ public abstract class Creature{
 	 * @post	The current hitpoints of this creature is set to the given maxHitpoints.
 	 * 			| new.getHitpoints() == maxHitpoints
 	 * @post	The maximum hitpoints of this creature is set to the given maxHitpoints.
-	 * 			| new.gteMaxHitpoints() == maxHitpoints
+	 * 			| new.getMaxHitpoints() == maxHitpoints
+	 * @post	The anchors and its objects are set to the given anchors and anchorObjects.
+	 * 			| new.getAnchors == (anchors, anchorObjects)
 	 * @throws	IllegalArgumentException()
 	 * 			This creature can't have this name.
 	 * 			| !canHaveAsName(name)
+	 * @throws 	IllegalArgumentException
+	 * 			The size of the given arraylist anchors can't be zero.
+	 * 			| anchors.size() == 0
+	 * @throws	IllegalArgumentException
+	 * 			There can only be one object in an anchor.
+	 * 			| anchorObjects.get(i) instanceof List ||
+	 * 			|		anchorObjects.get(i) instanceof Map ||
+				|		anchorObjects.get(i) instanceof Set
 	 */
 	@Raw
-	protected Creature(String name, BigDecimal strength, int maxHitpoints)
+	protected Creature(String name, BigDecimal strength, int maxHitpoints,
+			ArrayList<String> anchors, ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException {
 		setName(name);
 		setStrength(strength);
 		setHitpoints(maxHitpoints);
 		setMaxHitpoints(maxHitpoints);
+		setAnchors(anchors);
+		setAnchorObjects(anchorObjects);
 	}
 	
 	/**********************************
@@ -143,7 +160,7 @@ public abstract class Creature{
 	 * 			| if (!isFighting()){
 	 * 			|		canHaveAsHitpointsNotFighting(hitpoints) }
 	 * @post	The hitpoints are set to the given hitpoints.
-	 * 			| new.getHitpoints() = hitpoints
+	 * 			| new.getHitpoints() == hitpoints
 	 */
 	@Raw
 	protected void setHitpoints(int hitpoints){
@@ -194,7 +211,7 @@ public abstract class Creature{
 	 * @pre		The maxHitpoints must be valid for a creature who is not fighting.
 	 * 			| canHaveAsHitpointsNotFighting(maxHitpoints)
 	 * @post	The maxHitpoints is set to maxHitpoints
-	 * 			| new.getMaxHitpoints() = maxHitpoints
+	 * 			| new.getMaxHitpoints() == maxHitpoints
 	 */
 	@Raw
 	protected void setMaxHitpoints(int maxHitpoints){
@@ -210,7 +227,7 @@ public abstract class Creature{
 	 * 			| canHaveAsHitpointsFighting(maxHitpoints) ||
 	 * 			|		canHaveAsHitpointsNotFighting(maxHitpoints)
 	 * @post	The maxHitpoints is set to maxHitpoints
-	 * 			| new.getMaxHitpoints() = maxHitpoints
+	 * 			| new.getMaxHitpoints() == maxHitpoints
 	 */
 	protected void changeMaxHitpoints(int maxHitpoints){
 		
@@ -297,7 +314,7 @@ public abstract class Creature{
 	 * @param 	number
 	 * 			The number to multiply the strength from this creature with.
 	 * @post	The strength of this creature is multiplied by the given number.
-	 * 			| new.getStrength() = this.getStrength().multiply(new BigDecimal(number))
+	 * 			| new.getStrength() == this.getStrength().multiply(new BigDecimal(number))
 	 */
 	protected void multiplyStrength(int number){
 		setStrength(this.getStrength().multiply(new BigDecimal(number)));
@@ -313,7 +330,7 @@ public abstract class Creature{
 	 * 			| if (number == 0){
 	 * 			|		number = 1 }
 	 * @post	The strength of this creature is divided by number.
-	 * 			| new.getStrength() = this.getStrength().divide(new BigDecimal(number), RoundingMode.HALF_UP)
+	 * 			| new.getStrength() == this.getStrength().divide(new BigDecimal(number), RoundingMode.HALF_UP)
 	 */
 	protected void divideStrength(int number){
 		if (number == 0){
@@ -330,5 +347,47 @@ public abstract class Creature{
 	 * Variable referencing the anchors with their object of a creature.
 	 */
 	protected HashMap<String, Object> anchors = new HashMap<String, Object>();
+	
+	/**
+	 * Return the anchors and what's in the anchor of this creature.
+	 */
+	@Raw @Basic
+	public HashMap<String, Object> getAnchors(){
+		return this.anchors;
+	}
+	
+	/**
+	 * Set the anchors for this creature.
+	 * 
+	 * @param 	anchors
+	 * 			The anchors of this creature.
+	 * @throws 	IllegalArgumentException
+	 * 			The size of the given arraylist can't be zero.
+	 * 			| anchors.size() == 0
+	 */
+	@Raw
+	protected void setAnchors(ArrayList<String> anchors)
+			throws IllegalArgumentException{
+		if (anchors.size() == 0){
+			throw new IllegalArgumentException("A creature must have at least 1 anchor.");
+		}
+		for (int i = 0; i < anchors.size(); i++){
+			this.anchors.put(anchors.get(i), null);
+		}
+	}
+	
+	
+	/**
+	 * The anchors of this creature are set to the objects in the given list anchorObjects.
+	 * 
+	 * @param 	anchorObjects
+	 * 			The list with all the objects that must go in an anchor.
+	 * @post	The positions of the anchor are filled with the given objects in the list.
+	 * 			| new.getAnchors() ==	for all keys {
+	 * 			|								(key, value of key) in anchor }
+	 */
+	@Raw
+	protected abstract void setAnchorObjects(ArrayList<Object> anchorObjects)
+			throws IllegalArgumentException;
 	
 }
