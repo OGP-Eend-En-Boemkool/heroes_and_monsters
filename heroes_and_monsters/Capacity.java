@@ -34,8 +34,10 @@ public interface Capacity {
 	/**
 	 * Checks whether or not a certain given capacity is a valid capacity.
 	 * 
-	 * @return returns true if the capacity is not negative, false otherwise.
-	 * 		   | result == (capacity >= 0)
+	 * @return returns false if the capacity is negative.
+	 * 		   | if (capacity < 0) then 
+	 * 		   |		return false
+	 * @note   this return must be left open because some of the subclasses might change it.
 	 */
 	public boolean isValidCapacity(Number capacity);
 
