@@ -112,7 +112,7 @@ public class Weapon extends Ownable implements Damage{
 	 ******************************
 	
 	/**
-	 * 
+	 * Return a valid identification for a weapon.
 	 */
 	@Raw
 	private long calculateValidIdentification(){
