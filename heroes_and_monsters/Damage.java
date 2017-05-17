@@ -21,6 +21,7 @@ public interface Damage {
 	 * @return The resulting number must be a multiple of 7.
 	 * 		   | result % 7 = 0
 	 */
+	@Basic
 	public int getCurrentDamage();
 	
 	/**
