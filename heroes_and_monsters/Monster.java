@@ -12,7 +12,7 @@ import java.util.*;
  * @author Linde en Lotte
  * @version 1.0
  */
-public class Monster extends Creature implements Damage {
+public class Monster extends Creature implements Damage, Protection {
 	
 	/******************************************
 	 * Constructors

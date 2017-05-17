@@ -194,4 +194,33 @@ public class Hero extends Creature {
 		}
 		
 	}
+	
+	/**********************************
+	 * Protection 
+	 **********************************/
+	
+	/**
+	 * Variable registering the value of the standard protection of a hero.
+	 */
+	public final int standardProtection = 10;
+	
+	/**
+	 * Returns the current value for the protection of a hero.
+	 * 
+	 * @return The resulting number must be bigger than or equal to 1 and smaller than the maximum protection.
+	 * 		   | (result >= 1) && (result <= maxProtection)
+	 * @return The resulting number must be the sum of the standardProtection and the currentProtection of the armor.
+	 * 		   | result == (armor.getCurrentProtection() + this.standardProtection))
+	 */
+	public int getCurrentProtection() {
+		Object object = getAnchors().get("Body");
+		if ((object != null)&&(object instanceof Armor)){
+			Armor armor = (Armor)object;
+			return (armor.getCurrentProtection() + this.standardProtection);
+		}
+		else {
+			return this.standardProtection;
+		}
+	}	
+	
 }
