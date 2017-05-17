@@ -17,6 +17,10 @@ import java.util.*;
  */
 public abstract class Creature{
 
+	/******************************************
+	 * Constructors
+	 ******************************************
+	
 	/**
 	 * Initialize this new Creature with the given name as name and the
 	 * given strength as strength.
