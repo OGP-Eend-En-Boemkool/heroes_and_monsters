@@ -362,9 +362,9 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 		   | result == (this.getStrength.floatValue() * 9)
 	 */
 	@Override
-	public float getMaximumCapacity() {
+	public double getMaximumCapacity(Unit unit) {
 		float strength = this.getStrength().floatValue();
-		return (strength * 9);
+		return (unit.convertFromKilogram(strength * 9));
 	}
 
 	/**
@@ -376,20 +376,9 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 		   | result <= this.getMaximumCapacity()
 	 */
 	@Override
-	public float getUsedCapacity() {
+	public double getUsedCapacity(Unit unit) {
 		// TODO
 		return 0;
-	}
-
-	/**
-	 * Checks whether or not a certain given capacity is a valid capacity.
-	 * 
-	 * @return returns False if the capacity is negative, True otherwise.
-	 * 		   | (capacity >= 0)
-	 */
-	@Override
-	public boolean isValidCapacity(int capacity) {
-		return (capacity >= 0);
 	}
 
 }

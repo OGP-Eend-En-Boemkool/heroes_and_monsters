@@ -67,4 +67,39 @@ public class Backpack extends Storage {
 	    }
 	    return coefficient;
 	}
+
+	/********************************
+	 * Capacity - totaal
+	 ********************************/
+	
+	/**
+	 * Variable registering the maximum capacity of the backpack.
+	 */
+	private final double maximumCapacity;
+	
+	/**
+	 * Return the maximum capacity of the object.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 */
+	@Override
+	public double getMaximumCapacity(Unit unit) {
+		return unit.convertFromKilogram(maximumCapacity);
+	}
+
+	/**
+	 * Return the used part of the total capacity of the object.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 * @return the resulting number cannot be larger than the maximum capacity of the object.
+	 * 		   | result <= this.getMaximumCapacity()
+	 */
+	@Override
+	public double getUsedCapacity(Unit unit) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }
