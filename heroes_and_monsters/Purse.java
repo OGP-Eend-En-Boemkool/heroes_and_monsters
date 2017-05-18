@@ -5,10 +5,29 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A class of purses.
+ * 
+ * @invar	Every purse must have a correct identification.
+ * 			| canHaveAsIdentification(getIdentification())
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public class Purse extends Storage {
 
+	/******************************************
+	 * Constructors
+	 ******************************************
+	
+	/**
+	 * Initialize this new purse with an identification.
+	 * 
+	 * @effect	This purse is initialized as an ownable with a calculated identification.
+	 * 			| super(calculateValidIdentification())
+	 */
 	public Purse(){
-		
+		super(calculateValidIdentification());
 	}
 	
 	/*******************************
@@ -69,7 +88,7 @@ public class Purse extends Storage {
 	 * 			| result == isFibonacci(identification) && ( idListPurses.size() >= 1000 ||
 	 * 			|				!idListPurses.contains(identification) )
 	 */
-	public boolean canHaveAsIdentification(long identification){
+	public static boolean canHaveAsIdentification(long identification){
 		return (isFibonacci(identification) && ( idListPurses.size() >= 1000 ||
 	 				!idListPurses.contains(identification) ));
 	}
@@ -77,7 +96,7 @@ public class Purse extends Storage {
 	/**
 	 * Return a valid identification for a purse.
 	 */
-	private long calculateValidIdentification(){
+	private static long calculateValidIdentification(){
 		long id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
 		while (!canHaveAsIdentification(id)){
 			id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);

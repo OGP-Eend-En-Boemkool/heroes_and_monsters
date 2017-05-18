@@ -5,11 +5,28 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A class of weapons.
+ * 
+ * @invar	Every weapon must have a correct identification.
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public class Weapon extends Ownable implements Damage{
 
+	/******************************************
+	 * Constructors
+	 ******************************************
 	
+	/**
+	 * Initialize this new weapon with an identification.
+	 * 
+	 * @effect	This weapon is initialized as an ownable with a calculated identification.
+	 */
+	@Raw
 	public Weapon(){
-		
+		super(calculateValidIdentification());
 	}
 	
 	/**********************************************************
@@ -114,8 +131,7 @@ public class Weapon extends Ownable implements Damage{
 	/**
 	 * Return a valid identification for a weapon.
 	 */
-	@Raw
-	private long calculateValidIdentification(){
+	private static long calculateValidIdentification(){
 		long id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
 		while (!canHaveAsIdentification(id)){
 			id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
@@ -131,8 +147,7 @@ public class Weapon extends Ownable implements Damage{
 	 * @return	False if the number cannot be divided by 6. Also false if there are not
 	 * 			made 1000 weapons yet and the identification already exists. True otherwise.
 	 */
-	@Raw
-	public boolean canHaveAsIdentification(long identification){
+	public static boolean canHaveAsIdentification(long identification){
 		return (identification%6 == 0 && (idListWeapons.size() >= 1000 ||
 				!idListWeapons.contains(identification)));
 	}

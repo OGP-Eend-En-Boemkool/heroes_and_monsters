@@ -5,14 +5,31 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A class of armors.
+ * 
+ * @invar	Every armor must have a correct identification.
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public class Armor extends Ownable implements Protection{
 	
 	/******************************************
 	 * Constructors
-	 ******************************************/
+	 ******************************************
 	
-	public Armor(){
-		super();
+	/**
+	 * Initialize this new armor with an identification.
+	 * 
+	 * @param 	identification
+	 * 			The identification of this armor.
+	 * @effect	This armor is initialized as an ownable with the given identification.
+	 * 			If that is not a correct identification, the identification is set to
+	 * 			a correct identification.
+	 */
+	public Armor(long identification){
+		super(identification);
 		}
 	
 	/******************************************
@@ -155,8 +172,7 @@ public class Armor extends Ownable implements Protection{
 	 * @return	True if and only if the identification is positive, prime and if it is one
 	 * 			of the first 1000 armors, it must also be unique.
 	 */
-	@Raw
-	public boolean canHaveAsIdentification(long identification){
+	public static boolean canHaveAsIdentification(long identification){
 		boolean prime = true;
 		for (int i=1; i <= Math.round(Math.sqrt(identification)); i++){
 			if (identification % i == 0){

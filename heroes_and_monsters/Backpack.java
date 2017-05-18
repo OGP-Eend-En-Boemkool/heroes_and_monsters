@@ -5,10 +5,29 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A class of backpacks.
+ * 
+ * @invar	Every backpack must have the next correct identification number.
+ * 			| getIdentification == calculateValidIdentification()
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public class Backpack extends Storage {
 
+	/******************************************
+	 * Constructors
+	 ******************************************
+	
+	/**
+	 * Initialize this new backpack with an identification.
+	 * 
+	 * @effect	This backpack is initialized as an ownable with a calculated identification.
+	 * 			| super(calculateValidIdentification())
+	 */
 	public Backpack(){
-		
+		super(calculateValidIdentification());
 	}
 	
 	/********************************
@@ -35,8 +54,7 @@ public class Backpack extends Storage {
 	 * at the bottom an increasing number from zero to that same number (increased with
 	 * every new term of the sum).
 	 */
-	@Raw
-	private long calculateValidIdentification(){
+	private static long calculateValidIdentification(){
 		long n = idListBackpacks.size() + 1;
 		long id = 0;
 		for (int i = 0; i <= n; i++){
@@ -58,7 +76,7 @@ public class Backpack extends Storage {
 	    		| else {
 	    		|	return (calculateBinomial(n - 1, i) + calculateBinomial(n - 1, i - 1))
 	 */
-	private long calculateBinomial(long n, long i){
+	private static long calculateBinomial(long n, long i){
 		long coefficient;
 	    if (i==0 | i==n){
 	    	coefficient = 1;

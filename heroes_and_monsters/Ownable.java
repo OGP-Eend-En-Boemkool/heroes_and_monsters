@@ -5,10 +5,29 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A class of ownables.
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public abstract class Ownable{
  
-	protected Ownable(){
-		
+	/******************************************
+	 * Constructors
+	 ******************************************
+	
+	/**
+	 * Initialize an ownable with an identification.
+	 * 
+	 * @param 	identification
+	 * 			The identification of this ownable.
+	 * @post	The identification of this ownable is set to identification.
+	 * 			| new.getIdentification() == identification
+	 */
+	@Raw
+	protected Ownable(long identification){
+		setIdentification(identification);
 	}
 	
 	/*******************************
@@ -57,5 +76,6 @@ public abstract class Ownable{
 	 * 			has its own list).
 	 * 			| idList.add(identification)
 	 */
+	@Raw
 	protected abstract void setIdentification(long identification);
 }

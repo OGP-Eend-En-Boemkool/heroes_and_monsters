@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * A class of creatures with a name and a strength.
+ * A class of creatures.
  * 
  * @invar	Every creature must have a valid name.
  * 			| canHaveAsName(getName())
@@ -23,8 +23,8 @@ public abstract class Creature implements Capacity{
 	 ******************************************
 	
 	/**
-	 * Initialize this new Creature with the given name as name and the
-	 * given strength as strength.
+	 * Initialize this new Creature with a name, a strength, a maximum hitpoints a
+	 * current hitpoints, anchors and anchorObjects.
 	 * 
 	 * @param	name
 	 * 			The name of this creature.
