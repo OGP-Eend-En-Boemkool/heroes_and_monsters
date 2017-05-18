@@ -49,16 +49,5 @@ public class Purse extends Storage {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	/**
-	 * Checks whether or not a certain given capacity is a valid capacity.
-	 * 
-	 * @return returns False if the capacity is negative, True otherwise.
-	 * 		   | (capacity >= 0)
-	 */
-	@Override
-	public boolean isValidCapacity(double capacity) {
-		return (capacity >= 0);
-	}
 		
 }
