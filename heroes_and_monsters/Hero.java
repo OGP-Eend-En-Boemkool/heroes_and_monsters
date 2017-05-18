@@ -170,8 +170,9 @@ public class Hero extends Creature {
 		this.anchors.put("Belt", anchorObjects.get(4));
 	}
 	
+	
 	/**********************************
-	 * heal
+	 * Heal
 	 **********************************/
 	
 	/**
@@ -223,6 +224,7 @@ public class Hero extends Creature {
 		}
 	}
 
+
 	/**********************************
 	 * Capacity -  totaal
 	 **********************************/
@@ -239,7 +241,7 @@ public class Hero extends Creature {
 	 * 		   | result > 0
 	 */
 	@Override
-	public float getMaximumCapacity() {
+	public double getMaximumCapacity(Unit unit) {
 		float strength = this.getStrength().floatValue();
 		int constant = 1;
 		float capacity = 0;
@@ -257,7 +259,7 @@ public class Hero extends Creature {
 			int i = (int)Math.floor(strength);
 			capacity =  capacities.get(i);			
 		}
-		return (constant*capacity);
+		return (unit.convertFromKilogram(constant*capacity));
 	}
 
 	/**
@@ -269,20 +271,10 @@ public class Hero extends Creature {
 	 * 		   | result <= this.getMaximumCapacity()
 	 */
 	@Override
-	public float getUsedCapacity() {
+	public double getUsedCapacity(Unit unit) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/**
-	 * Checks whether or not a certain given capacity is a valid capacity.
-	 * 
-	 * @return returns False if the capacity is negative, True otherwise.
-	 * 		   | (capacity >= 0) 
-	 */
-	@Override
-	public boolean isValidCapacity(int capacity) {
-		return (capacity >= 0);
-	}
-	
+		
 }

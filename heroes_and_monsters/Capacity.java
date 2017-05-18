@@ -19,7 +19,7 @@ public interface Capacity {
 	 * @return the resulting number cannot be negative
 	 * 		   | result > 0
 	 */
-	public float getMaximumCapacity();
+	public double getMaximumCapacity(Unit unit);
 	
 	/**
 	 * Return the used part of the total capacity of the object.
@@ -29,16 +29,6 @@ public interface Capacity {
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
 	 * 		   | result <= this.getMaximumCapacity()
 	 */
-	public float getUsedCapacity();
-	
-	/**
-	 * Checks whether or not a certain given capacity is a valid capacity.
-	 * 
-	 * @return returns false if the capacity is negative.
-	 * 		   | if (capacity < 0) then 
-	 * 		   |		return false
-	 * @note   this return must be left open because some of the subclasses might change it.
-	 */
-	public boolean isValidCapacity(int capacity);
+	public double getUsedCapacity(Unit unit);
 
 }
