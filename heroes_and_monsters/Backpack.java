@@ -19,8 +19,9 @@ public class Backpack extends Storage {
 	 * Set the identification of this backpack to the given identification.
 	 * 
 	 * @param 	identification
-	 * 			The identification of this backpack
+	 * 			The identification of this backpack.
 	 * @post	The identification of this backpack is set to identification.
+	 * 			| new.getIdentification() = identification
 	 */
 	@Raw @Override
 	protected void setIdentification(long identification){

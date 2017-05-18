@@ -117,17 +117,24 @@ public class Weapon extends Ownable implements Damage{
 	@Raw
 	private long calculateValidIdentification(){
 		long id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
-		if (idListWeapons.size() >= 1000){
-			while (id%6 != 0){
-				id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
-			}
-		}
-		else {
-			while (id%6 != 0 || idListWeapons.contains(id)){
-				id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
-			}
+		while (!canHaveAsIdentification(id)){
+			id = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
 		}
 		return id;
+	}
+	
+	/**
+	 * Check whether the identification is correct.
+	 * 
+	 * @param 	identification
+	 * 			The identification to check.
+	 * @return	False if the number cannot be divided by 6. Also false if there are not
+	 * 			made 1000 weapons yet and the identification already exists. True otherwise.
+	 */
+	@Raw
+	public boolean canHaveAsIdentification(long identification){
+		return (identification%6 == 0 && (idListWeapons.size() >= 1000 ||
+				!idListWeapons.contains(identification)));
 	}
 	
 	/**

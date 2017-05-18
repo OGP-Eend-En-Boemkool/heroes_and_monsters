@@ -157,32 +157,15 @@ public class Armor extends Ownable implements Protection{
 	 */
 	@Raw
 	public boolean canHaveAsIdentification(long identification){
-		if (identification < 0){
-			return false;
-		}
-		else {
-			boolean prime = true;
-			for (int i=1; i <= Math.round(Math.sqrt(identification)); i++){
-				if (identification % i == 0){
-					prime = false;
-					break;
-				}
-			}
-			if (!prime){
-				return false;
-			}
-			else if (idListArmors.size() < 1000){
-				if (idListArmors.contains(identification)){
-					return false;
-				}
-				else {
-					return true;
-				}
-			}
-			else {
-				return true;
+		boolean prime = true;
+		for (int i=1; i <= Math.round(Math.sqrt(identification)); i++){
+			if (identification % i == 0){
+				prime = false;
+				break;
 			}
 		}
+		return (identification >= 0 && prime && (idListArmors.size() >= 1000 ||
+				!idListArmors.contains(identification)));
 	}
 	
 	/**
