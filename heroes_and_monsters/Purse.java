@@ -39,6 +39,8 @@ public class Purse extends Storage {
 	 * 
 	 * @param 	identification
 	 * 			The identification of this purse.
+	 * @effect	The identification is added to the list of identifications of purses.
+	 *  		| idListPurses.add(identification)
 	 * @post	The identification of this purse is set to identification.
 	 * 			| new.getIdentification() = identification
 	 */
@@ -138,5 +140,17 @@ public class Purse extends Storage {
 	public double getUsedCapacity(Unit unit) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	/******************************
+	 * holder
+	 ******************************
+	
+	/**
+	 * 
+	 */
+	@Raw @Override
+	protected void setHolder(Object holder){
+		
 	}
 }

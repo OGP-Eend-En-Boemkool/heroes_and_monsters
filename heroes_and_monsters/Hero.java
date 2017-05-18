@@ -60,7 +60,7 @@ public class Hero extends Creature {
 	 * @effect	The name of this hero is set to the given name.
 	 * 			| new.getName() == name
 	 */
-	@Raw
+	@Raw @Override
 	protected void setName(String name) throws IllegalArgumentException {
 		if (!canHaveAsName(name)){
 			throw new IllegalArgumentException("This is not a valid name for a hero");
@@ -143,7 +143,7 @@ public class Hero extends Creature {
 	 * 			The object on the fifth position can only be a purse.
 	 * 			| anchorObjects.get(4) != null && !(anchorObjects.get(4) instanceof Purse)
 	 */
-	@Raw
+	@Raw @Override
 	protected void setAnchorObjects(ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException {
 		if (anchorObjects.size() != anchorsStandard.size()){

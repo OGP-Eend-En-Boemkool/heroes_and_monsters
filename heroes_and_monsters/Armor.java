@@ -190,6 +190,7 @@ public class Armor extends Ownable implements Protection{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this armor.
+	 * @effect	The identification is added to the list of identifications of armors.
 	 * @post	If the given identification is unvalid, the identification is set to a
 	 * 			random valid identification. If it is valid, it is set to the given
 	 * 			identification.
@@ -204,5 +205,17 @@ public class Armor extends Ownable implements Protection{
 		}
 		this.identification = identification;
 		this.idListArmors.add(identification);
+	}
+	
+	/******************************
+	 * holder
+	 ******************************
+	
+	/**
+	 * 
+	 */
+	@Raw @Override
+	protected void setHolder(Object holder){
+		
 	}
 }

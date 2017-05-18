@@ -53,7 +53,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 
 	 * @effect	The name of this monster is set to the given name.
 	 */
-	@Raw
+	@Raw @Override
 	protected void setName(String name) throws IllegalArgumentException {
 		if (!canHaveAsName(name)){
 			throw new IllegalArgumentException("This is not a valid name for a monster");
@@ -99,7 +99,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 * @throws	IllegalArgumentException
 	 * 			There can only be one object in an anchor.
 	 */
-	@Raw
+	@Raw @Override
 	protected void setAnchorObjects(ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException{
 		if (anchorObjects.size() > anchors.size()){

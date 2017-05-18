@@ -39,6 +39,8 @@ public class Backpack extends Storage {
 	 * 
 	 * @param 	identification
 	 * 			The identification of this backpack.
+	 * @effect	The identification is added to the list of identifications of backpacks.
+	 * 			| idListBackpacks.add(identification)
 	 * @post	The identification of this backpack is set to identification.
 	 * 			| new.getIdentification() = identification
 	 */
@@ -119,6 +121,27 @@ public class Backpack extends Storage {
 	public double getUsedCapacity(Unit unit) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	/*********************************
+	 * content
+	 *********************************/
+	
+	/**
+	 * Variable referencing the content of a backpack
+	 */
+	private HashSet<Ownable> content = new HashSet<Ownable>();
+	
+	/******************************
+	 * holder
+	 ******************************
+	
+	/**
+	 * 
+	 */
+	@Raw @Override
+	protected void setHolder(Object holder){
+		
 	}
 	
 }

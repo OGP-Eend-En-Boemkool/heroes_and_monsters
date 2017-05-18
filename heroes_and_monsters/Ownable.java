@@ -74,8 +74,56 @@ public abstract class Ownable{
 	 * 			The identification of this ownable.
 	 * @post	The identification is added to the list of identifications (every ownable
 	 * 			has its own list).
-	 * 			| idList.add(identification)
+	 * 			| idListClass.add(identification)
 	 */
 	@Raw
 	protected abstract void setIdentification(long identification);
+	
+	/********************************
+	 * holder
+	 ********************************
+	
+	/**
+	 * Variable referencing the holder of an ownable.
+	 */
+	protected Object holder = null;
+	
+	/**
+	 * Return the holder of this ownable.
+	 */
+	@Raw @Basic
+	public Object getHolder(){
+		return this.holder;
+	}
+	/**
+	 * Return the ultimate owner of this ownable.
+	 */
+	@Raw
+	public Object getUltimateHolder(){
+		Object obj = this.getHolder();
+		if (obj == null || obj instanceof Creature){
+			return obj;
+		}
+		else {
+			Ownable own = (Ownable)obj;
+			while (own.getHolder() != null && !(own.getHolder() instanceof Creature)){
+				obj = own.getHolder();
+				own = (Ownable)obj;
+			}
+			if (own.getHolder() == null){
+				return own;
+			}
+			else {
+				return own.getHolder();
+			}		
+		}
+	}
+	
+	@Raw
+	protected abstract void setHolder(Object holder);
+	
+	@Raw
+	public boolean canHaveAsHolder(Object holder){
+		return ((holder instanceof Creature) || (holder instanceof Backpack));
+	}
 }
