@@ -170,8 +170,9 @@ public class Hero extends Creature {
 		this.anchors.put("Belt", anchorObjects.get(4));
 	}
 	
+	
 	/**********************************
-	 * heal
+	 * Heal
 	 **********************************/
 	
 	/**
@@ -223,6 +224,7 @@ public class Hero extends Creature {
 		}
 	}
 
+
 	/**********************************
 	 * Capacity -  totaal
 	 **********************************/
@@ -273,5 +275,6 @@ public class Hero extends Creature {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
+		
 }

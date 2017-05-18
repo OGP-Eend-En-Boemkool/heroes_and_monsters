@@ -408,9 +408,13 @@ public abstract class Creature implements Capacity{
 	
 	/**
 	 * Check whether the punch that was given is effective or not.
-	 * @return
+	 * 
+	 * @return True if hit is bigger (or equal to) than the protection of the creature that has been hit, False otherwise.
+	 * 		   | result == (hit >= this.getCurrentProtection())
 	 */
-	public abstract boolean effectiveHit();
+	public boolean effectiveHit(int hit){
+		return (hit >= this.getCurrentProtection());
+	}
 	
 	/*************************************
 	 * collect treasures
@@ -418,4 +422,10 @@ public abstract class Creature implements Capacity{
 	
 	protected abstract void collectTreasures();
 	
+	
+	/**********************************
+	 * Protection 
+	 **********************************/
+	
+	public abstract int getCurrentProtection();
 }
