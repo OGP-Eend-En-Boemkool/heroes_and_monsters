@@ -13,7 +13,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @version	1.0
  */
 @Value
-public class Ducat {
+public class Ducat{
 
 	/**
 	 * Initialize this new Ducat with the given numeral as amount.
