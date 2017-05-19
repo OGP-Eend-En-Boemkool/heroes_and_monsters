@@ -5,6 +5,8 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Exceptions.AnchorIsNotEmptyException;
+
 /**
  * A class of creatures.
  * 
@@ -394,6 +396,17 @@ public abstract class Creature implements Capacity{
 	@Raw
 	protected abstract void setAnchorObjects(ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException;
+	
+	protected void addToAnchor(Object object, String anchor)
+			throws IllegalArgumentException, AnchorIsNotEmptyException {
+		if (!(this.getAnchors().keySet().contains(anchor))){
+			throw new IllegalArgumentException("This is not a valid anchor");
+		}
+		if (this.getAnchors().get(anchor) != null){
+			throw new AnchorIsNotEmptyException(anchor);
+		}
+		this.anchors.put(anchor, object);	// klopt nog niet... :(
+	}
 	
 	/*************************************
 	 * hit

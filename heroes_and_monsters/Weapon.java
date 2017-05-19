@@ -4,6 +4,7 @@ import be.kuleuven.cs.som.annotate.*;
 import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import Exceptions.*;
 
 /**
  * A class of weapons.
@@ -176,8 +177,23 @@ public class Weapon extends Ownable implements Damage{
 	 * 
 	 */
 	@Raw @Override
-	protected void setHolder(Object holder){
+	protected void setHolder(Hero holder, String anchor)
+			throws IllegalArgumentException, HasAlreadyHolderException, AnchorIsNotEmptyException {
+		if (!(holder.getAnchors().keySet().contains(anchor))){
+			throw new IllegalArgumentException("This is not a valid anchor");
+		}
+		if (holder.getAnchors().get(anchor) != null){
+			throw new AnchorIsNotEmptyException(anchor);
+		}
+		if (!canHaveAsHolder(holder)){
+			// Should not happen, because the holder must be a hero, which is a creature
+			throw new IllegalArgumentException("Illegal holder");
+		}
+		if (this.getHolder() != null){
+			throw new HasAlreadyHolderException(this);
+		}
 		
+		this.holder = holder;
 	}
 
 }

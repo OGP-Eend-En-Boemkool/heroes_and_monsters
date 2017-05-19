@@ -120,10 +120,11 @@ public abstract class Ownable{
 	}
 	
 	@Raw
-	protected abstract void setHolder(Object holder);
+	protected abstract void setHolder(Hero holder, String anchor);
 	
 	@Raw
 	public boolean canHaveAsHolder(Object holder){
-		return ((holder instanceof Creature) || (holder instanceof Backpack));
+		return ((holder instanceof Creature) || (holder instanceof Backpack) ||
+				holder == null);
 	}
 }
