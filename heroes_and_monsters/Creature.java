@@ -512,8 +512,33 @@ public abstract class Creature implements Capacity{
 	 * @return True if hit is bigger (or equal to) than the protection of the creature that has been hit, False otherwise.
 	 * 		   | result == (hit >= this.getCurrentProtection())
 	 */
-	public boolean effectiveHit(int hit){
+	protected boolean effectiveHit(int hit){
 		return (hit >= this.getCurrentProtection());
+	}
+	
+	/**
+	 * Return the resulting damage of a certain hit of this creature
+	 * 
+	 */
+	protected abstract int getResultingDamage();
+	
+	protected abstract int deathblow();
+	
+	/**
+	 * 
+	 * @param other
+	 * 		  the creature that is hit.
+	 */
+	public void hit(Creature other){
+		int randy = Creature.randomNumber();
+		if (effectiveHit(randy)){
+			int newHitpointsOther = other.getHitpoints() - this.getResultingDamage();
+			if (newHitpointsOther < 0){
+				newHitpointsOther = 0;
+				this.deathblow();
+			}
+			other.setHitpoints(newHitpointsOther);
+		}
 	}
 	
 	/*************************************

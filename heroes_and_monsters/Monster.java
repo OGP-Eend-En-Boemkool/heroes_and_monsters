@@ -376,4 +376,31 @@ public class Monster extends Creature implements Damage, Protection {
 		return 0;
 	}
 
+	/**************************************
+	 * Hit
+	 **************************************/
+	
+	/**
+	 * Return the resulting damage of a certain hit of this creature
+	 * //TODO
+	 */
+	@Override
+	protected int getResultingDamage() {
+		int damageMonster = this.getCurrentDamage();
+		int strengthDamage = (int)Math.floor((this.getStrength().floatValue() - 5)/3);
+		int attack = damageMonster + strengthDamage;
+		if (attack < 0){
+			return 0;
+		}
+		else{
+			return attack;
+		}
+	}
+
+	@Override
+	protected int deathblow() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

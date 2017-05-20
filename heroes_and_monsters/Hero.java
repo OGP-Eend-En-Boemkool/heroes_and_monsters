@@ -279,5 +279,38 @@ public class Hero extends Creature {
 		return 0;
 	}
 
+	/**********************************
+	 * Hit
+	 **********************************/
+	
+	/**
+	 * Return the resulting damage of a certain hit of this creature
+	 * //TODO
+	 */
+	@Override
+	protected int getResultingDamage() {
+		double attackForce = this.getStrength().floatValue();
+		for (int i = 0; i < anchorsStandard.size(); i++){
+			Object object = this.getAnchors().get(i);
+			if ((object instanceof Weapon) && (object != null)){
+				Weapon weapon = (Weapon)object;
+				double damageWeapon = weapon.getCurrentDamage();
+				attackForce = attackForce + damageWeapon;
+			}
+		}
+		int attack = (int)Math.floor((attackForce -10)/2);
+		if (attack < 0){
+			return 0;
+		}
+		else{
+			return attack;
+		}
+	}
+
+	@Override
+	protected int deathblow() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 		
 }
