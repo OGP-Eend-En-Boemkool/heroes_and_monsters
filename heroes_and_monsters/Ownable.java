@@ -25,7 +25,7 @@ public abstract class Ownable{
 	 * @post	The identification of this ownable is set to identification.
 	 * 			| new.getIdentification() == identification
 	 */
-	@Raw
+	@Raw @Model
 	protected Ownable(long identification){
 		setIdentification(identification);
 	}

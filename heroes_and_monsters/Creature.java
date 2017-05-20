@@ -63,7 +63,7 @@ public abstract class Creature implements Capacity{
 	 * 			|		anchorObjects.get(i) instanceof Map ||
 				|		anchorObjects.get(i) instanceof Set
 	 */
-	@Raw
+	@Raw @Model
 	protected Creature(String name, BigDecimal strength, int maxHitpoints,
 			ArrayList<String> anchors, ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException {
@@ -360,7 +360,7 @@ public abstract class Creature implements Capacity{
 	 */
 	@Raw @Basic
 	public HashMap<String, Object> getAnchors(){
-		return this.anchors;
+		return new HashMap(this.anchors);
 	}
 	
 	/**
@@ -397,15 +397,102 @@ public abstract class Creature implements Capacity{
 	protected abstract void setAnchorObjects(ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException;
 	
+	/**
+	 * The given object is added to the given anchor.
+	 * 
+	 * @param 	object
+	 * 			The object to add.
+	 * @param 	anchor
+	 * 			The anchor to add it to.
+	 * @post	The given object is added to the given anchor.
+	 * 			| this.anchors.put(anchor, object)
+	 * @throws 	IllegalArgumentException
+	 * 			This object can't be added to this anchor.
+	 * 			| !canAddToAnchor(object, anchor)
+	 */
+	@Raw
 	protected void addToAnchor(Object object, String anchor)
-			throws IllegalArgumentException, AnchorIsNotEmptyException {
-		if (!(this.getAnchors().keySet().contains(anchor))){
-			throw new IllegalArgumentException("This is not a valid anchor");
+			throws IllegalArgumentException {
+		if (!canAddToAnchor(object, anchor)){
+			throw new IllegalArgumentException("The object can't be added to this anchor.");
 		}
-		if (this.getAnchors().get(anchor) != null){
-			throw new AnchorIsNotEmptyException(anchor);
+		this.anchors.put(anchor, object);
+	}
+	
+	/**
+	 * Check whether the given object can be added to the given anchor.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @param 	anchor
+	 * 			The anchor to check.
+	 * @return	True if and only if this creature has such anchor, that anchor doesn't
+	 * 			already have another object and the object is an ownable or a ducat.
+	 * 			| result == this.getAnchors().keySet().contains(anchor) &&
+	 *			|			this.getAnchors().get(anchor) == null &&
+	 *			|			((object instanceof Ownable) || (object instanceof Ducat))
+	 */
+	@Raw
+	public boolean canAddToAnchor(Object object, String anchor){
+		return (this.getAnchors().keySet().contains(anchor) &&
+				this.getAnchors().get(anchor) == null &&
+				((object instanceof Ownable) || (object instanceof Ducat)));
+	}
+	
+	/**
+	 * Empty the given anchor.
+	 * 
+	 * @param 	anchor
+	 * 			The anchor to empty.
+	 * @post	The given anchor has no object
+	 * 			| new.getAnchors().get(anchor) == null
+	 * @throws 	IllegalArgumentException
+	 * 			This creature has no such anchor.
+	 * 			| !getAnchors().keySet().contains(anchor)
+	 */
+	protected void emptyAnchor(String anchor) throws IllegalArgumentException {
+		if (!getAnchors().keySet().contains(anchor)){
+			throw new IllegalArgumentException("This creature has no such anchor.");
 		}
-		this.anchors.put(anchor, object);	// klopt nog niet... :(
+		this.anchors.remove(anchor);
+	}
+	
+	/**
+	 * Drop the given object from its anchor.
+	 * 
+	 * @param 	object
+	 * 			The object to drop.
+	 * @effect	The anchor from the given object is emptied.
+	 * 			| for all anchors in getAnchors() {
+	 * 			|		if (getAnchors().get(anchor) == object) {
+	 * 			|				emptyAnchor(anchor) } }
+	 * @throws 	IllegalArgumentException
+	 * 			The given object cannot be dropped.
+	 * 			| !canDropFromAnchor(object)
+	 */
+	protected void dropFromAnchor(Object object) throws IllegalArgumentException {
+		if (!canDropFromAnchor(object)){
+			throw new IllegalArgumentException("Object cannot be dropped.");
+		}
+		ArrayList<String> anchors = (ArrayList) getAnchors().keySet();
+		for (int i = 0; i < anchors.size(); i++){
+			if (getAnchors().get(anchors.get(i)) == object){
+				emptyAnchor(anchors.get(i));
+			}
+		}
+	}
+	
+	/**
+	 * Check whether the given object can be dropped from its anchor.
+	 * 
+	 * @param	object
+	 * 			The object to check.
+	 * @return	True if and only if this creature carries this object.
+	 * 			| getAnchors().containsValue(object)
+	 */
+	@Raw
+	public boolean canDropFromAnchor(Object object){
+		return (getAnchors().containsValue(object));
 	}
 	
 	/*************************************
