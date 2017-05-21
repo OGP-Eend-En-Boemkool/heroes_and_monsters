@@ -67,12 +67,12 @@ public class Ducat {
 	}
 	
 	/**
-	 * Return the weight of this amount of ducats in gram.
+	 * Return the weight of this amount of ducats in kilogram.
 	 * @return	The weight in gram.
-	 * 			| this.getNumeral()*50
+	 * 			| this.getNumeral()*0.050
 	 */
-	public long getWeight(){
-		return (this.getNumeral()*50);
+	public double getWeight(){
+		return (this.getNumeral()*0.050);
 	}
 	
 	/**

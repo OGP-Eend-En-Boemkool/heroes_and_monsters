@@ -132,16 +132,45 @@ public class Backpack extends Storage {
 	 */
 	private HashSet<Ownable> content = new HashSet<Ownable>();
 	
-	/******************************
-	 * holder
-	 ******************************
-	
-	/**
-	 * 
-	 */
-	@Raw @Override
-	protected void setHolder(Object holder){
+	public void addToBackpack(Object object){
 		
 	}
+	
+	/**
+	 * Check whether the given object can be added to this backpack.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @return	False if the object is not an ownable or a ducat. Also false if when the
+	 * 			object is a ownable, it already has a holder. Also false if with this
+	 * 			object the maximum capacity of this backpack would be exceeded.
+	 * 			| result == ( (object instanceof Ownable || object instanceof Ducat) &&
+	 * 			|				ownable.getHolder() == null &&
+	 * 			|				( this.getUsedCapacity(Unit.KG) + weight <=
+	 * 			|				this.getMaximumCapacity(Unit.KG)) ) }
+	 */
+	public boolean canAddToBackpack(Object object){
+		double weight = 0;
+		if (object instanceof Ownable){
+			Ownable ownable = (Ownable) object;
+			if (ownable.getHolder() != null){
+				return false;
+			}
+			weight = ownable.getWeight();
+		}
+		else if (object instanceof Ducat){
+			Ducat ducat = (Ducat) object;
+			weight = ducat.getWeight();
+		}
+		else {
+			return false;
+		}
+		if (this.getUsedCapacity(Unit.KG) + weight > this.getMaximumCapacity(Unit.KG)){
+			return false;
+		}
+		else {
+			return true;
+		}
+	}		// nog controleren op aantal harnassen bij hero en capacity bij rugzak in rugzak
 	
 }

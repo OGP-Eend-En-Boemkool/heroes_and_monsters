@@ -159,18 +159,33 @@ public class Hero extends Creature {
 	/**
 	 * Check whether the given object can be added to the given anchor.
 	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @param 	anchor
+	 * 			The anchor to check.
 	 * @return	True if and only if the given object can be added to the given anchor
 	 * 			for any creature and if when the anchor is a belt, the object is a purse
-	 * 			and if when the anchor is a body, the object is an armor.
+	 * 			and if when the anchor is a body, the object is an armor and this if when
+	 * 			the object is an armor, this hero doesn't carry 2 armors yet.
 	 * 			| result == super.canAddToAnchor(object, anchor) &&
 	 *			|				(anchor != "Belt" || (object instanceof Purse)) &&
-	 *			|				(anchor != "Body" || (object instanceof Armor))
+	 *			|				(anchor != "Body" || (object instanceof Armor)) &&
+	 *			|				armors.size() < 2
 	 */
 	@Raw @Override
 	public boolean canAddToAnchor(Object object, String anchor){
+		ArrayList<Object> armors = new ArrayList<Object>();
+		if (object instanceof Armor){
+			for (Object obj: getAnchors().values()){
+				if (obj instanceof Armor){
+					armors.add(obj);		// nog de inhoud van rugzakken checken
+				}
+			}
+		}
 		return (super.canAddToAnchor(object, anchor) &&
 				(anchor != "Belt" || (object instanceof Purse)) &&
-				(anchor != "Body" || (object instanceof Armor)));
+				(anchor != "Body" || (object instanceof Armor)) &&
+				armors.size() < 2);
 	}
 	
 	

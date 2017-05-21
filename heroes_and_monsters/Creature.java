@@ -406,17 +406,24 @@ public abstract class Creature implements Capacity{
 	 * 			The anchor to add it to.
 	 * @post	The given object is added to the given anchor.
 	 * 			| this.anchors.put(anchor, object)
+	 * @effect	The holder of the given object is set to this (if it is a ownable).
+	 * 			| if (object instanceof Ownable){
+	 * 			|		object.setHolder(this) }
 	 * @throws 	IllegalArgumentException
 	 * 			This object can't be added to this anchor.
 	 * 			| !canAddToAnchor(object, anchor)
 	 */
 	@Raw
-	protected void addToAnchor(Object object, String anchor)
+	public void addToAnchor(Object object, String anchor)
 			throws IllegalArgumentException {
 		if (!canAddToAnchor(object, anchor)){
 			throw new IllegalArgumentException("The object can't be added to this anchor.");
 		}
 		this.anchors.put(anchor, object);
+		if (object instanceof Ownable){
+			Ownable ownable = (Ownable) object;
+			ownable.setHolder(this);
+		}
 	}
 	
 	/**
@@ -446,15 +453,22 @@ public abstract class Creature implements Capacity{
 	 * 			The anchor to empty.
 	 * @post	The given anchor has no object
 	 * 			| new.getAnchors().get(anchor) == null
+	 * @effect	The holder of the object in this anchor is set to null.
+	 * 			| if (object instanceof Ownable){
+	 * 			| 		object.setHolder(null) }
 	 * @throws 	IllegalArgumentException
 	 * 			This creature has no such anchor.
 	 * 			| !getAnchors().keySet().contains(anchor)
 	 */
-	protected void emptyAnchor(String anchor) throws IllegalArgumentException {
+	public void emptyAnchor(String anchor) throws IllegalArgumentException {
 		if (!getAnchors().keySet().contains(anchor)){
 			throw new IllegalArgumentException("This creature has no such anchor.");
 		}
-		this.anchors.remove(anchor);
+		Object object = this.anchors.remove(anchor);
+		if (object instanceof Ownable){
+			Ownable ownable = (Ownable) object;
+			ownable.setHolder(null);
+		}
 	}
 	
 	/**
@@ -470,7 +484,7 @@ public abstract class Creature implements Capacity{
 	 * 			The given object cannot be dropped.
 	 * 			| !canDropFromAnchor(object)
 	 */
-	protected void dropFromAnchor(Object object) throws IllegalArgumentException {
+	public void dropFromAnchor(Object object) throws IllegalArgumentException {
 		if (!canDropFromAnchor(object)){
 			throw new IllegalArgumentException("Object cannot be dropped.");
 		}
@@ -493,6 +507,25 @@ public abstract class Creature implements Capacity{
 	@Raw
 	public boolean canDropFromAnchor(Object object){
 		return (getAnchors().containsValue(object));
+	}
+	
+	/**
+	 * Pass along an object from one creature to another.
+	 * 
+	 * @param 	object
+	 * 			The object to pass along.
+	 * @param 	creature
+	 * 			The creature to pass it along to.
+	 * @param 	anchor
+	 * 			The anchor from the other creature to put it in.
+	 * @effect	The object is dropped from this creature.
+	 * 			| this.dropFromAnchor(object)
+	 * @effect	The object is added to the given anchor from the given creature.
+	 * 			| creature.addToAnchor(object, anchor)
+	 */
+	public void passAlong(Object object, Creature creature, String anchor){
+		this.dropFromAnchor(object);
+		creature.addToAnchor(object, anchor);	// methode ook nog schrijven voor rugzakken
 	}
 	
 	/*************************************

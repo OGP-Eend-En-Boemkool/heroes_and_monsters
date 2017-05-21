@@ -30,7 +30,5 @@ public abstract class Storage extends Ownable implements Capacity {
 	@Raw
 	protected abstract void setIdentification(long identification);
 	
-	@Raw
-	protected abstract void setHolder(Object holder);
 }
 

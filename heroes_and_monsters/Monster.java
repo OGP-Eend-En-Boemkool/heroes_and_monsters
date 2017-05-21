@@ -119,7 +119,22 @@ public class Monster extends Creature implements Damage, Protection {
 				full.add(random);
 			}
 		}
-		
+	}
+	
+	/**
+	 * Check whether the given object can be added to the given anchor.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @param 	anchor
+	 * 			The anchor to check.
+	 * @return	True if and only if the given object can be added to the given anchor
+	 * 			for any creature and the object is not an armor.
+	 */
+	@Raw @Override
+	public boolean canAddToAnchor(Object object, String anchor){
+		return (super.canAddToAnchor(object, anchor) &&
+				!(object instanceof Armor));
 	}
 	
 	/**************************************
