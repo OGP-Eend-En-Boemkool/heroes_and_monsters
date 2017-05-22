@@ -284,12 +284,13 @@ public class Armor extends Ownable implements Protection{
 	 * @post  maxValue will be set to the given integer.
 	 * 		  | new.getMaxValue().equals(maxValue)
 	 * @post  If the given value isn't valid, maxValue is set to the default.
-	 * 		  | if !this.isValidValue(maxValue) then this.setMaxValue(1)
+	 * 		  | if !this.isValidValue(maxValue) then this.setMaxValue(2)
 	 */
 	private void setMaxValue(int maxValue){
 		if (this.isValidValue(maxValue)){
 			this.maxValue = maxValue;
 		}
+		else this.setMaxValue(2);
 	}
 	
 	/**
@@ -311,6 +312,7 @@ public class Armor extends Ownable implements Protection{
 	 * @return True if the integer 'value' is smaller than or equal to 1000 and bigger than or equal to 1 and the value is even.
 	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0)
 	 */
+	@Override
 	protected boolean isValidValue(int value){
 		return (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0));
 	}
