@@ -94,10 +94,11 @@ public class Monster extends Creature implements Damage, Protection {
 	 * @param	anchorObjects
 	 * 			The list with all the objects that must go in an anchor.
 	 * @effect	The positions of the anchor are filled with the given objects in the list.
+	 * @effect	The anchor objects are added to a random anchor.
 	 * @throws	IllegalArgumentException
 	 * 			There can't be more objects than anchors.
-	 * @throws	IllegalArgumentException
-	 * 			There can only be one object in an anchor.
+	 * @throws 	IllegalArgumentException
+	 * 			One of the objects can't be added to an anchor.
 	 */
 	@Raw @Override
 	protected void setAnchorObjects(ArrayList<Object> anchorObjects)
@@ -105,26 +106,35 @@ public class Monster extends Creature implements Damage, Protection {
 		if (anchorObjects.size() > anchors.size()){
 			throw new IllegalArgumentException("There can't be more objects than anchors.");
 		}
-		for (int i = 0; i < anchors.size(); i++){
-			if (anchorObjects.get(i) instanceof List || anchorObjects.get(i) instanceof Map
-					|| anchorObjects.get(i) instanceof Set){
-				throw new IllegalArgumentException("There can only be 1 object in an anchor.");
-			}
-		}
 		if (anchorObjects != null && anchorObjects.size() != 0){
 			Set<String> set = anchors.keySet();
 			ArrayList<String> list = (ArrayList)set;
+			ArrayList<Integer> full = new ArrayList<>();
 			for (int j = 0; j < anchorObjects.size(); j++){
 				Integer random = ThreadLocalRandom.current().nextInt(0, anchors.size());
-				ArrayList<Integer> full = new ArrayList<>();
 				while (full.contains(random)){
 					random = ThreadLocalRandom.current().nextInt(0, anchors.size());
 				}
+				addToAnchor(anchorObjects.get(j), list.get(random));
 				full.add(random);
-				anchors.put(list.get(random), anchorObjects.get(j));
 			}
 		}
-		
+	}
+	
+	/**
+	 * Check whether the given object can be added to the given anchor.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @param 	anchor
+	 * 			The anchor to check.
+	 * @return	True if and only if the given object can be added to the given anchor
+	 * 			for any creature and the object is not an armor.
+	 */
+	@Raw @Override
+	public boolean canAddToAnchor(Object object, String anchor){
+		return (super.canAddToAnchor(object, anchor) &&
+				!(object instanceof Armor));
 	}
 	
 	/**************************************

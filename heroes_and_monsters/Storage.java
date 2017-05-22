@@ -1,6 +1,6 @@
 package heroes_and_monsters;
 
-import be.kuleuven.cs.som.annotate.Raw;
+import be.kuleuven.cs.som.annotate.*;
 
 public abstract class Storage extends Ownable implements Capacity {
 
@@ -16,6 +16,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * @effect	This storage is initialized as an ownable with the given identification.
 	 * 			| super(identification)
 	 */
+	@Raw @Model
 	protected Storage(long identification){
 		super(identification);
 	}
@@ -24,10 +25,10 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * Set the identification to the given identification.
 	 * 
 	 * @effect	The identification is added to the list of identifications.
+	 * 			| super.setIdentification(identification)
 	 */
+	@Raw
 	protected abstract void setIdentification(long identification);
 	
-	@Raw
-	protected abstract void setHolder(Object holder);
 }
 

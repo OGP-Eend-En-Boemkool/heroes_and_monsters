@@ -25,7 +25,7 @@ public abstract class Ownable{
 	 * @post	The identification of this ownable is set to identification.
 	 * 			| new.getIdentification() == identification
 	 */
-	@Raw
+	@Raw @Model
 	protected Ownable(long identification){
 		setIdentification(identification);
 		setValue(this.calculateValue());
@@ -120,12 +120,33 @@ public abstract class Ownable{
 		}
 	}
 	
+	/**
+	 * Set the holder of this ownable to the given creature.
+	 * 
+	 * @param 	holder
+	 * 			The holder of this ownable.
+	 * @post	The holder of this ownable is set to the given holder.
+	 * 			| this.holder = holder
+	 */
 	@Raw
-	protected abstract void setHolder(Object holder);
+	protected void setHolder(Creature holder){
+		this.holder = holder;
+	}
 	
+	/**
+	 * Check whether this ownable can have the given holder as its holder.
+	 * 
+	 * @param 	holder
+	 * 			The holder to check.
+	 * @return	True if and only if the holder is a creature or a backpack or there is
+	 * 			no holder at all.
+	 * 			| result == ((holder instanceof Creature) || (holder instanceof Backpack) ||
+	 *			|				holder == null)
+	 */
 	@Raw
 	public boolean canHaveAsHolder(Object holder){
-		return ((holder instanceof Creature) || (holder instanceof Backpack));
+		return ((holder instanceof Creature) || (holder instanceof Backpack) ||
+				holder == null);
 	}
 	
 	/********************************

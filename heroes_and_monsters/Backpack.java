@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Linde en Lotte
  * @version 1.0
  */
-public class Backpack extends Storage {
+public class Backpack extends Storage{
 
 	/******************************************
 	 * Constructors
@@ -130,18 +130,129 @@ public class Backpack extends Storage {
 	/**
 	 * Variable referencing the content of a backpack
 	 */
-	private HashSet<Ownable> content = new HashSet<Ownable>();
-	
-	/******************************
-	 * holder
-	 ******************************
+	private ArrayList<Object> content = new ArrayList<Object>();
 	
 	/**
+	 * Add the given object to this backpack.
 	 * 
+	 * @param 	object
+	 * 			The object to add.
+	 * @post	The object is added to this backpack.
+	 * 			| content.add(object)
+	 * @post	The size of content is increased by 1.
+	 * 			| this.content.size() + 1 == new.content.size()
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be added to this backpack.
+	 * 			| !canAddToBackpack(object)
 	 */
-	@Raw @Override
-	protected void setHolder(Object holder){
-		
+	public void addToBackpack(Object object) throws IllegalArgumentException {
+		if (!canAddToBackpack(object)){
+			throw new IllegalArgumentException("The given object can't be added to this backpack.");
+		}
+		content.add(object);
+	}
+	
+	/**
+	 * Check whether the given object can be added to this backpack.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @return	False if the object is not an ownable or a ducat. Also false if when the
+	 * 			object is a ownable, it already has a holder. Also false if with this
+	 * 			object the maximum capacity of this backpack would be exceeded. Also false
+	 * 			if by adding an armor to a backpack, a hero would carry too many armors.
+	 * 			Also false if this backpack is in 1 or more other backpacks and one of
+	 * 			their capacities could be exceeded.
+	 * 			| result == ( (object instanceof Ownable || object instanceof Ducat) &&
+	 * 			|				ownable.getHolder() == null &&
+	 * 			|				(this.getUsedCapacity(Unit.KG) + weight <=
+	 * 			|				this.getMaximumCapacity(Unit.KG)) &&
+	 * 			|				hero.canAddArmor(object) &&
+	 * 			|				(backpack.getUsedCapacity(Unit.KG) + weight <=
+	 * 			|				backpack.getMaximumCapacity(Unit.KG) )
+	 */
+	public boolean canAddToBackpack(Object object){
+		double weight = 0;
+		if (object instanceof Ownable){
+			Ownable ownable = (Ownable) object;
+			if (ownable.getHolder() != null){
+				return false;
+			}
+			weight = ownable.getWeight();
+		}
+		else if (object instanceof Ducat){
+			Ducat ducat = (Ducat) object;
+			weight = ducat.getWeight();
+		}
+		else {
+			return false;
+		}
+		if (this.getUsedCapacity(Unit.KG) + weight > this.getMaximumCapacity(Unit.KG)){
+			return false;
+		}
+		if (object instanceof Armor){
+			if (this.getUltimateHolder() instanceof Hero){
+				Hero hero = (Hero) this.getUltimateHolder();
+				if (!hero.canAddArmor(object)){
+					return false;
+				}
+			}
+		}
+		if (this.getHolder() instanceof Backpack){
+			Object holder = this.getHolder();
+			while (holder instanceof Backpack){
+				Backpack backpack = (Backpack) holder;
+				if (backpack.getUsedCapacity(Unit.KG) + weight > backpack.getMaximumCapacity(Unit.KG)){
+					return false;
+				}
+				holder = backpack.getHolder();
+			}
+		}
+		else {
+			return true;
+		}
+	}
+
+	
+	
+	/***************************
+	 * iterator
+	 ***************************
+	
+	/**
+	 * Return an iterator that iterates over the content of this backpack.
+	 */
+	public Enumeration getBackpackIterator(){
+		return new Enumeration(){
+
+			/**
+			 * Variable indexing the current element of this iterator.
+			 */
+			private int indexCurrent = 0;
+			
+			/**
+			 * Check whether the iterator has more elements.
+			 * 
+			 * @return	True if and only if the size of the content of this backpack
+			 * 			minus the current index is greater than zero.
+			 * 			| result == content.size() - indexCurrent > 0
+			 */
+			@Override
+			public boolean hasMoreElements() {
+				return content.size() - indexCurrent > 0;
+			}
+
+			/**
+			 * Return the next element of the content of this backpack.
+			 */
+			@Override
+			public Object nextElement() {
+				Object object = content.get(indexCurrent);
+				indexCurrent++;
+				return object;
+			}
+			
+		};
 	}
 	
 }

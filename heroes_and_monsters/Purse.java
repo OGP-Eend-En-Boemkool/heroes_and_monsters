@@ -141,18 +141,7 @@ public class Purse extends Storage {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	/******************************
-	 * holder
-	 ******************************
-	
-	/**
-	 * 
-	 */
-	@Raw @Override
-	protected void setHolder(Object holder){
-		
-	}
+
 
 	/******************************
 	 * Value
@@ -166,4 +155,5 @@ public class Purse extends Storage {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 }

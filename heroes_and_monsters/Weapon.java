@@ -5,6 +5,7 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+
 /**
  * A class of weapons.
  * 
@@ -170,18 +171,6 @@ public class Weapon extends Ownable implements Damage{
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListWeapons.add(identification);
-	}
-	
-	/******************************
-	 * holder
-	 ******************************
-	
-	/**
-	 * 
-	 */
-	@Raw @Override
-	protected void setHolder(Object holder){
-		
 	}
 
 	/******************************

@@ -266,18 +266,6 @@ public class Armor extends Ownable implements Protection{
 		this.identification = identification;
 		this.idListArmors.add(identification);
 	}
-	
-	/******************************
-	 * holder
-	 ******************************
-	
-	/**
-	 * 
-	 */
-	@Raw @Override
-	protected void setHolder(Object holder){
-		
-	}
 
 	/******************************
 	 * value
@@ -343,4 +331,5 @@ public class Armor extends Ownable implements Protection{
 			return value + 1;
 		}
 	}
+
 }
