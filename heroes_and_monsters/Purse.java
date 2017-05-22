@@ -153,4 +153,17 @@ public class Purse extends Storage {
 	protected void setHolder(Object holder){
 		
 	}
+
+	/******************************
+	 * Value
+	 ******************************/
+	 
+	/**
+	 * 
+	 */
+	@Override
+	protected int calculateValue() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
