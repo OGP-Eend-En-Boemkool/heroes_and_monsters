@@ -28,6 +28,7 @@ public abstract class Ownable{
 	@Raw
 	protected Ownable(long identification){
 		setIdentification(identification);
+		setValue(this.calculateValue());
 	}
 	
 	/*******************************
@@ -126,4 +127,59 @@ public abstract class Ownable{
 	public boolean canHaveAsHolder(Object holder){
 		return ((holder instanceof Creature) || (holder instanceof Backpack));
 	}
+	
+	/********************************
+	 * Value
+	 ********************************/
+	
+	protected int value = 1;	
+	
+	/**
+	 * Return the number of ducats that represents the value of the ownable object. 
+	 * 
+	 * @return The resulting number must be bigger than or equal to 0.
+	 * 		   | result >= 0
+	 */
+	protected int getValue(){
+		return this.value;
+	}
+	
+	/**
+	 * Sets the value of the ownable object to the given integer 'value'.
+	 *
+	 * @param value
+	 * 		  The integer to which the value needs to be set.
+	 * @post  Value will be set to the given integer.
+	 * 		  | new.getValue().equals(value)
+	 * @post  If the given value isn't valid, value is set to the default.
+	 * 		  | if !this.isValidValue(value) then this.setValue(1)
+	 */
+	protected void setValue(int value){
+		if (this.isValidValue(value)){
+			this.value = value;
+		}
+	}
+	
+	/**
+	 * Checks whether or not the given integer is a valid value.
+	 * 
+	 * @param  value
+	 * 		   The integer that needs to be checked.
+	 * @return False if the given integer is negative.
+	 * 		   | if (value < 0) return False
+	 * @note   This return must be left open in order for the subclasses to be able to change it.
+	 */
+	protected boolean isValidValue(int value){
+		return (value >= 0);
+	}
+	
+	/**
+	 * Calculates the value in ducats of the ownable object.
+	 * 
+	 * @return The resulting number must be a valid value
+	 * 		   | isValidValue(result)
+	 */
+	protected abstract int calculateValue();
+	
+	
 }

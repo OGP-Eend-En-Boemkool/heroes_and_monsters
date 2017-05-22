@@ -28,15 +28,30 @@ public class Armor extends Ownable implements Protection{
 	 * 			If that is not a correct identification, the identification is set to
 	 * 			a correct identification.
 	 */
-	public Armor(long identification){
+	public Armor(long identification, int maxProtection, int maxValue){
 		super(identification);
+		this.setMaxValue(maxValue);
+		this.setMaxProtection(maxProtection);
 		}
 	
 	/******************************************
 	 * Armor Type
 	 ******************************************/
 	
+	/**
+	 * Variable registering the type of the armor.
+	 */
 	private ArmorType type = ArmorType.STANDARD;
+	
+	/**
+	 * Return the type of the armor.
+	 * 
+	 * @return The resulting type must be a valid type.
+	 * 		   | (type instanceof ArmorType)
+	 */
+	private ArmorType getType(){
+		return this.type;
+	}
 	
 
 	/******************************************
@@ -44,9 +59,14 @@ public class Armor extends Ownable implements Protection{
 	 ******************************************/
 
 	/**
-	 * Variable registering the value of the current damage.
+	 * Variable registering the value of the current protection.
 	 */
-	public int protection = 1;
+	private int protection = 1;
+	
+	/**
+	 * Variable registering the maximum protection of this particular armor.
+	 */
+	private int maxProtection = 1;
 	
 	/**
 	 * Returns the current value for the protection of an armor.
@@ -57,6 +77,17 @@ public class Armor extends Ownable implements Protection{
 	@Override
 	public int getCurrentProtection() {
 		return this.protection;
+	}
+	
+	/**
+	 * Returns the maximum protection of this particular armor.
+	 * 
+	 * @return The resulting number must be a valid protection.
+	 * 		   | this.canHaveAsMaxProtection(getMaxProtection())
+	 */
+	@Basic
+	public int getMaxProtection() {
+		return this.maxProtection;
 	}
 
 	/**
@@ -73,6 +104,22 @@ public class Armor extends Ownable implements Protection{
 	public void setCurrentProtection(int protection) {
 		if (canHaveAsProtection(protection)){
 			this.protection = protection;
+		}
+	}
+	
+	/**
+	 * Sets the maximum protection to the given number.
+	 * 
+	 * @param maxProtection
+	 * 		  The number to which the maximum protection is set.
+	 * @post  The given number must be a legal number.
+	 * 		  | canHaveAsMaxProtection(maxProtection)
+	 * @post  The number to which the maximum protection is set is equal to the given number.
+	 * 		  | new.getMaxProtection().equals(maxProtection)
+	 */
+	private void setMaxProtection(int maxProtection) {
+		if (canHaveAsMaxProtection(protection)){
+			this.maxProtection = maxProtection;
 		}
 	}
 
@@ -153,11 +200,24 @@ public class Armor extends Ownable implements Protection{
 	 * 		   The integer that needs to be checked.
 	 * @return True if the given integer is bigger than 0 and smaller than the maximum Protection, 
 	 * 		   false otherwise.
-	 * 		   | result == ((protection >= 1) && (protection <= type.getMaxProtection()))
+	 * 		   | result == ((protection >= 1) && (protection <= this.getMaxProtection()))
 	 */
 	@Override
 	public boolean canHaveAsProtection(int protection) {
-		return ((protection >= 1)&&(protection <= type.getMaxProtection()));
+		return ((protection >= 1)&&(protection <= this.getMaxProtection()));
+	}
+	
+	/**
+	 * Checks whether or not the given maximum protection is a legal case.
+	 * 
+	 * @param  maxProtection
+	 * 		   The integer that needs to be checked.
+	 * @return True if the given integer is bigger than 0 and smaller than the maximum Protection, 
+	 * 		   false otherwise.
+	 * 		   | result == ((protection >= 1) && (protection <= this.getType().getMaxProtection()))
+	 */
+	public boolean canHaveAsMaxProtection(int maxProtection) {
+		return ((maxProtection >= 1)&&(maxProtection <= this.getType().getMaxProtection()));
 	}
 	
 	/*******************************
@@ -217,5 +277,70 @@ public class Armor extends Ownable implements Protection{
 	@Raw @Override
 	protected void setHolder(Object holder){
 		
+	}
+
+	/******************************
+	 * value
+	 ******************************/
+	
+	/**
+	 * Variable registering the maximum value in ducats of this armor.
+	 */
+	private int maxValue = 2;
+	
+	/**
+	 * Sets the maximum value of the armor to the given integer 'maxValue'.
+	 *
+	 * @param maxValue
+	 * 		  The integer to which the maxValue needs to be set.
+	 * @post  maxValue will be set to the given integer.
+	 * 		  | new.getMaxValue().equals(maxValue)
+	 * @post  If the given value isn't valid, maxValue is set to the default.
+	 * 		  | if !this.isValidValue(maxValue) then this.setMaxValue(1)
+	 */
+	private void setMaxValue(int maxValue){
+		if (this.isValidValue(maxValue)){
+			this.maxValue = maxValue;
+		}
+	}
+	
+	/**
+	 * Returns the maximum value in ducats of the armor.
+	 * 
+	 * @return The resulting number must be a valid value.
+	 * 		   | this.isValidValue(result)
+	 */
+	@Basic
+	protected int getMaxValue(){
+		return this.maxValue;
+	}
+	
+	/**
+	 * Checks whether or not the given integer is a valid value.
+	 * 
+	 * @param  value
+	 * 		   The integer that needs to be checked.
+	 * @return True if the integer 'value' is smaller than or equal to 1000 and bigger than or equal to 1 and the value is even.
+	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0)
+	 */
+	protected boolean isValidValue(int value){
+		return (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0));
+	}
+	
+	/**
+	 * Calculates the value in the ducats of the armor.
+	 * 
+	 * @return The resulting number must be a valid value
+	 * 		   | isValidValue(result)
+	 */
+	@Override
+	protected int calculateValue() {
+		int value = (int)Math.floor(this.getMaxValue()*(this.getCurrentProtection()/this.getMaxProtection()));
+		if (this.isValidValue(value)){
+			return value;
+		}
+		else{
+			return value + 1;
+		}
 	}
 }

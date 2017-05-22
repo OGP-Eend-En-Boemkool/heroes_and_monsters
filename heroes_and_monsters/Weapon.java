@@ -36,12 +36,12 @@ public class Weapon extends Ownable implements Damage{
 	/**
 	 * Variable registering the value of the current damage.
 	 */
-	public int damage = 7;
+	private int damage = 7;
 	
 	/**
 	 * Variable registering the maximum value of the weapon.
 	 */
-	public static int maxDamage = 100;
+	private static int maxDamage = 100;
 	
 	/**
 	 * Returns the current value for the damage of a weapon.
@@ -79,7 +79,9 @@ public class Weapon extends Ownable implements Damage{
 	 */
 	@Override
 	public void setCurrentDamage(int damage) {
-		this.damage=damage;		
+		if (this.canHaveAsDamage(damage)){
+			this.damage=damage;
+		}		
 	}
 
 	/**
@@ -94,7 +96,9 @@ public class Weapon extends Ownable implements Damage{
 	 */
 	@Override
 	public void setMaximumDamage(int damage) {
-		Weapon.maxDamage=damage;		
+		if (this.isValidMaximumDamage(damage)){
+			Weapon.maxDamage=damage;
+		}		
 	}
 
 	/**
@@ -180,4 +184,36 @@ public class Weapon extends Ownable implements Damage{
 		
 	}
 
+	/******************************
+	 * value
+	 ******************************/
+	
+	/**
+	 * Checks whether or not the given integer is a valid value.
+	 * 
+	 * @param  value
+	 * 		   The integer that needs to be checked.
+	 * @return True if the integer 'value' is smaller than or equal to 200 and bigger than or equal to 1.
+	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=200)
+	 */
+	protected boolean isValidValue(int value){
+		return (super.isValidValue(value)&&(value>=1)&&(value<=2*this.getMaximumDamage()));
+	}
+	
+	/**
+	 * Calculates the value in the ducats of the weapon.
+	 * 
+	 * @return The resulting number must be a valid value
+	 * 		   | isValidValue(result)
+	 */
+	@Override
+	protected int calculateValue() {
+		int value = (this.getCurrentDamage()*2);
+		if (this.isValidValue(value)){
+			return value;
+		}
+		else{
+			return 1;
+		}
+	}
 }
