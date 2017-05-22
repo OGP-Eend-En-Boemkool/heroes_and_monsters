@@ -1,5 +1,7 @@
 package heroes_and_monsters;
 
+import java.util.ArrayList;
+
 import be.kuleuven.cs.som.annotate.*;
 
 public abstract class Storage extends Ownable implements Capacity {
@@ -21,6 +23,10 @@ public abstract class Storage extends Ownable implements Capacity {
 		super(identification);
 	}
 	
+	/*****************************************
+	 * identification
+	 *****************************************
+	
 	/**
 	 * Set the identification to the given identification.
 	 * 
@@ -30,5 +36,35 @@ public abstract class Storage extends Ownable implements Capacity {
 	@Raw
 	protected abstract void setIdentification(long identification);
 	
+	/******************************************
+	 * storage
+	 ******************************************
+	
+	/**
+	 * Variable referencing the content of a storage.
+	 */
+	protected ArrayList<Object> content = new ArrayList<Object>();
+	
+	/**
+	 * Add the given object to this storage.
+	 * 
+	 * @param 	object
+	 * 			The object to add.
+	 * @post	The object is added to this storage.
+	 * 			| content.add(object)
+	 * @post	The size of content is increased by 1.
+	 * 			| this.content.size() + 1 == new.content.size()
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be added to this backpack.
+	 * 			| !canAddToBackpack(object)
+	 */
+	public void addToStorage(Object object) throws IllegalArgumentException {
+		if (!canAddToStorage(object)){
+			throw new IllegalArgumentException("The given object can't be added to this storage.");
+		}
+		content.add(object);
+	}
+	
+	public abstract boolean canAddToStorage(Object object);
 }
 

@@ -155,5 +155,13 @@ public class Purse extends Storage {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	/*********************************
+	 * content
+	 *********************************
 
+	/**
+	 * 
+	 */
+	public boolean canAddToStorage(Object object)
 }

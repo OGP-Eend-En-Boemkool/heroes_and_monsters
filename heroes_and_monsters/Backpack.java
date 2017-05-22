@@ -125,32 +125,7 @@ public class Backpack extends Storage{
 	
 	/*********************************
 	 * content
-	 *********************************/
-	
-	/**
-	 * Variable referencing the content of a backpack
-	 */
-	private ArrayList<Object> content = new ArrayList<Object>();
-	
-	/**
-	 * Add the given object to this backpack.
-	 * 
-	 * @param 	object
-	 * 			The object to add.
-	 * @post	The object is added to this backpack.
-	 * 			| content.add(object)
-	 * @post	The size of content is increased by 1.
-	 * 			| this.content.size() + 1 == new.content.size()
-	 * @throws 	IllegalArgumentException
-	 * 			The given object can't be added to this backpack.
-	 * 			| !canAddToBackpack(object)
-	 */
-	public void addToBackpack(Object object) throws IllegalArgumentException {
-		if (!canAddToBackpack(object)){
-			throw new IllegalArgumentException("The given object can't be added to this backpack.");
-		}
-		content.add(object);
-	}
+	 *********************************
 	
 	/**
 	 * Check whether the given object can be added to this backpack.
@@ -171,7 +146,8 @@ public class Backpack extends Storage{
 	 * 			|				(backpack.getUsedCapacity(Unit.KG) + weight <=
 	 * 			|				backpack.getMaximumCapacity(Unit.KG) )
 	 */
-	public boolean canAddToBackpack(Object object){
+	@Override
+	public boolean canAddToStorage(Object object){
 		double weight = 0;
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
