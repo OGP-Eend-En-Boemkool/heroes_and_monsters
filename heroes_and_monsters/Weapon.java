@@ -185,6 +185,7 @@ public class Weapon extends Ownable implements Damage{
 	 * @return True if the integer 'value' is smaller than or equal to 200 and bigger than or equal to 1.
 	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=200)
 	 */
+	@Override
 	protected boolean isValidValue(int value){
 		return (super.isValidValue(value)&&(value>=1)&&(value<=2*this.getMaximumDamage()));
 	}

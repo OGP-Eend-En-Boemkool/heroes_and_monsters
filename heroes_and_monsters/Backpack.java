@@ -26,8 +26,10 @@ public class Backpack extends Storage{
 	 * @effect	This backpack is initialized as an ownable with a calculated identification.
 	 * 			| super(calculateValidIdentification())
 	 */
-	public Backpack(){
+	public Backpack(int standardValue, double maxCapacity, Unit unit){
 		super(calculateValidIdentification());
+		setStandardValue(standardValue);
+		setMaxCapacity(maxCapacity, unit);
 	}
 	
 	/********************************
@@ -96,7 +98,19 @@ public class Backpack extends Storage{
 	/**
 	 * Variable registering the maximum capacity of the backpack.
 	 */
-	private final double maximumCapacity;
+	private double maximumCapacity;
+	
+	/**
+	 * Set the maximum capacity of the backpack to the given maximum capacity in the given weight unit.
+	 * 
+	 * @param maximumCapacity
+	 * 		  The number to which the maximum capacity should be set.
+	 * @param unit
+	 * 		  The weight unit in which the capacity is set.
+	 */
+	private void setMaxCapacity(double maximumCapacity, Unit unit){
+		this.maximumCapacity = maximumCapacity;
+	}
 	
 	/**
 	 * Return the maximum capacity of the object.
@@ -264,7 +278,7 @@ public class Backpack extends Storage{
 	
 	/***************************
 	 * iterator
-	 ***************************
+	 ***************************/
 	
 	/**
 	 * Return an iterator that iterates over the content of this backpack.
@@ -300,6 +314,102 @@ public class Backpack extends Storage{
 			}
 			
 		};
+	}
+
+	/***************************
+	 * value
+	 ***************************/
+	
+	/**
+	 * Variable registering the standard value of the backpack in itself.
+	 */
+	private int standardValue = 0;
+	
+	/**
+	 * Sets the standard value of the backpack to the given integer 'standardValue'.
+	 *
+	 * @param standardValue
+	 * 		  The integer to which the standardValue needs to be set.
+	 * @post  if the given standard value is valid, the standardValue will be set to the given integer.
+	 * 		  | if this.isValidStandardValue(standardValue)
+	 * 		  | then new.getStandardValue().equals(standardValue)
+	 * @post  If the given value isn't valid, standardValue is set to the default.
+	 * 		  | if !this.isValidValue(standardValue) then this.setStandardValue(0)
+	 */
+	@Raw
+	private void setStandardValue(int standardValue){
+		if (this.isValidStandardValue(standardValue)){
+			this.standardValue = standardValue;
+		}
+		else {
+			this.setStandardValue(0);
+		}
+	}
+	
+	/**
+	 * Returns the standard value in ducats of the backpack.
+	 * 
+	 * @return The resulting number must be a valid value.
+	 * 		   | this.isValidValue(result)
+	 */
+	@Basic
+	public int getStandardValue(){
+		return this.standardValue;
+	}
+	
+	/**
+	 * Checks whether or not the given standard value is a valid value.
+	 * 
+	 * @param  standardValue
+	 * 		   The value that needs to be checked
+	 * @return True if the integer is not negative and smaller than or equal to 500.
+	 * 		   | result == ((standardValue >= 0)&&(standardValue <= 500))
+	 */
+	@Raw
+	protected boolean isValidStandardValue(int standardValue){
+		return ((standardValue >= 0)&&(standardValue <= 500));
+	}
+	
+	/**
+	 * Change the standard value to a given value
+	 * 
+	 * @param standardValue
+	 * 		  The new value for the standardValue
+	 * @post  if the given standard value is valid, the standardValue will be set to the given integer.
+	 * 		  | if this.isValidStandardValue(standardValue)
+	 * 		  | then new.getStandardValue().equals(standardValue)
+	 * @post  If the given value isn't valid, nothing happens.
+	 * 		  | if !(this.isValidStandardValue(standardValue)) 
+	 * 		  | then new.getStandardValue().equals(this.getStandardValue())
+	 */
+	protected void changeStandardValue(int standardValue){
+		if (this.isValidStandardValue(standardValue)){
+			this.setStandardValue(standardValue);
+			this.setValue(this.calculateValue());
+		}
+	}
+	
+	/**
+	 * Calculates the value in ducats of the ownable object.
+	 * 
+	 * @return The resulting number must be a valid value
+	 * 		   | isValidValue(result)
+	 */
+	@Override
+	protected int calculateValue() {
+		int value = this.standardValue;
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object object = this.getBackpackIterator().nextElement();
+			if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				value = value + ducat.getValue();
+			}
+			else if (object instanceof Ownable){
+				Ownable ownable = (Ownable) object;
+				value = value + ownable.getValue();
+			}
+		}
+		return value;
 	}
 	
 }
