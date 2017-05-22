@@ -41,30 +41,23 @@ public abstract class Storage extends Ownable implements Capacity {
 	 ******************************************
 	
 	/**
-	 * Variable referencing the content of a storage.
-	 */
-	protected ArrayList<Object> content = new ArrayList<Object>();
-	
-	/**
 	 * Add the given object to this storage.
 	 * 
-	 * @param 	object
-	 * 			The object to add.
-	 * @post	The object is added to this storage.
-	 * 			| content.add(object)
-	 * @post	The size of content is increased by 1.
-	 * 			| this.content.size() + 1 == new.content.size()
-	 * @throws 	IllegalArgumentException
-	 * 			The given object can't be added to this backpack.
-	 * 			| !canAddToBackpack(object)
+	 * @throws	IllegalArgumentException
+	 * 			The object cannot be added.
+	 * 			| !canAddToStorage(object)
 	 */
-	public void addToStorage(Object object) throws IllegalArgumentException {
-		if (!canAddToStorage(object)){
-			throw new IllegalArgumentException("The given object can't be added to this storage.");
-		}
-		content.add(object);
+	public abstract void addToStorage(Object object) throws IllegalArgumentException;
+	
+	/**
+	 * Check whether the given object can be added to this storage.
+	 */
+	public abstract boolean canAddToStorage(Object object);
+	
+	public void takeOutOfStorage(Object object){
+		
 	}
 	
-	public abstract boolean canAddToStorage(Object object);
+	public abstract boolean canTakeOutOfStorage(Object object);
 }
 

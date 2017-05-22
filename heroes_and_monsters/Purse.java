@@ -161,7 +161,68 @@ public class Purse extends Storage {
 	 *********************************
 
 	/**
+	 * Check whether the given object can be added to this purse.
 	 * 
+	 * @return	True if and only if the given object is a ducat and the purse is not broken.
+	 * 			| object instanceof Ducat && !getBroken()
 	 */
-	public boolean canAddToStorage(Object object)
+	@Override
+	public boolean canAddToStorage(Object object){
+		return object instanceof Ducat && !getBroken();
+	}
+	
+	/**
+	 * Variable referencing the content of this purse.
+	 */
+	private Ducat content = new Ducat(0);
+	
+	/**
+	 * Variable referencing if this purse is broken or not.
+	 */
+	private boolean broken = false;
+	
+	/**
+	 * Return if this purse is broken or not.
+	 */
+	public boolean getBroken(){
+		return this.broken;
+	}
+	
+	/**
+	 * Set broken to the given flag.
+	 * 
+	 * @param 	broken
+	 * 			The given flag.
+	 * @post	Broken is set to the given flag.
+	 * 			| new.getBroken() = broken
+	 */
+	private void setBroken(boolean broken){
+		this.broken = broken;
+	}
+	
+	/**
+	 * Add the given object to this purse.
+	 * 
+	 * @post	The given object is added to this purse.
+	 * 			| content.add(object)
+	 * @throws	IllegalArgumentException
+	 * 			The object cannot be added.
+	 * 			| !canAddToStorage(object)
+	 */
+	@Override
+	public void addToStorage(Object object) throws IllegalArgumentException {
+		if (!canAddToStorage(object)){
+			throw new IllegalArgumentException("The given object can't be added to this purse.");
+		}
+		Ducat ducat = (Ducat) object;
+		content.add(ducat);
+		if (content.getWeight(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
+			if (this.getHolder() instanceof Backpack){
+				Backpack backpack = (Backpack) this.getHolder();
+				backpack.addToStorage(content);
+				content = new Ducat(0);
+				setBroken(true);
+			}
+		}
+	}
 }

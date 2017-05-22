@@ -128,6 +128,62 @@ public class Backpack extends Storage{
 	 *********************************
 	
 	/**
+	 * Variable referencing the content of a backpack.
+	 */
+	private ArrayList<Object> content = new ArrayList<Object>();
+	
+	public ArrayList<Object> getContent(){
+		return new ArrayList<Object>(this.content);
+	}
+	
+	/**
+	 * Add the given object to this backpack.
+	 * 
+	 * @param 	object
+	 * 			The object to add.
+	 * @post	The object is added to this backpack.
+	 * 			| if (object instanceof Ducat){
+	 * 			|		if one of the objects in content already is a ducat {
+	 * 			|			d.add(object) } }
+	 * 			| else {
+	 * 			| 		content.add(object) }
+	 * @post	The size of content is increased by 1. Unless there is a ducat added and
+	 * 			there already is a ducat in this backpack, then the value of that ducat is
+	 * 			just increased.
+	 * 			| if (object instanceof Ducat){
+	 * 			|		if one of the objects in content already is a ducat {
+	 * 			|				this.content.size() == new.content.size() } }
+	 * 			| else {
+	 * 			| 		this.content.size() + 1 == new.content.size() }
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be added to this backpack.
+	 * 			| !canAddToStorage(object)
+	 */
+	@Override
+	public void addToStorage(Object object) throws IllegalArgumentException {
+		if (!canAddToStorage(object)){
+			throw new IllegalArgumentException("The given object can't be added to this backpack.");
+		}
+		if (object instanceof Ducat){
+			Ducat ducat = (Ducat) object;
+			boolean alreadyDucat = false;
+			for (Object obj: getContent()){
+				if (obj instanceof Ducat){
+					Ducat d = (Ducat) obj;
+					d.add(ducat);
+					alreadyDucat = true;
+				}
+			}
+			if (!alreadyDucat){
+				content.add(ducat);
+			}
+		}
+		else {
+			content.add(object);
+		}
+	}
+	
+	/**
 	 * Check whether the given object can be added to this backpack.
 	 * 
 	 * @param 	object
@@ -154,11 +210,11 @@ public class Backpack extends Storage{
 			if (ownable.getHolder() != null){
 				return false;
 			}
-			weight = ownable.getWeight();
+			weight = ownable.getWeight(Unit.KG);
 		}
 		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
-			weight = ducat.getWeight();
+			weight = ducat.getWeight(Unit.KG);
 		}
 		else {
 			return false;
@@ -186,6 +242,21 @@ public class Backpack extends Storage{
 		}
 		else {
 			return true;
+		}
+	}
+	
+	@Override
+	public boolean canTakeOutOfStorage(Object object){
+		if (object instanceof Ducat){
+			for (Object obj: getContent()){
+				if (obj instanceof Ducat){
+					return (obj.getValue() >= object.getValue());
+				}
+			}
+			return false;
+		}
+		else {
+			return getContent().contains(object);
 		}
 	}
 
