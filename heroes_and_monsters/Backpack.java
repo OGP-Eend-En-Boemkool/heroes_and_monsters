@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Linde en Lotte
  * @version 1.0
  */
-public class Backpack extends Storage {
+public class Backpack extends Storage{
 
 	/******************************************
 	 * Constructors
@@ -130,7 +130,7 @@ public class Backpack extends Storage {
 	/**
 	 * Variable referencing the content of a backpack
 	 */
-	private HashSet<Ownable> content = new HashSet<Ownable>();
+	private ArrayList<Ownable> content = new ArrayList<Ownable>();
 	
 	public void addToBackpack(Object object){
 		
@@ -168,9 +168,55 @@ public class Backpack extends Storage {
 		if (this.getUsedCapacity(Unit.KG) + weight > this.getMaximumCapacity(Unit.KG)){
 			return false;
 		}
+		if (this.getHolder() instanceof Hero){
+			
+		}
+		
 		else {
 			return true;
 		}
 	}		// nog controleren op aantal harnassen bij hero en capacity bij rugzak in rugzak
+
+	
+	
+	/***************************
+	 * iterator
+	 ***************************
+	
+	/**
+	 * Return an iterator that iterates over the content of this backpack.
+	 */
+	public Enumeration getBackpackIterator(){
+		return new Enumeration(){
+
+			/**
+			 * Variable indexing the current element of this iterator.
+			 */
+			private int indexCurrent = 0;
+			
+			/**
+			 * Check whether the iterator has more elements.
+			 * 
+			 * @return	True if and only if the size of the content of this backpack
+			 * 			minus the current index is greater than zero.
+			 * 			| result == content.size() - indexCurrent > 0
+			 */
+			@Override
+			public boolean hasMoreElements() {
+				return content.size() - indexCurrent > 0;
+			}
+
+			/**
+			 * Return the next element of the content of this backpack.
+			 */
+			@Override
+			public Object nextElement() {
+				Object object = content.get(indexCurrent);
+				indexCurrent++;
+				return object;
+			}
+			
+		};
+	}
 	
 }

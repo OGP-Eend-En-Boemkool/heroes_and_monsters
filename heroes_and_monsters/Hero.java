@@ -176,9 +176,12 @@ public class Hero extends Creature {
 	public boolean canAddToAnchor(Object object, String anchor){
 		ArrayList<Object> armors = new ArrayList<Object>();
 		if (object instanceof Armor){
-			for (Object obj: getAnchors().values()){
+			for (Object obj: getAnchors().values()){			
 				if (obj instanceof Armor){
 					armors.add(obj);		// nog de inhoud van rugzakken checken
+				}
+				if (obj instanceof Backpack){
+					
 				}
 			}
 		}
