@@ -130,10 +130,26 @@ public class Backpack extends Storage{
 	/**
 	 * Variable referencing the content of a backpack
 	 */
-	private ArrayList<Ownable> content = new ArrayList<Ownable>();
+	private ArrayList<Object> content = new ArrayList<Object>();
 	
-	public void addToBackpack(Object object){
-		
+	/**
+	 * Add the given object to this backpack.
+	 * 
+	 * @param 	object
+	 * 			The object to add.
+	 * @post	The object is added to this backpack.
+	 * 			| content.add(object)
+	 * @post	The size of content is increased by 1.
+	 * 			| this.content.size() + 1 == new.content.size()
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be added to this backpack.
+	 * 			| !canAddToBackpack(object)
+	 */
+	public void addToBackpack(Object object) throws IllegalArgumentException {
+		if (!canAddToBackpack(object)){
+			throw new IllegalArgumentException("The given object can't be added to this backpack.");
+		}
+		content.add(object);
 	}
 	
 	/**
@@ -143,11 +159,17 @@ public class Backpack extends Storage{
 	 * 			The object to check.
 	 * @return	False if the object is not an ownable or a ducat. Also false if when the
 	 * 			object is a ownable, it already has a holder. Also false if with this
-	 * 			object the maximum capacity of this backpack would be exceeded.
+	 * 			object the maximum capacity of this backpack would be exceeded. Also false
+	 * 			if by adding an armor to a backpack, a hero would carry too many armors.
+	 * 			Also false if this backpack is in 1 or more other backpacks and one of
+	 * 			their capacities could be exceeded.
 	 * 			| result == ( (object instanceof Ownable || object instanceof Ducat) &&
 	 * 			|				ownable.getHolder() == null &&
-	 * 			|				( this.getUsedCapacity(Unit.KG) + weight <=
-	 * 			|				this.getMaximumCapacity(Unit.KG)) ) }
+	 * 			|				(this.getUsedCapacity(Unit.KG) + weight <=
+	 * 			|				this.getMaximumCapacity(Unit.KG)) &&
+	 * 			|				hero.canAddArmor(object) &&
+	 * 			|				(backpack.getUsedCapacity(Unit.KG) + weight <=
+	 * 			|				backpack.getMaximumCapacity(Unit.KG) )
 	 */
 	public boolean canAddToBackpack(Object object){
 		double weight = 0;
@@ -168,14 +190,28 @@ public class Backpack extends Storage{
 		if (this.getUsedCapacity(Unit.KG) + weight > this.getMaximumCapacity(Unit.KG)){
 			return false;
 		}
-		if (this.getHolder() instanceof Hero){
-			
+		if (object instanceof Armor){
+			if (this.getUltimateHolder() instanceof Hero){
+				Hero hero = (Hero) this.getUltimateHolder();
+				if (!hero.canAddArmor(object)){
+					return false;
+				}
+			}
 		}
-		
+		if (this.getHolder() instanceof Backpack){
+			Object holder = this.getHolder();
+			while (holder instanceof Backpack){
+				Backpack backpack = (Backpack) holder;
+				if (backpack.getUsedCapacity(Unit.KG) + weight > backpack.getMaximumCapacity(Unit.KG)){
+					return false;
+				}
+				holder = backpack.getHolder();
+			}
+		}
 		else {
 			return true;
 		}
-	}		// nog controleren op aantal harnassen bij hero en capacity bij rugzak in rugzak
+	}
 
 	
 	

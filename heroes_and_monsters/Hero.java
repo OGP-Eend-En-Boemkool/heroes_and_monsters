@@ -165,30 +165,60 @@ public class Hero extends Creature {
 	 * 			The anchor to check.
 	 * @return	True if and only if the given object can be added to the given anchor
 	 * 			for any creature and if when the anchor is a belt, the object is a purse
-	 * 			and if when the anchor is a body, the object is an armor and this if when
-	 * 			the object is an armor, this hero doesn't carry 2 armors yet.
+	 * 			and if when the anchor is a body, the object is an armor and if the hero
+	 * 			won't carry too many armors.
 	 * 			| result == super.canAddToAnchor(object, anchor) &&
 	 *			|				(anchor != "Belt" || (object instanceof Purse)) &&
 	 *			|				(anchor != "Body" || (object instanceof Armor)) &&
-	 *			|				armors.size() < 2
+	 *			|				canAddArmor(object)
 	 */
 	@Raw @Override
 	public boolean canAddToAnchor(Object object, String anchor){
+		return (super.canAddToAnchor(object, anchor) &&
+				(anchor != "Belt" || (object instanceof Purse)) &&
+				(anchor != "Body" || (object instanceof Armor)) &&
+				canAddArmor(object));
+	}
+	
+	/**
+	 * Check whether a hero won't have too many armors if the given object is added.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @return	True if and only if the object is not an armor or the hero won't carry more
+	 * 			than 2 armors when the object is added.
+	 * 			| result == armors.size() < 2
+	 */
+	@Raw
+	protected boolean canAddArmor(Object object){
 		ArrayList<Object> armors = new ArrayList<Object>();
 		if (object instanceof Armor){
 			for (Object obj: getAnchors().values()){			
 				if (obj instanceof Armor){
-					armors.add(obj);		// nog de inhoud van rugzakken checken
+					armors.add(obj);
 				}
 				if (obj instanceof Backpack){
-					
+					ArrayList<Backpack> innerBackpacks = new ArrayList<Backpack>();
+					Backpack backpack = (Backpack) obj;
+					innerBackpacks.add(backpack);
+					while (innerBackpacks.size() > 0){
+						backpack = innerBackpacks.get(0);
+						while (backpack.getBackpackIterator().hasMoreElements()){
+							Object next = backpack.getBackpackIterator().nextElement();
+							if (next instanceof Armor){
+								armors.add(next);
+							}
+							if (next instanceof Backpack){
+								Backpack b = (Backpack) next;
+								innerBackpacks.add(b);
+							}
+						}
+						innerBackpacks.remove(0);
+					}
 				}
 			}
 		}
-		return (super.canAddToAnchor(object, anchor) &&
-				(anchor != "Belt" || (object instanceof Purse)) &&
-				(anchor != "Body" || (object instanceof Armor)) &&
-				armors.size() < 2);
+		return armors.size() < 2;
 	}
 	
 	
