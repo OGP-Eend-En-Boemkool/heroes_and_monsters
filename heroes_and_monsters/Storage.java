@@ -107,21 +107,25 @@ public abstract class Storage extends Ownable implements Capacity {
 	/**
 	 * Transfer an object from this storage to the given storage.
 	 * 
-	 * @param 	storage
-	 * 			The storage to transfer to.
+	 * @param 	other
+	 * 			The other storage to transfer to.
 	 * @param 	object
 	 * 			The object to transfer.
+	 * @effect	The given object is taken out of this storage.
+	 * 			| this.takeOutOfStorage(object)
+	 * @effect	The given object is added to the other storage.
+	 * 			| other.addToStorage(object)
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this storage.
-	 * 			| !canTakeOutOfStorage(object)
+	 * 			| !this.canTakeOutOfStorage(object)
 	 * @throws	IllegalArgumentException
-	 * 			The object cannot be added to this storage.
-	 * 			| !canAddToStorage(object)
+	 * 			The object cannot be added to the other storage.
+	 * 			| !other.canAddToStorage(object)
 	 */
-	public void transferToStorage(Storage storage, Object object)
+	public void transferToStorage(Storage other, Object object)
 			throws IllegalArgumentException {
 		this.takeOutOfStorage(object);
-		storage.addToStorage(object);
+		other.addToStorage(object);
 	}
 }
 

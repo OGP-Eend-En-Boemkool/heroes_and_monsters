@@ -281,14 +281,38 @@ public class Purse extends Storage {
 		else {
 			Ducat ducat = (Ducat) object;
 			this.content.subtract(ducat);
-			if (this.getContent().getValue() == 0){
-				if (this.getHolder() instanceof Backpack){
-					((Backpack) this.getHolder()).takeOutOfStorage(this);
-				}
+		}
+	}
+	
+	/**
+	 * Transfer an object from this purse to the given storage.
+	 * 
+	 * @param 	other
+	 * 			The other storage to transfer to.
+	 * @param 	object
+	 * 			The object to transfer.
+	 * @effect	The given object is taken out of this storage and added to the other storage.
+	 * 			| super.transferToStorage(other, object)
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be taken out of this storage.
+	 * 			| !this.canTakeOutOfStorage(object)
+	 * @throws	IllegalArgumentException
+	 * 			The object cannot be added to the other storage.
+	 * 			| !other.canAddToStorage(object)
+	 */
+	@Override
+	public void transferToStorage(Storage other, Object object)
+			throws IllegalArgumentException {
+		super.transferToStorage(other, object);
+		if (this.getContent().getValue() == 0 && other instanceof Purse){
+			if (this.getHolder() instanceof Backpack){
+				((Backpack) this.getHolder()).takeOutOfStorage(this);
+			}
+			else if (this.getHolder() instanceof Creature){
+				((Creature) this.getHolder()).dropFromAnchor(this);
 			}
 		}
 	}
-
 
 	
 	/******************************
