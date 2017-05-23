@@ -28,10 +28,11 @@ public class Armor extends Ownable implements Protection{
 	 * 			If that is not a correct identification, the identification is set to
 	 * 			a correct identification.
 	 */
-	public Armor(long identification, int maxProtection, int maxValue){
+	public Armor(long identification, int maxProtection, int maxValue, double weight, Unit unit){
 		super(identification);
 		this.setMaxValue(maxValue);
 		this.setMaxProtection(maxProtection);
+		this.setOwnWeight(weight, unit);
 		}
 	
 	/******************************************
