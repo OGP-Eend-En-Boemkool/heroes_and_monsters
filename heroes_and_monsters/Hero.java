@@ -323,8 +323,25 @@ public class Hero extends Creature {
 	 */
 	@Override
 	public double getUsedCapacity(Unit unit) {
-		// TODO Auto-generated method stub
-		return 0;
+		double weight = 0;
+		while (this.getAnchors().values().iterator().hasNext()){
+			Object object = this.getAnchors().keySet().iterator().next();
+			if (object instanceof Ownable){
+				if (object instanceof Storage){
+					Storage storage = (Storage) object;
+					weight = weight + storage.getTotalWeight(unit);
+				}
+				else {
+					Ownable ownable = (Ownable) object;
+					weight = weight + ownable.getOwnWeight(unit);
+				}
+			}
+			else if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				weight = weight + ducat.getWeight(unit);
+			}
+		}
+		return weight;
 	}
 
 	/**********************************
@@ -333,7 +350,9 @@ public class Hero extends Creature {
 	
 	/**
 	 * Return the resulting damage of a certain hit of this creature
-	 * //TODO
+	 * 
+	 * @return The resulting number cannot be negative.
+	 * 		   | result >= 0
 	 */
 	@Override
 	protected int getResultingDamage() {
@@ -359,6 +378,17 @@ public class Hero extends Creature {
 	protected int deathblow() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	
+	/**********************************
+	 * collect Treasures
+	 **********************************/
+	
+	@Override
+	protected void collectTreasures() {
+		// TODO Auto-generated method stub
+		
 	}
 		
 }
