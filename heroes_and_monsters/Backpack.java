@@ -230,6 +230,7 @@ public class Backpack extends Storage{
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder(this);
 			ownable.addAllContainersToContainersSet(this);
+			this.addToIdentificationNumbers(ownable);
 		}
 	}
 	
@@ -425,13 +426,116 @@ public class Backpack extends Storage{
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder();
 			ownable.removeAllContainers();
+			this.removeFromIdentificationNumbers(ownable);
 		}
 	}
 	
-	HashMap<Object, Object> blablabla = new HashMap<Object, Object>();
+	/**
+	 * A hashmap that contains all the different identificationnumbers in this backpack as keys
+	 * and for every identificationnumber an arraylist of all the objects in this backpack with this identificationnumber.
+	 */
+	private HashMap<Long, ArrayList<Ownable>> identificationNumbers = new HashMap<Long, ArrayList<Ownable>>();
 	
-	public boolean OwnableWithIdentificationInBackpack(long identification){
-		return true;
+	/**
+	 * Add an ownable and its content to the arraylists in identificationNumbers with their identificationnumbers as keys.
+	 * 
+	 * @param ownable
+	 * 		  the ownable object that needs to be added to the hashmap.
+	 * @post  the hashmap identificationNumbers will contain the identificationnumber of the ownable as one of the keys.
+	 * 		  | this.identificationNumbers.containsKey(ownable.getIdentification())
+	 * @post  the hashmap identificationNumbers map the identificationnumber of the ownable to an arraylist that contains the ownabale.
+	 * 		  | this.identificationNumbers.get(ownable.getIdentification()).contains(ownable)
+	 * @post  if the ownable object is a backpack, all the ownable objects in this backpack are also added to the hashmap in the same way.
+	 *        | if (ownable instanceof Backpack){
+	 *        | 	for all object in ownable{
+	 *        |			if (object instanceof Ownable){
+	 *        |				this.identificationNumbers.containsKey(object.getIdentification())
+	 *        |				this.identificationNumbers.get(object.getIdentification()).contains(object)
+	 *        |			}
+	 *        |		}
+	 *        | }
+	 */
+	private void addToIdentificationNumbers(Ownable ownable){
+		if (this.identificationNumbers.containsKey(ownable.getIdentification())){
+			ArrayList<Ownable> arraylist = this.identificationNumbers.get(ownable.getIdentification());
+			arraylist.add(ownable);
+		}
+		else {
+			ArrayList<Ownable> arraylist = new ArrayList<Ownable>();
+			arraylist.add(ownable);
+			this.identificationNumbers.put(ownable.getIdentification(), arraylist);
+		}
+		if (ownable instanceof Backpack){
+			Backpack backpack = (Backpack) ownable;
+			while (backpack.getBackpackIterator().hasMoreElements()){
+				Object object = backpack.getBackpackIterator().nextElement();
+				if (object instanceof Ownable){
+					ownable = (Ownable) object;
+					this.addToIdentificationNumbers(ownable);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Remove an ownable and its content from the arraylists in identificationNumbers with their identificationnumbers as keys.
+	 * 
+	 * @param ownable
+	 * 		  the ownable object that needs to be removed from the hashmap.
+	 * @post  the hashmap identificationNumbers no longer map the identificationnumber of the ownable to an arraylist that contains the ownable.
+	 * 		  If the identification number of the ownable is still used as key, the arraylist to which this key is mapped will not contain the ownable.
+	 * 		  | if (this.identificationNumbers.containsKey(ownable.getIdentification())){
+	 * 		  |		!(this.identificationNumbers.get(ownable.getIdentification()).contains(ownable))
+	 * 		  | }
+	 * @post  if the ownable object is a backpack, all the ownable objects in this backpack are also removed from the hashmap in the same way.
+	 *        | if (ownable instanceof Backpack){
+	 *        | 	for all object in ownable{
+	 *        |			if (object instanceof Ownable){
+	 *        |				if (this.identificationNumbers.containsKey(object.getIdentification())){
+	 *        |					!(this.identificationNumbers.get(object.getIdentification()).contains(object))
+	 *        |				}
+	 *        |			}
+	 *        |		}
+	 *        | }
+	 */
+	private void removeFromIdentificationNumbers(Ownable ownable){
+		ArrayList<Ownable> arraylist = this.identificationNumbers.get(ownable.getIdentification());
+		arraylist.remove(ownable);
+		if (arraylist.isEmpty()){
+			this.identificationNumbers.remove(ownable.getIdentification());
+		}
+		if (ownable instanceof Backpack){
+			Backpack backpack = (Backpack) ownable;
+			while (backpack.getBackpackIterator().hasMoreElements()){
+				Object object = backpack.getBackpackIterator().nextElement();
+				if (object instanceof Ownable){
+					ownable = (Ownable) object;
+					this.removeFromIdentificationNumbers(ownable);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Checks whether or not the backpack contains a certain ownable object.
+	 * 
+	 * @param  ownable
+	 * 		   The ownable from which it is tested if the backpack contains it.
+	 * @return True if the backpack contains it, false otherwise.
+	 * 		   | result == this.getContent().contains(ownable)
+	 */
+	public boolean OwnableInBackpack(Ownable ownable){
+		long idNumber = ownable.getIdentification();
+		if (this.identificationNumbers.get(idNumber) != null){
+			ArrayList<Ownable> arraylist = this.identificationNumbers.get(idNumber);
+			while (arraylist.iterator().hasNext()){
+				Ownable ownableInList = arraylist.iterator().next();
+				if (ownable == ownableInList){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/***************************
@@ -441,8 +545,8 @@ public class Backpack extends Storage{
 	/**
 	 * Return an iterator that iterates over the content of this backpack.
 	 */
-	public Enumeration getBackpackIterator(){
-		return new Enumeration(){
+	public Enumeration<Object> getBackpackIterator(){
+		return new Enumeration<Object>(){
 
 			/**
 			 * Variable indexing the current element of this iterator.
