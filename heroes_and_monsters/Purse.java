@@ -280,6 +280,13 @@ public class Purse extends Storage {
 		else {
 			Ducat ducat = (Ducat) object;
 			this.content.subtract(ducat);
+			if (this.getContent().getValue() == 0){
+				if (this.getHolder() instanceof Backpack){
+					((Backpack) this.getHolder()).takeOutOfStorage(this);
+				}
+			}
 		}
 	}
+	
+	
 }

@@ -404,16 +404,10 @@ public class Backpack extends Storage{
 		}
 	}
 	
+	HashMap<Object, Object> blablabla = new HashMap<Object, Object>();
+	
 	public boolean OwnableWithIdentificationInBackpack(long identification){
-		int armors = 0;
-		int weapons = 0;
-		int backpacks = 0;
-		int purse = 0;
-		for (long number: idListArmors){
-			if (number == identification){
-				armors++;
-			}
-		}
+		return true;
 	}
 	
 	/***************************
