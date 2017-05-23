@@ -9,6 +9,9 @@ import java.util.*;
 /**
  * A class of monsters.
  * 
+ * @invar	Every monster must have a valid damage.
+ * @invar	Every monster must have a valid protection.
+ * 
  * @author Linde en Lotte
  * @version 1.0
  */
@@ -32,16 +35,26 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 			The anchors of a monster.
 	 * @param	anchorObjects
 	 * 			The objects that must go in the anchors.
+	 * @param	damage
+	 * 			The damage of this monster.
+	 * @param	protection
+	 * 			The protection of this monster.
+	 * @pre		The given damage must be a correct value for damage.
 	 * @effect	This monster is initialized as a creature with the given name, strength,
 	 * 			current hitpoints, maximum hitpoints, anchors and anchorObjects.
+	 * @post	The current damage of this monster is set to the given damage.
+	 * @post	The current protection of this monster is set to the given protection.
 	 * @throws	IllegalArgumentException
 	 * 			There can't be more anchorObjects than anchors.		
 	 */
 	@Raw
 	public Monster(String name, BigDecimal strength, int maxHitpoints,
-			ArrayList<String> anchors, ArrayList<Object> anchorObjects)
+			ArrayList<String> anchors, ArrayList<Object> anchorObjects, int damage,
+			int protection)
 			throws IllegalArgumentException {
 		super(name, strength, maxHitpoints, anchors, anchorObjects);
+		setCurrentDamage(damage);
+		setCurrentProtection(protection);
 	}
 	
 	/******************************************

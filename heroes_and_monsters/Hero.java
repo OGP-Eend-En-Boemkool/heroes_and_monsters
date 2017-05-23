@@ -38,10 +38,7 @@ public class Hero extends Creature {
 	 * @throws	IllegalArgumentException
 	 * 			The object on the fourth position must be effective and it must be
 	 * 			an armor.
-	 * 			| anchorObjects.get(3) == null || !(anchorObjects.get(3) instanceof Armor
-	 * @throws	IllegalArgumentException
-	 * 			The object on the fifth position can only be a purse.
-	 * 			| anchorObjects.get(4) != null && !(anchorObjects.get(4) instanceof Purse)		
+	 * 			| anchorObjects.get(3) == null || !(anchorObjects.get(3) instanceof Armor)
 	 */
 	@Raw
 	public Hero(String name, BigDecimal strength, int maxHitpoints,
@@ -152,7 +149,9 @@ public class Hero extends Creature {
 					+ "must be effective and its class must be Armor.");
 		}
 		for (int i = 0; i < anchorObjects.size(); i++){
-			this.addToAnchor(anchorObjects.get(i), anchorsStandard.get(i));
+			if (anchorObjects.get(i) != null){
+				this.addToAnchor(anchorObjects.get(i), anchorsStandard.get(i));
+			}
 		}
 	}
 	

@@ -12,6 +12,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * 			| canHaveAsName(getName())
  * @invar	Every creature must have a valid strength.
  * 			| isValidStrength(getStrength())
+ * @invar	Every creature must have a valid maxHitpoints.
+ * 			| canHaveAsHitpointsNotFighting(getMaxHitpoints()) ||
+ * 			|	canHaveAsHitpointsFighting(getMaxHitpoints())
+ * @invar	Every creature must have a valid hitpoints.
+ * 			| if this creature is fighting {
+ * 			|		canHaveAsHitpointsFighting(getHitpoints()) }
+ * 			| else {
+ * 			|		canHaveAsHitpointsNotFighting(getHitpoints()) }
  * 
  * @author Linde en Lotte
  * @version 1.0
@@ -55,11 +63,9 @@ public abstract class Creature implements Capacity{
 	 * @throws 	IllegalArgumentException
 	 * 			The size of the given arraylist anchors can't be zero.
 	 * 			| anchors.size() == 0
-	 * @throws	IllegalArgumentException
-	 * 			There can only be one object in an anchor.
-	 * 			| anchorObjects.get(i) instanceof List ||
-	 * 			|		anchorObjects.get(i) instanceof Map ||
-				|		anchorObjects.get(i) instanceof Set
+	 * @throws 	IllegalArgumentException
+	 * 			An object can't be added to its associated anchor.
+	 * 			| !canAddToAnchor(object, anchor)
 	 */
 	@Raw @Model
 	protected Creature(String name, BigDecimal strength, int maxHitpoints,
