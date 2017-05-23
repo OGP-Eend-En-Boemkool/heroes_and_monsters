@@ -18,8 +18,8 @@ public class Hero extends Creature {
 	 ******************************************
 
 	/**
-	 * Initialize this new hero with a name, a strength, a maximum hitpoints a
-	 * current hitpoints, anchors and anchorObjects.
+	 * Initialize this new hero with a name, a strength, a maximum hitpoints, a
+	 * current hitpoints, standard anchors and anchorObjects.
 	 * 
 	 * @param 	name
 	 * 			The name of this hero.
@@ -45,6 +45,24 @@ public class Hero extends Creature {
 			ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException {
 		super(name, strength, maxHitpoints, anchorsStandard, anchorObjects);
+	}
+	
+	/**
+	 * Initialize this new hero with a name, the default strength, a maximum hitpoints, a
+	 * current hitpoints, standard anchors and no anchorObjects.
+	 * 
+	 * @param 	name
+	 * 			The name of this hero.
+	 * @param	maxHitpoints
+	 * 			The maximum and current hitpoints of this hero.
+	 * @effect	This hero is initialized as a hero with the given name, maximum hitpoints
+	 * 			and maximum hitpoints. The strength is the default strength and no objects
+	 * 			are added to the anchors.
+	 * 			| this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>())
+	 */
+	@Raw
+	public Hero(String name, int maxHitpoints){
+		this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>());
 	}
 	
 	/****************************************
