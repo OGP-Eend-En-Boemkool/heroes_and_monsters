@@ -148,12 +148,14 @@ public class Purse extends Storage {
 	 ******************************/
 	 
 	/**
+	 * Calculates the value in ducats of the purse.
 	 * 
+	 * @return The resulting number must be a valid value
+	 * 		   | isValidValue(result)
 	 */
 	@Override
 	protected int calculateValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.content.getValue();
 	}
 	
 	/*********************************
