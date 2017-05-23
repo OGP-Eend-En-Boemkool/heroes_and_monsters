@@ -571,6 +571,12 @@ public class Backpack extends Storage{
 			@Override
 			public Object nextElement() {
 				Object object = content.get(indexCurrent);
+				if (object instanceof Backpack){
+					Backpack backpack = (Backpack) object;
+					while (backpack.getBackpackIterator().hasMoreElements()){
+						return backpack.getBackpackIterator().nextElement();
+					}
+				}
 				indexCurrent++;
 				return object;
 			}
