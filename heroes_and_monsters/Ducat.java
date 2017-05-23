@@ -55,7 +55,7 @@ public class Ducat{
 	}
 	
 	/**
-	 * Chack whether the given value is a valid value for any amount of ducats.
+	 * Check whether the given value is a valid value for any amount of ducats.
 	 * 
 	 * @param	value
 	 * 			The value to check.

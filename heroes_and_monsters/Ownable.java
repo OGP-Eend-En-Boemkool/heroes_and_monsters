@@ -81,8 +81,62 @@ public abstract class Ownable{
 	protected abstract void setIdentification(long identification);
 	
 	/********************************
+	 * Weight
+	 ********************************/
+	
+	/**
+	 * Variable referencing the weight in kilogram of the ownable object.
+	 */
+	protected double ownWeight = 0;
+	
+	/**
+	 * Return the weight of the ownable object. 
+	 * 
+	 * @param  unit
+	 * 		   The weight in unit in which the weight should be returned.
+	 * @return The resulting number must be bigger than or equal to 0.
+	 * 		   | result >= 0
+	 */
+	protected double getOwnWeight(Unit unit){
+		return (unit.convertFromKilogram(this.ownWeight));
+	}
+	
+	/**
+	 * Sets the weight of the ownable object to the given value.
+	 *
+	 * @param weight
+	 * 		  The integer to which the weight needs to be set.
+	 * @param unit
+	 * 		  The unit in which the parameter weight is given.
+	 * @post  If the given value is valid, weight will be set to the given integer.
+	 * 		  | if isValidOwnWeight(weight)
+	 * 		  | then new.getOwnWeight().equals(weight)
+	 * @post  If the given value isn't valid, weight is set to the default.
+	 * 		  | if !this.isValidOwnWeight(weight) 
+	 * 		  | then new.getOwnWeight().equals(0)
+	 */
+	protected void setOwnWeight(double weight, Unit unit){
+		if (this.isValidOwnWeight(weight)){
+			this.ownWeight = unit.convertToKilogram(weight);
+		}
+	}
+	
+	/**
+	 * Checks whether or not the given integer is a valid weight.
+	 * 
+	 * @param  weight
+	 * 		   The integer that needs to be checked.
+	 * @return False if the given integer is negative, true otherwise.
+	 * 		   | result == (weight >= 0)
+	 */
+	protected boolean isValidOwnWeight(double weight){
+		return (weight >= 0);
+	}	
+		
+	
+	/********************************
 	 * holder
-	 ********************************
+	 ********************************/
 	
 	/**
 	 * Variable referencing the holder of an ownable.
