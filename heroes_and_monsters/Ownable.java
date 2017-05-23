@@ -278,5 +278,41 @@ public abstract class Ownable{
 	 */
 	protected abstract int getValue();
 	
+	/********************************
+	 * Containers
+	 ********************************/
 	
+	/**
+	 * Set that references all the backpacks in which the ownable is located.
+	 */
+	protected HashSet<Backpack> containersSet = new HashSet<Backpack>() ;
+	
+	/**
+	 * Add all the backpacks that contain this new container and this new container to the set of containers of this ownable.
+	 * (Used when this ownable is added to a backpack)
+	 * 
+	 * @param container
+	 * 		  The backpack that contains the ownable.
+	 * @post  The new containersSet will contain the new container.
+	 * 		  | new.containersSet.contains(container)
+	 * @post  The new containersSet will contain all the containers of the container.
+	 * 		  | new.containersSet.containsAll(container.containersSet)
+	 */
+	protected void addAllContainersToContainersSet(Backpack container){
+		this.containersSet.add(container);
+		while (container.containersSet.iterator().hasNext()){
+			this.containersSet.add(container.containersSet.iterator().next());
+		}
+	}
+	
+	/**
+	 * Removes all the containers out of the containersSet of this ownable.
+	 * (Used when this ownable is removed from a backpack)
+	 * 
+	 * @post The new containersSet will be empty.
+	 * 		 | new.containersSet.isEmpty()
+	 */
+	protected void removeAllContainers(){
+		this.containersSet.clear();
+	}
 }
