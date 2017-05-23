@@ -433,7 +433,7 @@ public abstract class Creature implements Capacity{
 	 * 			The anchor to check.
 	 * @return	True if and only if this creature has such anchor, that anchor doesn't
 	 * 			already have another object and the object is an ownable or a ducat. But
-	 * 			if it's a ducat and its value is not equal to one, it is false though.
+	 * 			if it's a ducat and its value is not equal to one, it is false 'though.
 	 * 			| result == this.getAnchors().keySet().contains(anchor) &&
 	 *			|			this.getAnchors().get(anchor) == null &&
 	 *			|			((object instanceof Ownable) || (object instanceof Ducat)) &&
