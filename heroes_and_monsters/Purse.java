@@ -26,8 +26,9 @@ public class Purse extends Storage {
 	 * @effect	This purse is initialized as an ownable with a calculated identification.
 	 * 			| super(calculateValidIdentification())
 	 */
-	public Purse(){
+	public Purse(double ownWeight, Unit unit){
 		super(calculateValidIdentification());
+		this.setOwnWeight(ownWeight, unit);
 	}
 	
 	/*******************************
@@ -154,7 +155,7 @@ public class Purse extends Storage {
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		return this.content.getValue();
 	}
 	

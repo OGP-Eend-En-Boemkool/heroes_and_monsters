@@ -325,7 +325,7 @@ public class Armor extends Ownable implements Protection{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		int value = (int)Math.floor(this.getMaxValue()*(this.getCurrentProtection()/this.getMaxProtection()));
 		if (this.isValidValue(value)){
 			return value;

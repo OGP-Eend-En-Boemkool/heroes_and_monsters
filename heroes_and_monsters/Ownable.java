@@ -28,7 +28,6 @@ public abstract class Ownable{
 	@Raw @Model
 	protected Ownable(long identification){
 		setIdentification(identification);
-		setValue(this.calculateValue());
 	}
 	
 	/*******************************
@@ -207,34 +206,6 @@ public abstract class Ownable{
 	 * Value
 	 ********************************/
 	
-	protected int value = 1;	
-	
-	/**
-	 * Return the number of ducats that represents the value of the ownable object. 
-	 * 
-	 * @return The resulting number must be bigger than or equal to 0.
-	 * 		   | result >= 0
-	 */
-	protected int getValue(){
-		return this.value;
-	}
-	
-	/**
-	 * Sets the value of the ownable object to the given integer 'value'.
-	 *
-	 * @param value
-	 * 		  The integer to which the value needs to be set.
-	 * @post  Value will be set to the given integer.
-	 * 		  | new.getValue().equals(value)
-	 * @post  If the given value isn't valid, value is set to the default.
-	 * 		  | if !this.isValidValue(value) then this.setValue(1)
-	 */
-	protected void setValue(int value){
-		if (this.isValidValue(value)){
-			this.value = value;
-		}
-	}
-	
 	/**
 	 * Checks whether or not the given integer is a valid value.
 	 * 
@@ -254,7 +225,7 @@ public abstract class Ownable{
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)
 	 */
-	protected abstract int calculateValue();
+	protected abstract int getValue();
 	
 	
 }

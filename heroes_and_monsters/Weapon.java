@@ -198,7 +198,7 @@ public class Weapon extends Ownable implements Damage{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		int value = (this.getCurrentDamage()*2);
 		if (this.isValidValue(value)){
 			return value;

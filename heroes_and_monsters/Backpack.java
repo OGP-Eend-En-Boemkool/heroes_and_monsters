@@ -26,10 +26,11 @@ public class Backpack extends Storage{
 	 * @effect	This backpack is initialized as an ownable with a calculated identification.
 	 * 			| super(calculateValidIdentification())
 	 */
-	public Backpack(int standardValue, double maxCapacity, Unit unit){
+	public Backpack(int standardValue, double maxCapacity, double ownWeight, Unit unit){
 		super(calculateValidIdentification());
 		setStandardValue(standardValue);
 		setMaxCapacity(maxCapacity, unit);
+		setOwnWeight(ownWeight,unit);
 	}
 	
 	/********************************
