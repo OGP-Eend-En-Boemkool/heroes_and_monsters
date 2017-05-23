@@ -146,6 +146,9 @@ public class Backpack extends Storage{
 	 */
 	private ArrayList<Object> content = new ArrayList<Object>();
 	
+	/**
+	 * Return the content of this backpack.
+	 */
 	public ArrayList<Object> getContent(){
 		return new ArrayList<Object>(this.content);
 	}
@@ -259,22 +262,132 @@ public class Backpack extends Storage{
 		}
 	}
 	
+	/**
+	 * Check whether the given object can be taken out of this backpack.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @return	True if the given object is direct or indirect content of this backpack.
+	 * 			Also true if the given object is a ducat and the value of all the ducats
+	 * 			in this backpack is greater than or equal to the given ducat.
+	 * 			| result == (for one backpack in this backpack (including this backpack) {
+	 * 			|					backpack.content.contains(object) }) ||
+	 * 			|			(if (object instanceof Ducat) {
+	 * 			|					ducat = total value of ducats in this backpack
+	 * 			|					ducat.getValue() >= object.getValue() )
+	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
-		if (object instanceof Ducat){
-			for (Object obj: getContent()){
+		Ducat ducat = new Ducat(0);
+		ArrayList<Backpack> backpacks = new ArrayList<Backpack>();
+		backpacks.add(this);
+		while (backpacks.size() > 0){
+			Backpack currentBackpack = backpacks.get(0);
+			while (currentBackpack.getBackpackIterator().hasMoreElements()){
+				Object obj = currentBackpack.getBackpackIterator().nextElement();
 				if (obj instanceof Ducat){
-					return (obj.getValue() >= object.getValue());
+					Ducat d = (Ducat) obj;
+					ducat.add(d);
+				}
+				else if (object == obj){
+					return true;
+				}
+				else if (obj instanceof Backpack){
+					Backpack b = (Backpack) obj;
+					backpacks.add(b);
+				}
+				else if (obj instanceof Purse){
+					Purse p = (Purse) obj;
+					ducat.add(p.getContent());
 				}
 			}
-			return false;
+			backpacks.remove(0);
+		}
+		if (object instanceof Ducat){
+			Ducat ducatObject = (Ducat) object;
+			return ducat.getValue() >= ducatObject.getValue();
 		}
 		else {
-			return getContent().contains(object);
+			return false;
 		}
 	}
 
-	
+	/**
+	 * Take the given object out of this backpack.
+	 * 
+	 * @param 	object
+	 * 			The object to take out.
+	 * @post	If the given object is an amount of ducat, the same amount is taken out of
+	 * 			this backpack or a backpack direct or indirect in this backpack or a purse
+	 * 			direct or indirect in this backpack or a combination of these possibilities.
+	 * 			If it's not, the given object is taken out of its holder.
+	 * 			| if (object instanceof Ducat){
+	 * 			|			for all ducats and purses {
+	 * 			|				ducat.subtract(object) or purse.takeOutOfStorage(object)
+	 * 			|				(until enough is subtracted) } }
+	 * 			| else {
+	 * 			|			object.getHolder().content.remove(object) }
+	 * @post	If the given object is not a ducat, the size of the content of its holder
+	 * 			is decreased by 1.
+	 * 			| if (!(object instanceof Ducat)){
+	 * 			|			new.getContent().size() == this.getContent().size() - 1
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be taken out of this backpack.
+	 * 			| !canTakeOutOfStorage(object)
+	 */
+	@Override
+	public void takeOutOfStorage(Object object) throws IllegalArgumentException {
+		if (!canTakeOutOfStorage(object)){
+			throw new IllegalArgumentException("The given object can't be taken out of this backpack.");
+		}
+		else {
+			Ducat restingDucat = new Ducat(0);
+			boolean objectFound = false;
+			if (object instanceof Ducat){
+				restingDucat = (Ducat) object;
+			}
+			ArrayList<Backpack> backpacks = new ArrayList<Backpack>();
+			backpacks.add(this);
+			while (backpacks.size() > 0 && !objectFound){
+				Backpack currentBackpack = backpacks.get(0);
+				while (currentBackpack.getBackpackIterator().hasMoreElements() && !objectFound){
+					Object obj = currentBackpack.getBackpackIterator().nextElement();
+					if (obj instanceof Ducat && object instanceof Ducat){
+						Ducat d = (Ducat) obj;
+						if (d.getValue() >= restingDucat.getValue()){
+							d.subtract(restingDucat);
+							objectFound = true;
+						}
+						else {
+							restingDucat.subtract(d);
+							d.subtract(d);
+						}
+						
+					}
+					else if (object == obj){
+						currentBackpack.content.remove(object);
+						objectFound = true;
+					}
+					else if (obj instanceof Backpack){
+						Backpack b = (Backpack) obj;
+						backpacks.add(b);
+					}
+					else if (obj instanceof Purse && object instanceof Ducat){
+						Purse p = (Purse) obj;
+						if (p.getValue() >= restingDucat.getValue()){
+							p.takeOutOfStorage(restingDucat);
+							objectFound = true;
+						}
+						else {
+							restingDucat.subtract(p);
+							p.takeOutOfStorage(p.getContent());
+						}
+					}
+				}
+				backpacks.remove(0);
+			}
+		}
+	}
 	
 	/***************************
 	 * iterator

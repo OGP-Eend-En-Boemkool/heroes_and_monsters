@@ -81,7 +81,7 @@ public class Ducat{
 	 * @param 	other
 	 * 			The other amount of ducats to add.
 	 * @return	The sum of the two amounts of ducats.
-	 * 			| result.getValue().equals(this.getValue() + other.getValue())
+	 * 			| new.getValue().equals(this.getValue() + other.getValue())
 	 * @throws 	IllegalArgumentException
 	 * 			The other ducat is not effective.
 	 * 			| other == null
@@ -94,11 +94,30 @@ public class Ducat{
 	}
 	
 	/**
+	 * Compute the sum of a ducat and the content of a purse.
+	 * 
+	 * @param 	purse
+	 * 			The purse of the content to add.
+	 * @return	The sum of the value of the ducat and the purse.
+	 * 			| new.getValue().equals(this.getValue() + purse.getValue())
+	 * @throws 	IllegalArgumentException
+	 * 			The purse is not effective.
+	 * 			| purse == null
+	 */
+	public Ducat add(Purse purse) throws IllegalArgumentException {
+		if (purse == null){
+			throw new IllegalArgumentException("Other Ducat is not effective");
+		}
+		return new Ducat(this.getValue() + purse.getValue());
+	}
+	
+	/**
 	 * Compute the subtraction of the other amount of ducats from this amount.
 	 * 
 	 * @param	other
 	 * 			The other amount of ducats to subtract.
 	 * @return	The subtraction of the two amounts of ducats.
+	 * 			| new.getValue().equals(this.getValue() - other.getValue())
 	 * @throws	IllegalArgumentException
 	 * 			The other ducat is not effective.
 	 * 			| other == null
@@ -114,6 +133,30 @@ public class Ducat{
 			throw new IllegalArgumentException("The result would be negative, which is invalid");
 		}
 		return new Ducat(this.getValue() - other.getValue());
+	}
+	
+	/**
+	 * Compute the subtraction of the content of the purse from this ducat.
+	 * 
+	 * @param	purse
+	 * 			The purse of the content to subtract.
+	 * @return	The subtraction of the value of the ducat and the purse.
+	 * 			| new.getValue().equals(this.getValue() - purse.getValue())
+	 * @throws	IllegalArgumentException
+	 * 			The purse is not effective.
+	 * 			| purse == null
+	 * @throws	IllegalArgumentException
+	 * 			The amount to subtract is greater than the amount to subtract from.
+	 * 			| purse.getValue() > this.getValue()
+	 */
+	public Ducat subtract(Purse purse) throws IllegalArgumentException {
+		if (purse == null){
+			throw new IllegalArgumentException("Purse is not effective");
+		}
+		if (purse.getValue() > this.getValue()){
+			throw new IllegalArgumentException("The result would be negative, which is invalid");
+		}
+		return new Ducat(this.getValue() - purse.getValue());
 	}
 	
 	
