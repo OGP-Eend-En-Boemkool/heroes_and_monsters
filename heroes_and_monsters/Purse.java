@@ -228,4 +228,21 @@ public class Purse extends Storage {
 			}
 		}
 	}
+
+	
+	/******************************
+	 * Weight - totaal
+	 ******************************/
+	 
+	/**
+	 * Calculates the weight in the given weight unit of the purse.
+	 * 
+	 * @return The resulting number must be a valid weight.
+	 * 		   | canHaveAsTotalWeight(result)
+	 */
+	@Override
+	protected double getTotalWeight(Unit unit) {
+		return this.content.getWeight(unit);
+	}
+	
 }

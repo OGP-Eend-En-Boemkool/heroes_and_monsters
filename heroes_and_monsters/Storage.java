@@ -58,7 +58,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * @return The new total weight must be a valid value for total weight.
 	 * 		   | canHaveAsTotalWeight(result)
 	 */
-	protected abstract double getTotalWeight();
+	protected abstract double getTotalWeight(Unit unit);
 	
 	/******************************************
 	 * storage

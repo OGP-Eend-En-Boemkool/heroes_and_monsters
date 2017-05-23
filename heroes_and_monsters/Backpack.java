@@ -386,18 +386,17 @@ public class Backpack extends Storage{
 	protected void changeStandardValue(int standardValue){
 		if (this.isValidStandardValue(standardValue)){
 			this.setStandardValue(standardValue);
-			this.setValue(this.calculateValue());
 		}
 	}
 	
 	/**
-	 * Calculates the value in ducats of the ownable object.
+	 * Calculates the value in ducats of the backpack.
 	 * 
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		int value = this.standardValue;
 		while (this.getBackpackIterator().hasMoreElements()){
 			Object object = this.getBackpackIterator().nextElement();
@@ -411,6 +410,35 @@ public class Backpack extends Storage{
 			}
 		}
 		return value;
+	}
+
+	/***************************
+	 * weight - totaal
+	 ***************************/
+	
+	/**
+	 * Calculates the weight in the given weight unit of the backpack.
+	 * 
+	 * @param  unit
+	 * 		   The weight unit in which the total weight should be returned.
+	 * @return The resulting number must be a valid weight
+	 * 		   | canHaveAsTotalWeight(result)
+	 */
+	@Override
+	protected double getTotalWeight(Unit unit) {
+		double weight = unit.convertFromKilogram(this.ownWeight);
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object object = this.getBackpackIterator().nextElement();
+			if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				weight = weight + ducat.getWeight(unit);
+			}
+			else if (object instanceof Ownable){
+				Ownable ownable = (Ownable) object;
+				weight = weight + ownable.getOwnWeight(unit);
+			}
+		}
+		return weight;
 	}
 	
 }
