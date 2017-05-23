@@ -36,18 +36,21 @@ public class Purse extends Storage {
 	 *******************************
 	
 	/**
-	 *  Set the identification of this purse to the given identification.
+	 *  Set the identification of this purse to the given identification. The first
+	 *  thousand weapons have a unique number.
 	 * 
 	 * @param 	identification
 	 * 			The identification of this purse.
-	 * @effect	The identification is added to the list of identifications of purses.
-	 *  		| idListPurses.add(identification)
+	 * @effect	The identification is added to the list of identifications and this purse
+	 * 			is added to the list of purses. Both sizes are increased by 1.
+	 * 			| super.setIdentification(identification)
 	 * @post	The identification of this purse is set to identification.
 	 * 			| new.getIdentification() = identification
 	 */
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListPurses.add(identification);
+		listPurses.add(this);
 	}
 	
 
@@ -263,7 +266,9 @@ public class Purse extends Storage {
 	 * 
 	 * @param 	object
 	 * 			The object to take out.
-	 * @post	
+	 * @post	The value of the given object (that must be a ducat) is subtracted from
+	 * 			the value of this purse.
+	 * 			| this.content.subtract(object)
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this purse.
 	 * 			| !canTakeOutOfStorage(object)

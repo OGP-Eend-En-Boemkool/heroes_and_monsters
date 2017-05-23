@@ -5,8 +5,6 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import Exceptions.AnchorIsNotEmptyException;
-
 /**
  * A class of creatures.
  * 
@@ -455,7 +453,7 @@ public abstract class Creature implements Capacity{
 	 * 			| new.getAnchors().get(anchor) == null
 	 * @effect	The holder of the object in this anchor is set to null.
 	 * 			| if (object instanceof Ownable){
-	 * 			| 		object.setHolder(null) }
+	 * 			| 		object.setHolder() }
 	 * @throws 	IllegalArgumentException
 	 * 			This creature has no such anchor.
 	 * 			| !getAnchors().keySet().contains(anchor)
@@ -467,7 +465,7 @@ public abstract class Creature implements Capacity{
 		Object object = this.anchors.remove(anchor);
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
-			ownable.setHolder(null);
+			ownable.setHolder();
 		}
 	}
 	
