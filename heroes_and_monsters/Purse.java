@@ -26,8 +26,9 @@ public class Purse extends Storage {
 	 * @effect	This purse is initialized as an ownable with a calculated identification.
 	 * 			| super(calculateValidIdentification())
 	 */
-	public Purse(){
+	public Purse(double ownWeight, Unit unit){
 		super(calculateValidIdentification());
+		this.setOwnWeight(ownWeight, unit);
 	}
 	
 	/*******************************
@@ -157,7 +158,7 @@ public class Purse extends Storage {
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		return this.content.getValue();
 	}
 	
@@ -287,6 +288,23 @@ public class Purse extends Storage {
 			}
 		}
 	}
+
+
 	
+	/******************************
+	 * Weight - totaal
+	 ******************************/
+	 
+	/**
+	 * Calculates the weight in the given weight unit of the purse.
+	 * 
+	 * @return The resulting number must be a valid weight.
+	 * 		   | canHaveAsTotalWeight(result)
+	 */
+	@Override
+	protected double getTotalWeight(Unit unit) {
+		return this.content.getWeight(unit);
+	}
+
 	
 }

@@ -28,10 +28,11 @@ public class Armor extends Ownable implements Protection{
 	 * 			If that is not a correct identification, the identification is set to
 	 * 			a correct identification.
 	 */
-	public Armor(long identification, int maxProtection, int maxValue){
+	public Armor(long identification, int maxProtection, int maxValue, double weight, Unit unit){
 		super(identification);
 		this.setMaxValue(maxValue);
 		this.setMaxProtection(maxProtection);
+		this.setOwnWeight(weight, unit);
 		}
 	
 	/******************************************
@@ -326,7 +327,7 @@ public class Armor extends Ownable implements Protection{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		int value = (int)Math.floor(this.getMaxValue()*(this.getCurrentProtection()/this.getMaxProtection()));
 		if (this.isValidValue(value)){
 			return value;

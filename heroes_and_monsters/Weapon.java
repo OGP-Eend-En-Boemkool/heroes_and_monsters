@@ -26,8 +26,9 @@ public class Weapon extends Ownable implements Damage{
 	 * @effect	This weapon is initialized as an ownable with a calculated identification.
 	 */
 	@Raw
-	public Weapon(){
+	public Weapon(double weight, Unit unit){
 		super(calculateValidIdentification());
+		this.setOwnWeight(weight, unit);
 	}
 	
 	/**********************************************************
@@ -199,7 +200,7 @@ public class Weapon extends Ownable implements Damage{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		int value = (this.getCurrentDamage()*2);
 		if (this.isValidValue(value)){
 			return value;

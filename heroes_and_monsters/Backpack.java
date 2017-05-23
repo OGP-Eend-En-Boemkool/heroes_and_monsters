@@ -26,10 +26,11 @@ public class Backpack extends Storage{
 	 * @effect	This backpack is initialized as an ownable with a calculated identification.
 	 * 			| super(calculateValidIdentification())
 	 */
-	public Backpack(int standardValue, double maxCapacity, Unit unit){
+	public Backpack(int standardValue, double maxCapacity, double ownWeight, Unit unit){
 		super(calculateValidIdentification());
 		setStandardValue(standardValue);
 		setMaxCapacity(maxCapacity, unit);
+		setOwnWeight(ownWeight,unit);
 	}
 	
 	/********************************
@@ -204,7 +205,9 @@ public class Backpack extends Storage{
 			content.add(object);
 		}
 		if (object instanceof Ownable){
-			((Ownable) object).setHolder(this);
+			Ownable ownable = (Ownable) object;
+			ownable.setHolder(this);
+			ownable.addAllContainersToContainersSet(this);
 		}
 	}
 	
@@ -235,7 +238,7 @@ public class Backpack extends Storage{
 			if (ownable.getHolder() != null){
 				return false;
 			}
-			weight = ownable.getWeight(Unit.KG);
+			weight = ownable.getOwnWeight(Unit.KG);
 		}
 		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
@@ -265,9 +268,7 @@ public class Backpack extends Storage{
 				holder = backpack.getHolder();
 			}
 		}
-		else {
-			return true;
-		}
+		return true;
 	}
 	
 	/**
@@ -401,6 +402,7 @@ public class Backpack extends Storage{
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder();
+			ownable.removeAllContainers();
 		}
 	}
 	
@@ -519,18 +521,17 @@ public class Backpack extends Storage{
 	protected void changeStandardValue(int standardValue){
 		if (this.isValidStandardValue(standardValue)){
 			this.setStandardValue(standardValue);
-			this.setValue(this.calculateValue());
 		}
 	}
 	
 	/**
-	 * Calculates the value in ducats of the ownable object.
+	 * Calculates the value in ducats of the backpack.
 	 * 
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int calculateValue() {
+	protected int getValue() {
 		int value = this.standardValue;
 		while (this.getBackpackIterator().hasMoreElements()){
 			Object object = this.getBackpackIterator().nextElement();
@@ -545,5 +546,93 @@ public class Backpack extends Storage{
 		}
 		return value;
 	}
+
+	/***************************
+	 * weight - totaal
+	 ***************************/
 	
+	/**
+	 * Calculates the weight in the given weight unit of the backpack.
+	 * 
+	 * @param  unit
+	 * 		   The weight unit in which the total weight should be returned.
+	 * @return The resulting number must be a valid weight
+	 * 		   | canHaveAsTotalWeight(result)
+	 */
+	@Override
+	protected double getTotalWeight(Unit unit) {
+		double weight = unit.convertFromKilogram(this.ownWeight);
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object object = this.getBackpackIterator().nextElement();
+			if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				weight = weight + ducat.getWeight(unit);
+			}
+			else if (object instanceof Ownable){
+				Ownable ownable = (Ownable) object;
+				weight = weight + ownable.getOwnWeight(unit);
+			}
+		}
+		return weight;
+	}
+	
+	/********************************
+	 * Containers
+	 ********************************/
+	
+	/**
+	 * Add all the backpacks that contain this new container and this new container to the set of containers of this ownable.
+	 * (Used when this ownable is added to a backpack)
+	 * 
+	 * @param container
+	 * 		  The backpack that contains the ownable.
+	 * @post  The new containersSet will contain the new container.
+	 * 		  | new.containersSet.contains(container)
+	 * @post  The new containersSet will contain all the containers of the container.
+	 * 		  | new.containersSet.containsAll(container.containersSet)
+	 * @post  The updated containersSet of all the ownable objects in this backpack will contain the container.
+	 * 		  | For all ownable in this backpack{
+	 * 		  | 	ownable.containersSet.contains(container)
+	 * 		  |		}
+	 * @post  The updated containersSet of all the ownable objects in this backpack will contain all the containers of the container.
+	 * 		  | For all ownable in this backpack{
+	 * 		  | 	ownable.containersSet.containsAll(container.containersSet)
+	 * 		  |		}
+	 */
+	@Override
+	protected void addAllContainersToContainersSet(Backpack container){
+		super.addAllContainersToContainersSet(container);
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object object = this.getBackpackIterator().nextElement();
+			if (object instanceof Ownable){
+				Ownable ownable = (Ownable) object;
+				ownable.addAllContainersToContainersSet(container);
+			}
+		}
+	}
+	
+	/**
+	 * Removes all the containers out of the containersSet of this ownable.
+	 * (Used when this ownable is removed from a backpack)
+	 * 
+	 * @post The new containersSet will be empty.
+	 * 		 | new.containersSet.isEmpty()
+	 * @post  The updated containersSet of all the ownable objects in this backpack won't contain all the old containers of the container any longer.
+	 * 		  | For all ownable o in this backpack{
+	 * 		  |		for all backpack b in this.containersSet{
+	 * 		  |			!(o.containersSet.contains(b))
+	 * 		  |			}
+	 * 		  |		}
+	 */
+	@Override
+	protected void removeAllContainers(){
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object object = this.getBackpackIterator().nextElement();
+			if (object instanceof Ownable){
+				Ownable ownable = (Ownable) object;
+				ownable.containersSet.removeAll(this.containersSet);
+			}
+		}
+		super.removeAllContainers();
+	}
 }

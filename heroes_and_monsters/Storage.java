@@ -25,7 +25,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	
 	/*****************************************
 	 * identification
-	 *****************************************
+	 *****************************************/
 	
 	/**
 	 * Set the identification to the given identification.
@@ -38,9 +38,33 @@ public abstract class Storage extends Ownable implements Capacity {
 	@Raw
 	protected abstract void setIdentification(long identification);
 	
+	
+	/*****************************************
+	 * Weight
+	 *****************************************/
+	
+	/**
+	 * Checks whether or not the given weight is a legal value for the total weight.
+	 * 
+	 * @param  weight
+	 * 		   The value that needs to be checked.
+	 * @return True if the given value is bigger than or equal to the own weight of the storage object.
+	 */
+	protected boolean canHaveAsTotalWeight(double weight){
+		return ((weight>=this.getOwnWeight(Unit.KG)));
+	}
+	
+	/**
+	 * Calculates the new total weight of the storage object. Used after adding or removing an item out of the backpack.
+	 * 
+	 * @return The new total weight must be a valid value for total weight.
+	 * 		   | canHaveAsTotalWeight(result)
+	 */
+	protected abstract double getTotalWeight(Unit unit);
+	
 	/******************************************
 	 * storage
-	 ******************************************
+	 ******************************************/
 	
 	/**
 	 * Add the given object to this storage.
