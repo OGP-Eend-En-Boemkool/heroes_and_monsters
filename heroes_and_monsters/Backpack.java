@@ -205,7 +205,9 @@ public class Backpack extends Storage{
 			content.add(object);
 		}
 		if (object instanceof Ownable){
-			((Ownable) object).setHolder(this);
+			Ownable ownable = (Ownable) object;
+			ownable.setHolder(this);
+			ownable.addAllContainersToContainersSet(this);
 		}
 	}
 	
@@ -400,6 +402,7 @@ public class Backpack extends Storage{
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder();
+			ownable.removeAllContainers();
 		}
 	}
 	
