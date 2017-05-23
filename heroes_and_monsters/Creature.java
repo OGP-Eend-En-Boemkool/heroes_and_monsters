@@ -432,13 +432,21 @@ public abstract class Creature implements Capacity{
 	 * @param 	anchor
 	 * 			The anchor to check.
 	 * @return	True if and only if this creature has such anchor, that anchor doesn't
-	 * 			already have another object and the object is an ownable or a ducat.
+	 * 			already have another object and the object is an ownable or a ducat. But
+	 * 			if it's a ducat and its value is not equal to one, it is false though.
 	 * 			| result == this.getAnchors().keySet().contains(anchor) &&
 	 *			|			this.getAnchors().get(anchor) == null &&
-	 *			|			((object instanceof Ownable) || (object instanceof Ducat))
+	 *			|			((object instanceof Ownable) || (object instanceof Ducat)) &&
+	 *			|			(if (object instanceof Ducat) {
+	 *			|					object.getValue() == 1 } )
 	 */
 	@Raw
 	public boolean canAddToAnchor(Object object, String anchor){
+		if (object instanceof Ducat){
+			if (((Ducat) object).getValue() != 1){
+				return false;
+			}
+		}
 		return (this.getAnchors().keySet().contains(anchor) &&
 				this.getAnchors().get(anchor) == null &&
 				((object instanceof Ownable) || (object instanceof Ducat)));
