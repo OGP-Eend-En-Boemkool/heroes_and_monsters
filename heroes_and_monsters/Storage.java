@@ -30,7 +30,9 @@ public abstract class Storage extends Ownable implements Capacity {
 	/**
 	 * Set the identification to the given identification.
 	 * 
-	 * @effect	The identification is added to the list of identifications.
+	 * @effect	The identification is added to the list of identifications and this storage
+	 * 			is added to the list of storages (each storage has its own lists). Both 
+	 * 			sizes are increased by 1.
 	 * 			| super.setIdentification(identification)
 	 */
 	@Raw
@@ -46,7 +48,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * @param 	object
 	 * 			The object to add.
 	 * @throws	IllegalArgumentException
-	 * 			The object cannot be added.
+	 * 			The object cannot be added to this storage.
 	 * 			| !canAddToStorage(object)
 	 */
 	public abstract void addToStorage(Object object) throws IllegalArgumentException;
@@ -77,5 +79,25 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 			The object to check.
 	 */
 	public abstract boolean canTakeOutOfStorage(Object object);
+	
+	/**
+	 * Transfer an object from this storage to the given storage.
+	 * 
+	 * @param 	storage
+	 * 			The storage to transfer to.
+	 * @param 	object
+	 * 			The object to transfer.
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be taken out of this storage.
+	 * 			| !canTakeOutOfStorage(object)
+	 * @throws	IllegalArgumentException
+	 * 			The object cannot be added to this storage.
+	 * 			| !canAddToStorage(object)
+	 */
+	public void transferToStorage(Storage storage, Object object)
+			throws IllegalArgumentException {
+		this.takeOutOfStorage(object);
+		storage.addToStorage(object);
+	}
 }
 

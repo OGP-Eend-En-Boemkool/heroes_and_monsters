@@ -41,8 +41,9 @@ public class Backpack extends Storage{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this backpack.
-	 * @effect	The identification is added to the list of identifications of backpacks.
-	 * 			| idListBackpacks.add(identification)
+	 * @effect	The identification is added to the list of identifications and this backpack
+	 * 			is added to the list of backpacks. Both sizes are increased by 1.
+	 * 			| super.setIdentification(identification)
 	 * @post	The identification of this backpack is set to identification.
 	 * 			| new.getIdentification() = identification
 	 */
@@ -50,6 +51,7 @@ public class Backpack extends Storage{
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListBackpacks.add(identification);
+		listBackpacks.add(this);
 	}
 	
 	/**
@@ -172,6 +174,9 @@ public class Backpack extends Storage{
 	 * 			|				this.content.size() == new.content.size() } }
 	 * 			| else {
 	 * 			| 		this.content.size() + 1 == new.content.size() }
+	 * @effect	If the given object is an ownable, its holder is set to this.
+	 * 			| if (object instanceof Ownable){
+	 * 			| 		object.setHolder(this) }
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be added to this backpack.
 	 * 			| !canAddToStorage(object)
@@ -197,6 +202,9 @@ public class Backpack extends Storage{
 		}
 		else {
 			content.add(object);
+		}
+		if (object instanceof Ownable){
+			((Ownable) object).setHolder(this);
 		}
 	}
 	
@@ -327,10 +335,13 @@ public class Backpack extends Storage{
 	 * 			|				(until enough is subtracted) } }
 	 * 			| else {
 	 * 			|			object.getHolder().content.remove(object) }
-	 * @post	If the given object is not a ducat, the size of the content of its holder
+	 * @post	If the given object is an ownable, the size of the content of its holder
 	 * 			is decreased by 1.
-	 * 			| if (!(object instanceof Ducat)){
-	 * 			|			new.getContent().size() == this.getContent().size() - 1
+	 * 			| if (object instanceof Ownable){
+	 * 			|			(new object.getHolder()).getContent().size() == object.getHolder().getContent().size() - 1 }
+	 * @effect	If the given object is an ownable, its holder is set to null.
+	 * 			| if (object instanceof Ownable){
+	 * 			| 			object.setHolder() }
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this backpack.
 	 * 			| !canTakeOutOfStorage(object)
@@ -385,6 +396,22 @@ public class Backpack extends Storage{
 					}
 				}
 				backpacks.remove(0);
+			}
+		}
+		if (object instanceof Ownable){
+			Ownable ownable = (Ownable) object;
+			ownable.setHolder();
+		}
+	}
+	
+	public boolean OwnableWithIdentificationInBackpack(long identification){
+		int armors = 0;
+		int weapons = 0;
+		int backpacks = 0;
+		int purse = 0;
+		for (long number: idListArmors){
+			if (number == identification){
+				armors++;
 			}
 		}
 	}

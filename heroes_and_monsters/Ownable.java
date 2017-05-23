@@ -41,22 +41,42 @@ public abstract class Ownable{
 	protected long identification;
 	
 	/**
-	 * Variable where we can store the first 1000 identifications of armors.
+	 * Variable where we can store all the armors.
+	 */
+	protected static ArrayList<Armor> listArmors;
+	
+	/**
+	 * Variable where we can store all the id's of armors.
 	 */
 	protected static ArrayList<Long> idListArmors;
 	
 	/**
-	 * Variable where we can store the first 1000 identifications of weapons.
+	 * Variable where we can store all the weapons.
+	 */
+	protected static ArrayList<Weapon> listWeapons;
+	
+	/**
+	 * Variable where we can store all the id's of weapons.
 	 */
 	protected static ArrayList<Long> idListWeapons;
 	
 	/**
-	 * Variable where we can store the first 1000 identifications of backpacks.
+	 * Variable where we can store all the backpacks.
+	 */
+	protected static ArrayList<Backpack> listBackpacks;
+	
+	/**
+	 * Variable where we can store all the id's of backpacks.
 	 */
 	protected static ArrayList<Long> idListBackpacks;
 	
 	/**
-	 * Variable where we can store the first 1000 identifications of purses.
+	 * Variable where we can store all the purses.
+	 */
+	protected static ArrayList<Purse> listPurses;
+	
+	/**
+	 * Variable where we can store all the id's of purses.
 	 */
 	protected static ArrayList<Long> idListPurses;
 	
@@ -73,9 +93,16 @@ public abstract class Ownable{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this ownable.
-	 * @post	The identification is added to the list of identifications (every ownable
-	 * 			has its own list).
-	 * 			| idListClass.add(identification)
+	 * @post	The ownable is added to the list of ownables (every ownable
+	 * 			has its own lists).
+	 * 			| listClass.add(this)
+	 * @post	The size of the list of ownables is increased by 1.
+	 * 			| new.listClass.size() = this.listClass.size() + 1
+	 * @post	The ownable is added to the list of identifications (every ownable
+	 * 			has its own lists).
+	 * 			| idListClass.add(this)
+	 * @post	The size of the list of identifications is increased by 1.
+	 * 			| new.idListClass.size() = this.idListClass.size() + 1
 	 */
 	@Raw
 	protected abstract void setIdentification(long identification);
@@ -180,11 +207,35 @@ public abstract class Ownable{
 	 * @param 	holder
 	 * 			The holder of this ownable.
 	 * @post	The holder of this ownable is set to the given holder.
-	 * 			| this.holder = holder
+	 * 			| this.getHolder() = holder
 	 */
 	@Raw
 	protected void setHolder(Creature holder){
 		this.holder = holder;
+	}
+	
+	/**
+	 * Set the holder of this ownable to the given backpack.
+	 * 
+	 * @param 	holder
+	 * 			The holder of this ownable.
+	 * @post	The holder of this ownable is set to the given holder.
+	 * 			| this.getHolder() = holder 
+	 */
+	@Raw
+	protected void setHolder(Backpack holder){
+		this.holder = holder;
+	}
+	
+	/**
+	 * Set the holder of this ownable to null.
+	 * 
+	 * @post	The holder of this ownable is set to null.
+	 * 			| this.getHolder() = null 
+	 */
+	@Raw
+	protected void setHolder(){
+		this.holder = null;
 	}
 	
 	/**

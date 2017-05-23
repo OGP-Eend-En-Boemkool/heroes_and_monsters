@@ -246,11 +246,12 @@ public class Armor extends Ownable implements Protection{
 	
 	/**
 	 * Set the identification to the given identification if it is valid, otherwise it will
-	 * be set to a random valid value.
+	 * be set to a random valid value. The first thousand armors have a unique number.
 	 * 
 	 * @param 	identification
 	 * 			The identification of this armor.
-	 * @effect	The identification is added to the list of identifications of armors.
+	 * @effect	The identification is added to the list of identifications and this armors
+	 * 			is added to the list of armors. Both sizes are increased by 1.
 	 * @post	If the given identification is unvalid, the identification is set to a
 	 * 			random valid identification. If it is valid, it is set to the given
 	 * 			identification.
@@ -264,7 +265,8 @@ public class Armor extends Ownable implements Protection{
 			}
 		}
 		this.identification = identification;
-		this.idListArmors.add(identification);
+		Ownable.listArmors.add(this);
+		Ownable.idListArmors.add(identification);
 	}
 
 	/******************************
