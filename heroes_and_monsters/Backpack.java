@@ -10,6 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * 
  * @invar	Every backpack must have the next correct identification number.
  * 			| getIdentification == calculateValidIdentification()
+ * @invar	Every backpack must have a valid standard value.
+ * 			| isValidStandardValue(getStandardValue())
  * 
  * @author Linde en Lotte
  * @version 1.0
@@ -21,16 +23,34 @@ public class Backpack extends Storage{
 	 ******************************************
 	
 	/**
-	 * Initialize this new backpack with an identification.
+	 * Initialize this new backpack with an identification, own weight and unit.
 	 * 
-	 * @effect	This backpack is initialized as an ownable with a calculated identification.
-	 * 			| super(calculateValidIdentification())
+	 * @param	standardValue
+	 * 			The standard value of this backpack.
+	 * @param	maxCapacity
+	 * 			The maximum capacity of this backpack
+	 * @param	ownWeight
+	 * 			The weight of this backpack.
+	 * @param	unit
+	 * 			The unit in which the weight is set.
+	 * @effect	This backpack is initialized as a storage with a calculated identification
+	 * 			and the given ownWeight and unit.
+	 * 			| super(calculateValidIdentification(), ownWeight, unit)
+	 * @post  	If the given standard value is valid, the standardValue of this backpack
+	 * 			will be set to the given standardValue.
+	 * 			| if this.isValidStandardValue(standardValue)
+	 * 		  	| then new.getStandardValue().equals(standardValue)
+	 * @post  	If the given value isn't valid, nothing happens.
+	 * 		  	| if !(this.isValidStandardValue(standardValue)) 
+	 * 		  	| then new.getStandardValue().equals(this.getStandardValue())
+	 * @post	The maximum capacity of this backpack is set to maximumCapacity.
+	 * 			| new.getMaximumCapacity(unit) == maximumCapacity
 	 */
+	@Raw
 	public Backpack(int standardValue, double maxCapacity, double ownWeight, Unit unit){
-		super(calculateValidIdentification());
+		super(calculateValidIdentification(), ownWeight, unit);
 		setStandardValue(standardValue);
 		setMaxCapacity(maxCapacity, unit);
-		setOwnWeight(ownWeight,unit);
 	}
 	
 	/********************************
@@ -106,10 +126,12 @@ public class Backpack extends Storage{
 	/**
 	 * Set the maximum capacity of the backpack to the given maximum capacity in the given weight unit.
 	 * 
-	 * @param maximumCapacity
-	 * 		  The number to which the maximum capacity should be set.
-	 * @param unit
-	 * 		  The weight unit in which the capacity is set.
+	 * @param 	maximumCapacity
+	 * 		  	The number to which the maximum capacity should be set.
+	 * @param 	unit
+	 * 		  	The weight unit in which the capacity is set.
+	 * @post	The maximum capacity of this backpack is set to maximumCapacity.
+	 * 			| new.getMaximumCapacity(unit) == maximumCapacity
 	 */
 	private void setMaxCapacity(double maximumCapacity, Unit unit){
 		this.maximumCapacity = maximumCapacity;
@@ -464,13 +486,14 @@ public class Backpack extends Storage{
 	/**
 	 * Sets the standard value of the backpack to the given integer 'standardValue'.
 	 *
-	 * @param standardValue
-	 * 		  The integer to which the standardValue needs to be set.
-	 * @post  if the given standard value is valid, the standardValue will be set to the given integer.
-	 * 		  | if this.isValidStandardValue(standardValue)
-	 * 		  | then new.getStandardValue().equals(standardValue)
-	 * @post  If the given value isn't valid, standardValue is set to the default.
-	 * 		  | if !this.isValidValue(standardValue) then this.setStandardValue(0)
+	 * @param 	standardValue
+	 * 		  	The integer to which the standardValue needs to be set.
+	 * @post  	If the given standard value is valid, the standardValue will be set to the
+	 * 			given integer.
+	 * 		  	| if this.isValidStandardValue(standardValue)
+	 * 		  	| then new.getStandardValue().equals(standardValue)
+	 * @post  	If the given value isn't valid, standardValue is set to the default.
+	 * 		  	| if !this.isValidValue(standardValue) then this.setStandardValue(0)
 	 */
 	@Raw
 	private void setStandardValue(int standardValue){

@@ -9,6 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * A class of armors.
  * 
  * @invar	Every armor must have a correct identification.
+ * @invar	Every armor must have a correct protection.
+ * @invar	Every armor must have a valid maxValue.
  * 
  * @author Linde en Lotte
  * @version 1.0
@@ -20,19 +22,31 @@ public class Armor extends Ownable implements Protection{
 	 ******************************************
 	
 	/**
-	 * Initialize this new armor with an identification.
+	 * Initialize this new armor with an identification, maximum protection, maximum value,
+	 * weight and unit.
 	 * 
 	 * @param 	identification
 	 * 			The identification of this armor.
-	 * @effect	This armor is initialized as an ownable with the given identification.
-	 * 			If that is not a correct identification, the identification is set to
-	 * 			a correct identification.
+	 * @param	maxProtection
+	 * 			The maximum protection of this armor.
+	 * @param	maxValue
+	 * 			The maximum value of this armor.
+	 * @param	weight
+	 * 			The weight of this armor.
+	 * @param	unit
+	 * 			The unit in which the weight is set.
+	 * @effect	This armor is initialized as an ownable with the given identification, 
+	 * 			weight and unit. If the given identification is not a correct
+	 * 			identification, the identification is set to a correct identification.
+	 * @post  	The maxValue of this armor is set to the given maxValue.
+	 * @post  	If the given value isn't valid, maxValue is set to the default.
 	 */
-	public Armor(long identification, int maxProtection, int maxValue, double weight, Unit unit){
-		super(identification);
+	@Raw
+	public Armor(long identification, int maxProtection, int maxValue,
+			double weight, Unit unit){
+		super(identification, weight, unit);
 		this.setMaxValue(maxValue);
 		this.setMaxProtection(maxProtection);
-		this.setOwnWeight(weight, unit);
 		}
 	
 	/******************************************

@@ -8,6 +8,11 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * A class of ownables.
  * 
+ * @invar	Every ownable must have a valid weight.
+ * 			| isValidOwnWeight(getOwnWeight(Unit.KG))
+ * @invar	Every ownable must have a valid value.
+ * 			| isValidValue(getValue())
+ * 
  * @author Linde en Lotte
  * @version 1.0
  */
@@ -22,12 +27,19 @@ public abstract class Ownable{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this ownable.
+	 * @param	weight
+	 * 			The weight of this ownable.
+	 * @param	unit
+	 * 			The unit in which the weight is set.
 	 * @post	The identification of this ownable is set to identification.
 	 * 			| new.getIdentification() == identification
+	 * @post	The weight of this ownable is set to the given weight in the given unit.
+	 * 			| new.getOwnWeight(unit) == weight
 	 */
 	@Raw @Model
-	protected Ownable(long identification){
+	protected Ownable(long identification, double weight, Unit unit){
 		setIdentification(identification);
+		setOwnWeight(weight, unit);
 	}
 	
 	/*******************************

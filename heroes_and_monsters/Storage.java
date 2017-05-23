@@ -4,6 +4,15 @@ import java.util.ArrayList;
 
 import be.kuleuven.cs.som.annotate.*;
 
+/**
+ * A class of storages.
+ * 
+ * @invar	Every storage must have a correct total weight.
+ * 			| canHaveAsTotalWeight(getTotalWeight(Unit.KG))
+ * 
+ * @author Linde en Lotte
+ * @version 1.0
+ */
 public abstract class Storage extends Ownable implements Capacity {
 
 	/******************************************
@@ -11,16 +20,20 @@ public abstract class Storage extends Ownable implements Capacity {
 	 ******************************************
 	
 	/**
-	 * Initialize this new storage with an identification.
+	 * Initialize this new storage with an identification, own weight and unit.
 	 * 
 	 * @param 	identification
 	 * 			The identification of this storage.
+	 * @param	ownWeight
+	 * 			The weight of this storage.
+	 * @param	unit
+	 * 			The unit in which the weight is set.
 	 * @effect	This storage is initialized as an ownable with the given identification.
-	 * 			| super(identification)
+	 * 			| super(identification, ownWeight, unit)
 	 */
 	@Raw @Model
-	protected Storage(long identification){
-		super(identification);
+	protected Storage(long identification, double ownWeight, Unit unit){
+		super(identification, ownWeight, unit);
 	}
 	
 	/*****************************************

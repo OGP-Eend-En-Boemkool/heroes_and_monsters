@@ -21,14 +21,19 @@ public class Purse extends Storage {
 	 ******************************************
 	
 	/**
-	 * Initialize this new purse with an identification.
+	 * Initialize this new purse with an identification, own weight and unit.
 	 * 
-	 * @effect	This purse is initialized as an ownable with a calculated identification.
-	 * 			| super(calculateValidIdentification())
+	 * @param	ownWeight
+	 * 			The weight of this purse.
+	 * @param	unit
+	 * 			The unit in which the weight is set.
+	 * @effect	This purse is initialized as a storage with a calculated identification
+	 * 			and the given ownWeight and unit.
+	 * 			| super(calculateValidIdentification(), ownWeight, unit)
 	 */
+	@Raw
 	public Purse(double ownWeight, Unit unit){
-		super(calculateValidIdentification());
-		this.setOwnWeight(ownWeight, unit);
+		super(calculateValidIdentification(), ownWeight, unit);
 	}
 	
 	/*******************************

@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * A class of weapons.
  * 
  * @invar	Every weapon must have a correct identification.
+ * @invar	Every weapon must have a correct damage.
  * 
  * @author Linde en Lotte
  * @version 1.0
@@ -21,14 +22,23 @@ public class Weapon extends Ownable implements Damage{
 	 ******************************************
 	
 	/**
-	 * Initialize this new weapon with an identification.
+	 * Initialize this new weapon with an identification, weight, unit and damage.
 	 * 
-	 * @effect	This weapon is initialized as an ownable with a calculated identification.
+	 * @param	weight
+	 * 			The weight of this weapon.
+	 * @param	unit
+	 * 			The unit in which the weight is set.
+	 * @param	damage
+	 * 			The damage of this weapon
+	 * @pre   	the given damage must be a legal number.
+	 * @effect	This weapon is initialized as an ownable with a calculated identification 
+	 * 			and the given weight and unit.
+	 * @post	The damage of this weapon is set to damage.
 	 */
 	@Raw
-	public Weapon(double weight, Unit unit){
-		super(calculateValidIdentification());
-		this.setOwnWeight(weight, unit);
+	public Weapon(double weight, Unit unit, int damage){
+		super(calculateValidIdentification(), weight, unit);
+		setCurrentDamage(damage);
 	}
 	
 	/**********************************************************
@@ -81,9 +91,7 @@ public class Weapon extends Ownable implements Damage{
 	 */
 	@Override
 	public void setCurrentDamage(int damage) {
-		if (this.canHaveAsDamage(damage)){
-			this.damage=damage;
-		}		
+		this.damage=damage;	
 	}
 
 	/**
