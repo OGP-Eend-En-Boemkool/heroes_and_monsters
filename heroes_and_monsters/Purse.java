@@ -180,6 +180,13 @@ public class Purse extends Storage {
 	private Ducat content = new Ducat(0);
 	
 	/**
+	 * Return the content of this purse.
+	 */
+	public Ducat getContent(){
+		return new Ducat(content.getValue());
+	}
+	
+	/**
 	 * Variable referencing if this purse is broken or not.
 	 */
 	private boolean broken = false;
@@ -206,10 +213,12 @@ public class Purse extends Storage {
 	/**
 	 * Add the given object to this purse.
 	 * 
+	 * @param 	object
+	 * 			The object to add.
 	 * @post	The given object is added to this purse.
 	 * 			| content.add(object)
 	 * @throws	IllegalArgumentException
-	 * 			The object cannot be added.
+	 * 			The object cannot be added to this purse.
 	 * 			| !canAddToStorage(object)
 	 */
 	@Override
@@ -223,9 +232,50 @@ public class Purse extends Storage {
 			if (this.getHolder() instanceof Backpack){
 				Backpack backpack = (Backpack) this.getHolder();
 				backpack.addToStorage(content);
-				content = new Ducat(0);
-				setBroken(true);
 			}
+			content = new Ducat(0);
+			setBroken(true);
+		}
+	}
+	
+	/**
+	 * Check whether the given object can be taken out of this purse.
+	 * 
+	 * @param 	object
+	 * 			The object to check.
+	 * @return	True if and only if the given object is a ducat and its value is smaller
+	 * 			than or equal to the value of the content of this purse.
+	 * 			| result == object instanceof Ducat && object.getValue() <= content.getValue()
+	 */
+	@Override
+	public boolean canTakeOutOfStorage(Object object){
+		if (object instanceof Ducat){
+			Ducat ducat = (Ducat) object;
+			return ducat.getValue() <= content.getValue();
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Take the given object out of this purse.
+	 * 
+	 * @param 	object
+	 * 			The object to take out.
+	 * @post	
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be taken out of this purse.
+	 * 			| !canTakeOutOfStorage(object)
+	 */
+	@Override
+	public void takeOutOfStorage(Object object) throws IllegalArgumentException {
+		if (!canTakeOutOfStorage(object)){
+			throw new IllegalArgumentException("The given object can't be taken out of this purse.");
+		}
+		else {
+			Ducat ducat = (Ducat) object;
+			this.content.subtract(ducat);
 		}
 	}
 
