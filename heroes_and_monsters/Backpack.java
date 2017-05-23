@@ -228,7 +228,7 @@ public class Backpack extends Storage{
 			if (ownable.getHolder() != null){
 				return false;
 			}
-			weight = ownable.getWeight(Unit.KG);
+			weight = ownable.getOwnWeight(Unit.KG);
 		}
 		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
@@ -258,9 +258,7 @@ public class Backpack extends Storage{
 				holder = backpack.getHolder();
 			}
 		}
-		else {
-			return true;
-		}
+		return true;
 	}
 	
 	/**
