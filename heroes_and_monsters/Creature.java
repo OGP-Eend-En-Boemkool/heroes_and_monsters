@@ -364,7 +364,7 @@ public abstract class Creature implements Capacity{
 	 */
 	@Raw @Basic
 	public HashMap<String, Object> getAnchors(){
-		return new HashMap(this.anchors);
+		return new HashMap<String, Object>(this.anchors);
 	}
 	
 	/**
@@ -500,10 +500,10 @@ public abstract class Creature implements Capacity{
 		if (!canDropFromAnchor(object)){
 			throw new IllegalArgumentException("Object cannot be dropped.");
 		}
-		ArrayList<String> anchors = (ArrayList) getAnchors().keySet();
-		for (int i = 0; i < anchors.size(); i++){
-			if (getAnchors().get(anchors.get(i)) == object){
-				emptyAnchor(anchors.get(i));
+		while (this.getAnchors().values().iterator().hasNext()){
+			String anchor = this.getAnchors().keySet().iterator().next();
+			if ( this.getAnchors().get(anchor) == object){
+				this.getAnchors().remove(anchor);
 			}
 		}
 	}
@@ -590,8 +590,25 @@ public abstract class Creature implements Capacity{
 	 * collect treasures
 	 *************************************/
 	
+
 	protected abstract void collectTreasures(Object object, Creature opponent);
-	
+
+	protected HashSet<Object> getOpponentsPossessions(Creature opponent){
+		HashSet<Object> opponentsPossessions = new HashSet<Object>();
+		while (this.getAnchors().values().iterator().hasNext()){
+			Object object = this.getAnchors().values().iterator().next();
+			opponentsPossessions.add(object);
+			if (object instanceof Backpack){
+				Backpack backpack = (Backpack)object;
+				while(backpack.getBackpackIterator().hasMoreElements()){
+					Object objectInBackpack = backpack.getBackpackIterator().nextElement();
+					opponentsPossessions.add(objectInBackpack);
+				}
+			}
+		}
+		return opponentsPossessions;
+	}
+		
 	
 	/**********************************
 	 * Protection 
