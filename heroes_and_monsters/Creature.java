@@ -590,7 +590,7 @@ public abstract class Creature implements Capacity{
 	 * collect treasures
 	 *************************************/
 	
-	protected abstract void collectTreasures(Object object);
+	protected abstract void collectTreasures(Object object, Creature opponent);
 	
 	
 	/**********************************
