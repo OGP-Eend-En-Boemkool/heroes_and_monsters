@@ -467,7 +467,7 @@ public abstract class Creature implements Capacity{
 	 * 			This creature has no such anchor.
 	 * 			| !getAnchors().keySet().contains(anchor)
 	 */
-	public void emptyAnchor(String anchor) throws IllegalArgumentException {
+	protected void emptyAnchor(String anchor) throws IllegalArgumentException {
 		if (!getAnchors().keySet().contains(anchor)){
 			throw new IllegalArgumentException("This creature has no such anchor.");
 		}
@@ -491,7 +491,7 @@ public abstract class Creature implements Capacity{
 	 * 			The given object cannot be dropped.
 	 * 			| !canDropFromAnchor(object)
 	 */
-	public void dropFromAnchor(Object object) throws IllegalArgumentException {
+	protected void dropFromAnchor(Object object) throws IllegalArgumentException {
 		if (!canDropFromAnchor(object)){
 			throw new IllegalArgumentException("Object cannot be dropped.");
 		}
@@ -529,10 +529,81 @@ public abstract class Creature implements Capacity{
 	 * 			| this.dropFromAnchor(object)
 	 * @effect	The object is added to the given anchor from the given creature.
 	 * 			| creature.addToAnchor(object, anchor)
+	 * @throws 	IllegalArgumentException
+	 * 			The given object cannot be dropped.
+	 * 			| !canDropFromAnchor(object)
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be added to the given anchor.
+	 * 			| !canAddToAnchor(object, anchor)
 	 */
-	public void passAlong(Object object, Creature creature, String anchor){
+	public void passAlong(Object object, Creature creature, String anchor)
+			throws IllegalArgumentException {
 		this.dropFromAnchor(object);
 		creature.addToAnchor(object, anchor);	// methode ook nog schrijven voor rugzakken
+	}
+	
+	public void passToStorage(Object object, Storage storage)
+			throws IllegalArgumentException {
+		this.dropFromAnchor(object);
+		storage.addToStorage(object);
+	}
+	
+	/**
+	 * Empty all the anchors from this creature.
+	 * 
+	 * @effect	All the anchors are emptied.
+	 * 			| for all anchors from this {
+	 * 			|		emptyAnchor(anchor) }
+	 */
+	protected void emptyAllAnchors() throws IllegalArgumentException {
+		while (this.getAnchors().keySet().iterator().hasNext()){
+			this.emptyAnchor(this.getAnchors().keySet().iterator().next());
+		}
+	}
+	
+	/**
+	 * Empty this anchor and terminate the object that was in it if needed.
+	 * 
+	 * @param 	anchor
+	 * 			The anchor to empty.
+	 * @effect	The given anchor is emptied.
+	 * 			| emptyAnchor(anchor)
+	 * @effect	If the object that was in the given anchor is an ownable, it is terminated
+	 * 			if possible (only armors and weapons get terminated).
+	 * 			| if (previous instanceof Ownable){
+	 *			|		((Ownable) previous).terminate() }
+	 *@throws 	IllegalArgumentException
+	 * 			This creature has no such anchor.
+	 * 			| !getAnchors().keySet().contains(anchor)
+	 */
+	public void emptyAnchorAndTerminate(String anchor) throws IllegalArgumentException {
+		Object previous = this.getAnchors().get(anchor);
+		this.emptyAnchor(anchor);
+		if (previous instanceof Ownable){
+			((Ownable) previous).terminate();
+		}
+	}
+	
+	/**
+	 * The given object is dropped from its anchor and terminated if needed.
+	 * 
+	 * @param	object
+	 * 			The object to drop.
+	 * @effect	The given object is dropped from its anchor.
+	 * 			| dropFromAnchor(object)
+	 * @effect	If the object that was in the given anchor is an ownable, it is terminated
+	 * 			if possible (only armors and weapons get terminated).
+	 * 			| if (previous instanceof Ownable){
+	 *			|		((Ownable) previous).terminate() }
+	 * @throws 	IllegalArgumentException
+	 * 			The given object cannot be dropped.
+	 * 			| !canDropFromAnchor(object)
+	 */
+	public void dropFromAnchorAndTerminate(Object object) throws IllegalArgumentException {
+		this.dropFromAnchor(object);
+		if (object instanceof Ownable){
+			((Ownable) object).terminate();
+		}
 	}
 	
 	/*************************************
@@ -660,5 +731,30 @@ public abstract class Creature implements Capacity{
 		return weight;
 	}
 	
+	/************************************
+	 * killed
+	 ************************************/
+	
+	/**
+	 * Variable referencing if this creature is dead or not.
+	 */
+	private boolean killed = false;
+	
+	/**
+	 * Return if this creature is killed or still alive.
+	 */
+	public boolean getKilled(){
+		return this.killed;
+	}
+	
+	/**
+	 * Kill this creature.
+	 * 
+	 * @post	Killed is set to true.
+	 * 			| this.killed = true
+	 */
+	protected void kill(){
+		this.killed = true;
+	}
 	
 }

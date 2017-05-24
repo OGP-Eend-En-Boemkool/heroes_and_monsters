@@ -298,7 +298,7 @@ public class Purse extends Storage {
 	 * 			| !canTakeOutOfStorage(object)
 	 */
 	@Override
-	public void takeOutOfStorage(Object object) throws IllegalArgumentException {
+	protected void takeOutOfStorage(Object object) throws IllegalArgumentException {
 		if (!canTakeOutOfStorage(object)){
 			throw new IllegalArgumentException("The given object can't be taken out of this purse.");
 		}
@@ -347,7 +347,7 @@ public class Purse extends Storage {
 	 * 			| new.getValue() == 0
 	 */
 	@Override
-	public void emptyStorage() throws IllegalArgumentException {
+	protected void emptyStorage() throws IllegalArgumentException {
 		this.takeOutOfStorage(getContent());
 	}
 
