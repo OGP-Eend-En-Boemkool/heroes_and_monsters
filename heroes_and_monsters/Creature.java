@@ -597,32 +597,68 @@ public abstract class Creature implements Capacity{
 
 
 	/**
-	 * Return a set with all the possessions of the opponent in the battle.
+	 * Return a hashmap with all the possessions of the opponent in the battle with their classnames as keys and an arraylist of all 
+	 * objects of that class as value.
 	 * 
 	 * @param  opponent
 	 * 		   The creature that was beaten in the battle.
+	 * @post   All the objects that have the opponent as ultimate holder will be in the arraylist associated with their classname.
+	 * 		   Therefore their classname will be one of the keys in this hashmap.
+	 * 		   | for all objects{
+	 * 		   |  	if object.getUltimateHolder().equals(opponent){
+	 * 		   | 		 this.getOpponentsPossessions(opponent).containsKey(object.getClass().toString())
+	 * 		   |    	 && this.getOpponentsPossessions(opponent).get(object.getClass().toString()).contains(object)
+	 * 		   |	}
+	 * 		   | }
 	 */
-	protected HashSet<Object> getOpponentsPossessions(Creature opponent){
-		HashSet<Object> opponentsPossessions = new HashSet<Object>();
+	protected HashMap<String, ArrayList<Object>> getOpponentsPossessions(Creature opponent){
+		HashMap<String, ArrayList<Object>> opponentsPossessions = new HashMap<String, ArrayList<Object>>();
 		while (this.getAnchors().values().iterator().hasNext()){
 			Object object = this.getAnchors().values().iterator().next();
-			opponentsPossessions.add(object);
+			this.addToPossessions(object, opponentsPossessions);
 			if (object instanceof Backpack){
-				Backpack backpack = (Backpack)object;
-				while(backpack.getBackpackIterator().hasMoreElements()){
-					Object objectInBackpack = backpack.getBackpackIterator().nextElement();
-					opponentsPossessions.add(objectInBackpack);
+				while (((Backpack)object).getBackpackIterator().hasMoreElements()){
+					Object objectInBackpack = ((Backpack)object).getBackpackIterator().nextElement();
+					this.addToPossessions(objectInBackpack, opponentsPossessions);
 				}
 			}
 		}
 		return opponentsPossessions;
 	}
 		
+	/**
+	 * Adds a certain object to the hashmaps with all the possessions of the opponent.
+	 * 
+	 * @param 	object
+	 * 		  	The object that is added to the hashmap with the possessions.
+	 * @param 	opponentsPossessions
+	 * 		  	The hashmap with the possessions to which the object should be added.
+	 * @post   	The object will be in the arraylist associated with its classname.
+	 * 		   	Therefore its classname will be one of the keys in this hashmap.
+	 * 			| if object.getUltimateHolder().equals(opponent){
+	 * 		   	| 		 this.getOpponentsPossessions(opponent).containsKey(object.getClass().toString())
+	 * 		   	|    	 && this.getOpponentsPossessions(opponent).get(object.getClass().toString()).contains(object)
+	 * 		   	| }	
+	 */
+	protected void addToPossessions(Object object, HashMap<String, ArrayList<Object>> opponentsPossessions){
+		String classObject = object.getClass().toString();
+		if (opponentsPossessions.containsKey(classObject)){
+			opponentsPossessions.get(classObject).add(object);
+		}
+		else {
+			ArrayList<Object> arraylist = new ArrayList<Object>();
+			arraylist.add(object)
+			opponentsPossessions.put(classObject, arraylist);
+		}
+	}
 	
 	/**********************************
 	 * Protection 
 	 **********************************/
 	
+	/**
+	 * Return the value for the current protection.
+	 */
 	public abstract int getCurrentProtection();
 	
 	/**********************************
