@@ -52,19 +52,9 @@ public abstract class Ownable{
 	protected long identification;
 	
 	/**
-	 * Variable where we can store all the armors.
-	 */
-	protected static ArrayList<Armor> listArmors;
-	
-	/**
 	 * Variable where we can store all the id's of armors.
 	 */
 	protected static ArrayList<Long> idListArmors;
-	
-	/**
-	 * Variable where we can store all the weapons.
-	 */
-	protected static ArrayList<Weapon> listWeapons;
 	
 	/**
 	 * Variable where we can store all the id's of weapons.
@@ -72,19 +62,9 @@ public abstract class Ownable{
 	protected static ArrayList<Long> idListWeapons;
 	
 	/**
-	 * Variable where we can store all the backpacks.
-	 */
-	protected static ArrayList<Backpack> listBackpacks;
-	
-	/**
 	 * Variable where we can store all the id's of backpacks.
 	 */
 	protected static ArrayList<Long> idListBackpacks;
-	
-	/**
-	 * Variable where we can store all the purses.
-	 */
-	protected static ArrayList<Purse> listPurses;
 	
 	/**
 	 * Variable where we can store all the id's of purses.
@@ -104,13 +84,8 @@ public abstract class Ownable{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this ownable.
-	 * @post	The ownable is added to the list of ownables (every ownable
-	 * 			has its own lists).
-	 * 			| listClass.add(this)
-	 * @post	The size of the list of ownables is increased by 1.
-	 * 			| new.listClass.size() = this.listClass.size() + 1
 	 * @post	The ownable is added to the list of identifications (every ownable
-	 * 			has its own lists).
+	 * 			has its own list).
 	 * 			| idListClass.add(this)
 	 * @post	The size of the list of identifications is increased by 1.
 	 * 			| new.idListClass.size() = this.idListClass.size() + 1

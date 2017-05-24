@@ -46,8 +46,8 @@ public class Purse extends Storage {
 	 * 
 	 * @param 	identification
 	 * 			The identification of this purse.
-	 * @effect	The identification is added to the list of identifications and this purse
-	 * 			is added to the list of purses. Both sizes are increased by 1.
+	 * @effect	The identification is added to the list of identifications. The size of
+	 * 			this list is increased by 1.
 	 * 			| super.setIdentification(identification)
 	 * @post	The identification of this purse is set to identification.
 	 * 			| new.getIdentification() = identification
@@ -55,7 +55,6 @@ public class Purse extends Storage {
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListPurses.add(identification);
-		listPurses.add(this);
 	}
 	
 

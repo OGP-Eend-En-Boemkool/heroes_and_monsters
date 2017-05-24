@@ -43,9 +43,8 @@ public abstract class Storage extends Ownable implements Capacity {
 	/**
 	 * Set the identification to the given identification.
 	 * 
-	 * @effect	The identification is added to the list of identifications and this storage
-	 * 			is added to the list of storages (each storage has its own lists). Both 
-	 * 			sizes are increased by 1.
+	 * @effect	The identification is added to the list of identifications (each storage
+	 * 			has its own list). The sizes of the lists are increased by one.
 	 * 			| super.setIdentification(identification)
 	 */
 	@Raw

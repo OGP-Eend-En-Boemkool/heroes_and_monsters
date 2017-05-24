@@ -172,8 +172,8 @@ public class Weapon extends Ownable implements Damage{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this weapon.
-	 * @effect	The identification is added to the list of identifications and this weapons
-	 * 			is added to the list of weapons. Both sizes are increased by 1.
+	 * @effect	The identification is added to the list of identifications. The size of
+	 * 			this list is increased by one.
 	 * @post	The identification is set to a positive even number that can be divided
 	 * 			by 3.
 	 */
@@ -181,7 +181,6 @@ public class Weapon extends Ownable implements Damage{
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListWeapons.add(identification);
-		listWeapons.add(this);
 	}
 
 	/******************************

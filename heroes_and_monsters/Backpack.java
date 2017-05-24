@@ -62,8 +62,8 @@ public class Backpack extends Storage{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this backpack.
-	 * @effect	The identification is added to the list of identifications and this backpack
-	 * 			is added to the list of backpacks. Both sizes are increased by 1.
+	 * @effect	The identification is added to the list of identifications. The size of
+	 * 			this list is increased by 1.
 	 * 			| super.setIdentification(identification)
 	 * @post	The identification of this backpack is set to identification.
 	 * 			| new.getIdentification() = identification
@@ -72,7 +72,6 @@ public class Backpack extends Storage{
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListBackpacks.add(identification);
-		listBackpacks.add(this);
 	}
 	
 	/**
