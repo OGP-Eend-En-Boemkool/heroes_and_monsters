@@ -461,7 +461,15 @@ public class Monster extends Creature implements Damage, Protection {
 			if (!added){
 				while (this.getAnchors().keySet().iterator().hasNext() && !added){
 					String anchor = this.getAnchors().keySet().iterator().next();
-					
+					if (getWeightFromAnchorObject(this.getAnchors().get(anchor)) > weight){
+						try {
+							this.emptyAnchor(anchor);
+							this.addToAnchor(object, anchor);
+							added = true;
+						} catch (Exception e) {
+							
+						}
+					}
 				}
 			}
 		}
