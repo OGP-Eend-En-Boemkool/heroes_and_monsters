@@ -215,22 +215,13 @@ public class Hero extends Creature {
 					armors.add(obj);
 				}
 				if (obj instanceof Backpack){
-					ArrayList<Backpack> innerBackpacks = new ArrayList<Backpack>();
-					Backpack backpack = (Backpack) obj;
-					innerBackpacks.add(backpack);
-					while (innerBackpacks.size() > 0){
-						backpack = innerBackpacks.get(0);
-						while (backpack.getBackpackIterator().hasMoreElements()){
+					Backpack backpack =  (Backpack) obj;
+					while (backpack.getBackpackIterator().hasMoreElements()){
 							Object next = backpack.getBackpackIterator().nextElement();
 							if (next instanceof Armor){
 								armors.add(next);
 							}
-							if (next instanceof Backpack){
-								Backpack b = (Backpack) next;
-								innerBackpacks.add(b);
-							}
-						}
-						innerBackpacks.remove(0);
+						
 					}
 				}
 			}

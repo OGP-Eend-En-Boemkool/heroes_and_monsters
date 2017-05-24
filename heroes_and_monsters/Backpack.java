@@ -158,8 +158,25 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	public double getUsedCapacity(Unit unit) {
-		// TODO Auto-generated method stub
-		return 0;
+		double weight = this.getOwnWeight(unit);
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object object = this.getBackpackIterator().nextElement();
+			if (object instanceof Ownable){
+				if (object instanceof Storage){
+					Storage storage = (Storage) object;
+					weight = weight + storage.getOwnWeight(unit);
+				}
+				else {
+					Ownable ownable = (Ownable) object;
+					weight = weight + ownable.getOwnWeight(unit);
+				}
+			}
+			else if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				weight = weight + ducat.getWeight(unit);
+			}
+		}
+		return weight;
 	}
 	
 	/*********************************
@@ -220,17 +237,15 @@ public class Backpack extends Storage{
 				}
 			}
 			if (!alreadyDucat){
-				content.add(ducat);
+				this.content.add(ducat);
 			}
 		}
-		else {
-			content.add(object);
-		}
-		if (object instanceof Ownable){
+		else if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder(this);
 			ownable.addAllContainersToContainersSet(this);
 			this.addToIdentificationNumbers(ownable);
+			this.content.add(ownable);
 		}
 	}
 	
@@ -281,15 +296,15 @@ public class Backpack extends Storage{
 				}
 			}
 		}
-		if (this.getHolder() instanceof Backpack){
-			Object holder = this.getHolder();
-			while (holder instanceof Backpack){
-				Backpack backpack = (Backpack) holder;
-				if (backpack.getUsedCapacity(Unit.KG) + weight > backpack.getMaximumCapacity(Unit.KG)){
-					return false;
-				}
-				holder = backpack.getHolder();
+		while (this.containersSet.iterator().hasNext()){
+			Backpack backpack = this.containersSet.iterator().next();
+			if ((backpack.getUsedCapacity(Unit.KG) + weight) > backpack.getMaximumCapacity(Unit.KG)){
+				return false;
 			}
+		}
+		if (this.getUltimateHolder() instanceof Creature){
+			Creature creature = (Creature) this.getUltimateHolder();
+			return ((creature.getUsedCapacity(Unit.KG) + weight) <= creature.getMaximumCapacity(Unit.KG));
 		}
 		return true;
 	}
@@ -299,49 +314,43 @@ public class Backpack extends Storage{
 	 * 
 	 * @param 	object
 	 * 			The object to check.
-	 * @return	True if the given object is direct or indirect content of this backpack.
+	 * @return	True if the given object ownable and it is direct or indirect content of this backpack.
 	 * 			Also true if the given object is a ducat and the value of all the ducats
-	 * 			in this backpack is greater than or equal to the given ducat.
-	 * 			| result == (for one backpack in this backpack (including this backpack) {
-	 * 			|					backpack.content.contains(object) }) ||
-	 * 			|			(if (object instanceof Ducat) {
-	 * 			|					ducat = total value of ducats in this backpack
-	 * 			|					ducat.getValue() >= object.getValue() )
+	 * 			in this backpack is greater than or equal to the given ducat. False otherwise.
+	 * 			| if (object instanceof Ownable){
+	 * 			|		result == this.OwnableInBackpack(object)
+	 * 			| }
+	 * 			| else if (object instanceof Ducat) {
+	 * 			|		ducat = total value of ducats in this backpack
+	 * 			|		result == ducat.getValue() >= object.getValue() )
+	 * 			| }
+	 * 			| else {
+	 * 			| 		result == false
+	 * 			| }
 	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
-		Ducat ducat = new Ducat(0);
-		ArrayList<Backpack> backpacks = new ArrayList<Backpack>();
-		backpacks.add(this);
-		while (backpacks.size() > 0){
-			Backpack currentBackpack = backpacks.get(0);
-			while (currentBackpack.getBackpackIterator().hasMoreElements()){
-				Object obj = currentBackpack.getBackpackIterator().nextElement();
-				if (obj instanceof Ducat){
-					Ducat d = (Ducat) obj;
-					ducat.add(d);
+		if (object instanceof Ownable){
+			Ownable ownable = (Ownable) object;
+			return this.OwnableInBackpack(ownable);
+		}
+		else if (object instanceof Ducat){
+			Ducat ducat = (Ducat) object;
+			Ducat newDucat = new Ducat(0);
+			while (this.getBackpackIterator().hasMoreElements()){
+				Object objectInBackpack = this.getBackpackIterator().nextElement();
+				if (objectInBackpack instanceof Ducat){
+					Ducat other = (Ducat) objectInBackpack;
+					newDucat = newDucat.add(other);
 				}
-				else if (object == obj){
-					return true;
-				}
-				else if (obj instanceof Backpack){
-					Backpack b = (Backpack) obj;
-					backpacks.add(b);
-				}
-				else if (obj instanceof Purse){
-					Purse p = (Purse) obj;
-					ducat.add(p.getContent());
+				if (objectInBackpack instanceof Purse){
+					Ducat other = new Ducat(((Purse)objectInBackpack).getValue());
+					newDucat = newDucat.add(other);
 				}
 			}
-			backpacks.remove(0);
+			return (ducat.getValue() <= newDucat.getValue());
 		}
-		if (object instanceof Ducat){
-			Ducat ducatObject = (Ducat) object;
-			return ducat.getValue() >= ducatObject.getValue();
-		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	/**
@@ -376,57 +385,36 @@ public class Backpack extends Storage{
 			throw new IllegalArgumentException("The given object can't be taken out of this backpack.");
 		}
 		else {
-			Ducat restingDucat = new Ducat(0);
-			boolean objectFound = false;
-			if (object instanceof Ducat){
-				restingDucat = (Ducat) object;
+			if (object instanceof Ownable){
+				((Ownable) object).setHolder();
+				((Backpack)(((Ownable) object).getHolder())).content.remove(object);
+				((Ownable) object).removeAllContainers();
+				this.removeFromIdentificationNumbers((Ownable) object);
 			}
-			ArrayList<Backpack> backpacks = new ArrayList<Backpack>();
-			backpacks.add(this);
-			while (backpacks.size() > 0 && !objectFound){
-				Backpack currentBackpack = backpacks.get(0);
-				while (currentBackpack.getBackpackIterator().hasMoreElements() && !objectFound){
-					Object obj = currentBackpack.getBackpackIterator().nextElement();
-					if (obj instanceof Ducat && object instanceof Ducat){
-						Ducat d = (Ducat) obj;
-						if (d.getValue() >= restingDucat.getValue()){
-							d.subtract(restingDucat);
-							objectFound = true;
+			else if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				Ducat newDucat = new Ducat(0);
+				Ducat other = new Ducat(0);
+				while (ducat.getValue() != newDucat.getValue()){
+					while (this.getBackpackIterator().hasMoreElements()){
+						Object objectInBackpack = this.getBackpackIterator().nextElement();
+						if (objectInBackpack instanceof Purse){
+							other = ((Purse) objectInBackpack).getContent();
+						}
+						else if (objectInBackpack instanceof Ducat){
+							other = (Ducat) objectInBackpack;
+						}
+						if (other.getValue() >= (ducat.getValue()-newDucat.getValue())){
+							other = other.subtract(ducat).add(newDucat);
+							newDucat = newDucat.subtract(newDucat).add(ducat);
 						}
 						else {
-							restingDucat.subtract(d);
-							d.subtract(d);
-						}
-						
-					}
-					else if (object == obj){
-						currentBackpack.content.remove(object);
-						objectFound = true;
-					}
-					else if (obj instanceof Backpack){
-						Backpack b = (Backpack) obj;
-						backpacks.add(b);
-					}
-					else if (obj instanceof Purse && object instanceof Ducat){
-						Purse p = (Purse) obj;
-						if (p.getValue() >= restingDucat.getValue()){
-							p.takeOutOfStorage(restingDucat);
-							objectFound = true;
-						}
-						else {
-							restingDucat.subtract(p);
-							p.takeOutOfStorage(p.getContent());
+							newDucat = newDucat.add(other);
+							other = other.subtract(other);
 						}
 					}
 				}
-				backpacks.remove(0);
 			}
-		}
-		if (object instanceof Ownable){
-			Ownable ownable = (Ownable) object;
-			ownable.setHolder();
-			ownable.removeAllContainers();
-			this.removeFromIdentificationNumbers(ownable);
 		}
 	}
 	
@@ -671,6 +659,10 @@ public class Backpack extends Storage{
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				value = value + ducat.getValue();
+			}
+			else if (object instanceof Backpack){
+				Backpack backpack = (Backpack) object;
+				value = value + backpack.getStandardValue();
 			}
 			else if (object instanceof Ownable){
 				Ownable ownable = (Ownable) object;

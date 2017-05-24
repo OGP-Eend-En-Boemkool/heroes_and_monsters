@@ -144,11 +144,11 @@ public class Purse extends Storage {
 	 * 		   | result > 0
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
 	 * 		   | result <= this.getMaximumCapacity()
+	 * @effect 
 	 */
 	@Override
 	public double getUsedCapacity(Unit unit) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getTotalWeight(unit);
 	}
 
 
@@ -174,12 +174,31 @@ public class Purse extends Storage {
 	/**
 	 * Check whether the given object can be added to this purse.
 	 * 
-	 * @return	True if and only if the given object is a ducat and the purse is not broken.
-	 * 			| object instanceof Ducat && !getBroken()
+	 * @return	True if the object is a ducat, the purse isn't broken, all the backpacks in which it's located have enough capacity to store the extra weight
+	 * 			and the capacity of the ultimate holder is big enough to support the extra weight.
+	 * 			False otherwise.
+	 * 			| result == ((object instanceof Ducat) && (!(this.getBroken())) && for all 
 	 */
 	@Override
 	public boolean canAddToStorage(Object object){
-		return object instanceof Ducat && !getBroken();
+		if ((object instanceof Ducat)&&(!(this.getBroken()))){
+			Ducat ducat = (Ducat) object;
+			double weight = ducat.getWeight(Unit.KG);
+			while (this.containersSet.iterator().hasNext()){
+				Backpack backpack = this.containersSet.iterator().next();
+				if ((backpack.getUsedCapacity(Unit.KG) + weight) > backpack.getMaximumCapacity(Unit.KG)){
+					return false;
+				}
+			}
+			if (this.getUltimateHolder() instanceof Creature){
+				Creature creature = (Creature) this.getUltimateHolder();
+				if ((creature.getUsedCapacity(Unit.KG) + weight) > creature.getMaximumCapacity(Unit.KG)){
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	/**
