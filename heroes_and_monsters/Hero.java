@@ -226,7 +226,7 @@ public class Hero extends Creature {
 				}
 			}
 		}
-		return armors.size() < 2;
+		return (armors.size() < 2);
 	}
 	
 	
@@ -297,7 +297,7 @@ public class Hero extends Creature {
 	 * Return the maximum capacity of the hero.
 	 * 
 	 * @return the resulting number cannot be negative
-	 * 		   | result > 0
+	 * 		   | result >= 0
 	 */
 	@Override
 	public double getMaximumCapacity(Unit unit) {
@@ -361,6 +361,45 @@ public class Hero extends Creature {
 	/**********************************
 	 * collect Treasures
 	 **********************************/
+	
+	/**
+	 * Return a hashmap with all the possessions of this hero and the monster that was its opponent, with the classname as keys
+	 * and an arraylist of all the possessions of this class as a value.
+	 * 
+	 * @param  	opponent
+	 * 			The monster that was beaten.
+	 * @post   	If there was a mapping between a key and an arraylist in the hashmap with all the possessions of the monster, 
+	 * 			this key will be a key in the new hashmap, and the associated new arraylist will have the associated old arraylist
+	 * 			as subarraylist.
+	 * 			| if this.getOpponentsPossessions(opponent).containsKey(key){
+	 * 			|		this.getAllPossessions(opponent).containsKey(key)
+	 * 			|		&& this.getAllPossessions(opponent).get(key).containsAll(this.getOpponentsPossessions(opponent).get(key))
+	 * @post   	If there was a mapping between a key and an arraylist in the hashmap with all the possessions of this hero, 
+	 * 			this key will be a key in the new hashmap, and the associated new arraylist will have the associated old arraylist
+	 * 			as subarraylist.
+	 * 			| if this.getOpponentsPossessions(this).containsKey(key){
+	 * 			|		this.getAllPossessions(opponent).containsKey(key)
+	 * 			|		&& this.getAllPossessions(opponent).get(key).containsAll(this.getOpponentsPossessions(this).get(key))
+	 */
+	private HashMap<String, ArrayList<Object>> getAllPossessions(Creature opponent){
+		HashMap<String, ArrayList<Object>> allPossessions = this.getOpponentsPossessions(opponent);
+		while (this.getOpponentsPossessions(this).keySet().iterator().hasNext()){
+			String key = (this.getOpponentsPossessions(this)).keySet().iterator().next();
+			if (allPossessions.containsKey(key)){
+				allPossessions.get(key).addAll(this.getOpponentsPossessions(this).get(key));
+			}
+			else {
+				allPossessions.put(key, this.getOpponentsPossessions(this).get(key));
+			}
+		}
+		return allPossessions;
+	}
+	
+	protected Object chooseTreasure(Creature opponent){
+		HashMap<String, ArrayList<Object>> allPossesions = this.getAllPossessions(opponent);
+		
+		if this.getUsedCapacity(Unit.KG)
+	}
 	
 	@Override
 	protected void addTreasure(Object object) {
