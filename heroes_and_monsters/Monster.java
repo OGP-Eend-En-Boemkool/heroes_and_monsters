@@ -432,7 +432,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 */
 	private void collectTreasures(Creature opponent){
 		for (int i = 0; i <= 5; i++){
-			addTreasure(chooseTreasure(opponent));
+			addTreasure(chooseTreasure(opponent), opponent);
 		}
 	}
 	
@@ -450,7 +450,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 * @post	If still not the case, the monster won't take the object with him.
 	 */
 	@Override
-	protected  void addTreasure(Object object){
+	protected  void addTreasure(Object object, Creature opponent){
 		if (object != null){
 			boolean added = false;
 			while (this.getAnchors().keySet().iterator().hasNext() && !added){

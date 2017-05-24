@@ -4,6 +4,7 @@ import be.kuleuven.cs.som.annotate.*;
 import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import Exceptions.*;
 
 /**
  * A class of creatures.
@@ -433,10 +434,11 @@ public abstract class Creature implements Capacity{
 	 * @param 	anchor
 	 * 			The anchor to check.
 	 * @return	True if and only if this creature has such anchor, that anchor doesn't
-	 * 			already have another object and the object is an ownable or a ducat. But
-	 * 			if it's a ducat and its value is not equal to one, it is false 'though.
+	 * 			already have another object, this creature is still alive and the object
+	 * 			is an ownable or a ducat. But if it's a ducat and its value is not equal
+	 * 			to one, it is false 'though.
 	 * 			| result == this.getAnchors().keySet().contains(anchor) &&
-	 *			|			this.getAnchors().get(anchor) == null &&
+	 *			|			this.getAnchors().get(anchor) == null && !getKilled() &&
 	 *			|			((object instanceof Ownable) || (object instanceof Ducat)) &&
 	 *			|			(if (object instanceof Ducat) {
 	 *			|					object.getValue() == 1 } )
@@ -449,7 +451,7 @@ public abstract class Creature implements Capacity{
 			}
 		}
 		return (this.getAnchors().keySet().contains(anchor) &&
-				this.getAnchors().get(anchor) == null &&
+				this.getAnchors().get(anchor) == null && !getKilled() &&
 				((object instanceof Ownable) || (object instanceof Ducat)));
 	}
 	
@@ -464,18 +466,30 @@ public abstract class Creature implements Capacity{
 	 * 			| if (object instanceof Ownable){
 	 * 			| 		object.setHolder() }
 	 * @throws 	IllegalArgumentException
-	 * 			This creature has no such anchor.
-	 * 			| !getAnchors().keySet().contains(anchor)
+	 * 			Anchor cannot be emptied.
+	 * 			| !canEmptyAnchor(anchor)
 	 */
 	protected void emptyAnchor(String anchor) throws IllegalArgumentException {
-		if (!getAnchors().keySet().contains(anchor)){
-			throw new IllegalArgumentException("This creature has no such anchor.");
+		if (!canEmptyAnchor(anchor)){
+			throw new IllegalArgumentException("Anchor cannot be emptied.");
 		}
 		Object object = this.anchors.remove(anchor);
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder();
 		}
+	}
+	
+	/**
+	 * Check whether the given anchor can be emptied.
+	 * 
+	 * @param 	anchor
+	 * 			The anchor to check.
+	 * @return 	True if and only if this creature has such anchor and it is still alive.
+	 * 			| result == getAnchors().keySet().contains(anchor) && !getKilled()
+	 */
+	public boolean canEmptyAnchor(String anchor){
+		return (getAnchors().keySet().contains(anchor) && !getKilled());
 	}
 	
 	/**
@@ -508,12 +522,12 @@ public abstract class Creature implements Capacity{
 	 * 
 	 * @param	object
 	 * 			The object to check.
-	 * @return	True if and only if this creature carries this object.
-	 * 			| getAnchors().containsValue(object)
+	 * @return	True if and only if this creature carries this object and it's not dead.
+	 * 			| getAnchors().containsValue(object) && !getKilled()
 	 */
 	@Raw
 	public boolean canDropFromAnchor(Object object){
-		return (getAnchors().containsValue(object));
+		return (getAnchors().containsValue(object) && !getKilled());
 	}
 	
 	/**
@@ -655,10 +669,16 @@ public abstract class Creature implements Capacity{
 	
 	/**
 	 * 
-	 * @param other
-	 * 		  the creature that is hit.
+	 * @param 	other
+	 * 		  	The creature that is hit.
+	 * @throws	CreatureIsDeadException
+	 * 			This creature is dead.
+	 * 			| getKilled()
 	 */
-	public void hit(Creature other){
+	public void hit(Creature other) throws CreatureIsDeadException {
+		if (getKilled()){
+			throw new CreatureIsDeadException(this);
+		}
 		int randy = Creature.randomNumber();
 		if (effectiveHit(randy)){
 			int newHitpointsOther = other.getHitpoints() - this.getResultingDamage();
