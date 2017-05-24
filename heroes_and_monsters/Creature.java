@@ -647,7 +647,7 @@ public abstract class Creature implements Capacity{
 		}
 		else {
 			ArrayList<Object> arraylist = new ArrayList<Object>();
-			arraylist.add(object)
+			arraylist.add(object);
 			opponentsPossessions.put(classObject, arraylist);
 		}
 	}
