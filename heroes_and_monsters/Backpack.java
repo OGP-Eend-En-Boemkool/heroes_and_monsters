@@ -393,23 +393,28 @@ public class Backpack extends Storage{
 			else if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				Ducat newDucat = new Ducat(0);
-				Ducat other = new Ducat(0);
 				while (ducat.getValue() != newDucat.getValue()){
 					while (this.getBackpackIterator().hasMoreElements()){
 						Object objectInBackpack = this.getBackpackIterator().nextElement();
 						if (objectInBackpack instanceof Purse){
-							other = ((Purse) objectInBackpack).getContent();
+							if ( ((Purse) objectInBackpack).getContent().getValue() >= (ducat.getValue()-newDucat.getValue())){
+								 ((Purse) objectInBackpack).getContent().subtract(ducat).add(newDucat);
+								 newDucat = newDucat.subtract(newDucat).add(ducat);
+							}
+							else {
+								newDucat = newDucat.add( ((Purse) objectInBackpack).getContent());
+								((Purse) objectInBackpack).getContent().subtract( ((Purse) objectInBackpack).getContent());
+							}
 						}
 						else if (objectInBackpack instanceof Ducat){
-							other = (Ducat) objectInBackpack;
-						}
-						if (other.getValue() >= (ducat.getValue()-newDucat.getValue())){
-							other = other.subtract(ducat).add(newDucat);
-							newDucat = newDucat.subtract(newDucat).add(ducat);
-						}
-						else {
-							newDucat = newDucat.add(other);
-							other = other.subtract(other);
+							if (((Ducat) objectInBackpack).getValue() >= (ducat.getValue()-newDucat.getValue())){
+								((Ducat) objectInBackpack).subtract(ducat).add(newDucat);
+								newDucat = newDucat.subtract(newDucat).add(ducat);
+							}
+							else {
+								newDucat = newDucat.add(((Ducat) objectInBackpack));
+								((Ducat) objectInBackpack).subtract(((Ducat) objectInBackpack));
+							}
 						}
 					}
 				}

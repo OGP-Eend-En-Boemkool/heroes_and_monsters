@@ -390,20 +390,6 @@ public class Monster extends Creature implements Damage, Protection {
 		return (unit.convertFromKilogram(strength * 9));
 	}
 
-	/**
-	 * Return the used part of the total capacity of the monster.
-	 * 
-	 * @return the resulting number cannot be negative
-	 * 		   | result > 0
-	 * @return the resulting number cannot be bigger than the maximum capacity of the object.
-	 * 		   | result <= this.getMaximumCapacity()
-	 */
-	@Override
-	public double getUsedCapacity(Unit unit) {
-		// TODO
-		return 0;
-	}
-
 	/**************************************
 	 * Hit
 	 **************************************/
