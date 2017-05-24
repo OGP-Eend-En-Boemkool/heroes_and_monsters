@@ -192,8 +192,8 @@ public class Hero extends Creature {
 	@Raw @Override
 	public boolean canAddToAnchor(Object object, String anchor){
 		return (super.canAddToAnchor(object, anchor) &&
-				(anchor != "Belt" || (object instanceof Purse)) &&
-				(anchor != "Body" || (object instanceof Armor)) &&
+				(anchor != "Belt" || (object instanceof Purse) || (object == null)) &&
+				(anchor != "Body" || (object instanceof Armor) || (object == null)) &&
 				canAddArmor(object));
 	}
 	
@@ -395,16 +395,37 @@ public class Hero extends Creature {
 		return allPossessions;
 	}
 	
-	protected Object chooseTreasure(Creature opponent){
-		HashMap<String, ArrayList<Object>> allPossesions = this.getAllPossessions(opponent);
-		
-		if this.getUsedCapacity(Unit.KG)
+	@Override
+	protected void addTreasure(Object object, Creature opponent){
+		HashMap<String, ArrayList<Object>> allPossessions = this.getAllPossessions(opponent);
+		this.emptyAllAnchors();
+		opponent.emptyAllAnchors();
+		this.addToAnchor(this.chooseArmor(allPossessions), "Body");
 	}
 	
-	@Override
-	protected void addTreasure(Object object) {
-		
-		
+	protected Object chooseArmor(HashMap<String, ArrayList<Object>> allPossessions){
+		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
+			if (allPossessions.containsKey("Armor")){
+				ArrayList<Object> armorlist = allPossessions.get("Armor");
+				Collections.sort(armorlist, new Comparator<Object>() {
+				    @Override
+				    public int compare(Object o1, Object o2) {
+				    	Armor a1 = (Armor) o1;
+				    	Armor a2 = (Armor) o2;
+				        return compare(a1.getCurrentProtection(), a2.getCurrentProtection());
+				    }
+				});
+				Armor armor = (Armor) armorlist.get(0);
+				while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
+					allPossessions.get("Armor").remove(0);
+					armor = (Armor) armorlist.get(0);					
+				}
+				if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					return armor;
+				}
+			}
+		}
+		return null;
 	}
 		
 }
