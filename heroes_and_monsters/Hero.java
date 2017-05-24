@@ -363,7 +363,7 @@ public class Hero extends Creature {
 	 **********************************/
 	
 	@Override
-	protected void collectTreasures(Object object, Creature opponent) {
+	protected void collectTreasures(Object object) {
 		// TODO Auto-generated method stub
 		
 	}

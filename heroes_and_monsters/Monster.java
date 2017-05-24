@@ -422,12 +422,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 *************************************/
 	
 	@Override
-	protected  void collectTreasures(Object object, Creature opponent){
-		dropTreasure(object, opponent);
-		addTreasure(object);
-	}
-	
-	private void addTreasure(Object object){
+	protected  void collectTreasures(Object object){
 		if (object != null){
 			boolean added = false;
 			while (this.getAnchors().keySet().iterator().hasNext() && !added){
@@ -448,12 +443,13 @@ public class Monster extends Creature implements Damage, Protection {
 				while (this.getAnchors().keySet().iterator().hasNext() && !added){
 					String anchor = this.getAnchors().keySet().iterator().next();
 					if (getWeightFromAnchorObject(this.getAnchors().get(anchor)) > weight){
+						Object previousObject = this.getAnchors().get(anchor);
 						try {
 							this.emptyAnchor(anchor);
 							this.addToAnchor(object, anchor);
 							added = true;
 						} catch (Exception e) {
-							
+							this.addToAnchor(previousObject, anchor);
 						}
 					}
 				}
@@ -473,26 +469,6 @@ public class Monster extends Creature implements Damage, Protection {
 		}
 		else {
 			return 0;
-		}
-	}
-
-	private void dropTreasure(Object object, Creature opponent){
-		if (object != null){
-			if (opponent.canDropFromAnchor(object)){
-				opponent.dropFromAnchor(object);
-			}
-			else {
-				boolean dropped = false;
-				while (opponent.getAnchors().keySet().iterator().hasNext() && !dropped){
-					String anchor = opponent.getAnchors().keySet().iterator().next();
-					if (opponent.getAnchors().get(anchor) instanceof Storage){
-						if (((Storage) opponent.getAnchors().get(anchor)).canTakeOutOfStorage(object)){
-							((Storage) opponent.getAnchors().get(anchor)).takeOutOfStorage(object);
-							dropped = true;
-						}
-					}
-				}
-			}
 		}
 	}
 	

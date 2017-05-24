@@ -591,7 +591,7 @@ public abstract class Creature implements Capacity{
 	 *************************************/
 	
 
-	protected abstract void collectTreasures(Object object, Creature opponent);
+	protected abstract void collectTreasures(Object object);
 
 	protected HashSet<Object> getOpponentsPossessions(Creature opponent){
 		HashSet<Object> opponentsPossessions = new HashSet<Object>();
