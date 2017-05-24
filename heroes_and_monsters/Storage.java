@@ -141,6 +141,33 @@ public abstract class Storage extends Ownable implements Capacity {
 	}
 	
 	/**
+	 * Transfer the given object from this storage to the given anchor of the given
+	 * creature.
+	 * 
+	 * @param 	object
+	 * 			The object to transfer.
+	 * @param 	creature
+	 * 			The creature to transfer to.
+	 * @param 	anchor
+	 * 			The anchor to put the given object in.
+	 * @effect	The given object is taken out of this storage.
+	 * 			| this.takeOutOfStorage(object)
+	 * @effect	The given object is added to the given anchor from the given creature.
+	 * 			| creature.addToAnchor(object, anchor)
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be taken out of this storage.
+	 * 			| !this.canTakeOutOfStorage(object)
+	 * @throws 	IllegalArgumentException
+	 * 			This object can't be added to this anchor.
+	 * 			| !canAddToAnchor(object, anchor)
+	 */
+	public void transferToCreature(Object object, Creature creature, String anchor)
+			throws IllegalArgumentException {
+		this.takeOutOfStorage(object);
+		creature.addToAnchor(object, anchor);
+	}
+	
+	/**
 	 * The content of this storage is emptied.
 	 * 
 	 * @throws 	IllegalArgumentException

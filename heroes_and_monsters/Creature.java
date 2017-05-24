@@ -539,9 +539,27 @@ public abstract class Creature implements Capacity{
 	public void passAlong(Object object, Creature creature, String anchor)
 			throws IllegalArgumentException {
 		this.dropFromAnchor(object);
-		creature.addToAnchor(object, anchor);	// methode ook nog schrijven voor rugzakken
+		creature.addToAnchor(object, anchor);
 	}
 	
+	/**
+	 * Pass the given object from this creature to the given storage.
+	 * 
+	 * @param 	object
+	 * 			The object to pass along.
+	 * @param 	storage
+	 * 			The storage to pass it to.
+	 * @effect	Drop the given object from its anchor.
+	 * 			| this.dropFromAnchor(object)
+	 * @effect	Add the given object to the given storage.
+	 * 			| storage.addToStorage(object)
+	 * @throws 	IllegalArgumentException
+	 * 			The given object cannot be dropped.
+	 * 			| !canDropFromAnchor(object)
+	 * @throws	IllegalArgumentException
+	 * 			The object cannot be added to the given storage.
+	 * 			| !canAddToStorage(object)
+	 */
 	public void passToStorage(Object object, Storage storage)
 			throws IllegalArgumentException {
 		this.dropFromAnchor(object);
