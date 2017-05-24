@@ -589,9 +589,14 @@ public abstract class Creature implements Capacity{
 	/*************************************
 	 * collect treasures
 	 *************************************/
-	
 
-	protected abstract void collectTreasures(Object object);
+	/**
+	 * Adds one of the possessions of the opponent to its own possesions.
+	 * 
+	 * @param object
+	 * 		  The treasure that this creature steals from its opponent.
+	 */
+	protected abstract void addTreasure(Object object);
 
 
 	/**

@@ -422,7 +422,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 *************************************/
 	
 	@Override
-	protected  void collectTreasures(Object object){
+	protected  void addTreasure(Object object){
 		if (object != null){
 			boolean added = false;
 			while (this.getAnchors().keySet().iterator().hasNext() && !added){
