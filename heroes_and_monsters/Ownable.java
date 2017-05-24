@@ -300,20 +300,27 @@ public abstract class Ownable{
 	protected HashSet<Backpack> containersSet = new HashSet<Backpack>() ;
 	
 	/**
+	 * Return a set with all the backpacks that contain this ownable object.
+	 */
+	public HashSet<Backpack> getContainersSet(){
+		return this.containersSet;
+	}
+	
+	/**
 	 * Add all the backpacks that contain this new container and this new container to the set of containers of this ownable.
 	 * (Used when this ownable is added to a backpack)
 	 * 
 	 * @param container
 	 * 		  The backpack that contains the ownable.
 	 * @post  The new containersSet will contain the new container.
-	 * 		  | new.containersSet.contains(container)
+	 * 		  | new.getContainersSet().contains(container)
 	 * @post  The new containersSet will contain all the containers of the container.
-	 * 		  | new.containersSet.containsAll(container.containersSet)
+	 * 		  | new.getContainersSet().containsAll(container.getContainersSet())
 	 */
 	protected void addAllContainersToContainersSet(Backpack container){
-		this.containersSet.add(container);
-		while (container.containersSet.iterator().hasNext()){
-			this.containersSet.add(container.containersSet.iterator().next());
+		this.getContainersSet().add(container);
+		while (container.getContainersSet().iterator().hasNext()){
+			this.getContainersSet().add(container.getContainersSet().iterator().next());
 		}
 	}
 	
@@ -322,9 +329,9 @@ public abstract class Ownable{
 	 * (Used when this ownable is removed from a backpack)
 	 * 
 	 * @post The new containersSet will be empty.
-	 * 		 | new.containersSet.isEmpty()
+	 * 		 | new.getContainersSet().isEmpty()
 	 */
 	protected void removeAllContainers(){
-		this.containersSet.clear();
+		this.getContainersSet().clear();
 	}
 }

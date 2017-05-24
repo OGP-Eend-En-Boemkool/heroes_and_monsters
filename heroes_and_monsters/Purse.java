@@ -184,8 +184,8 @@ public class Purse extends Storage {
 		if ((object instanceof Ducat)&&(!(this.getBroken()))){
 			Ducat ducat = (Ducat) object;
 			double weight = ducat.getWeight(Unit.KG);
-			while (this.containersSet.iterator().hasNext()){
-				Backpack backpack = this.containersSet.iterator().next();
+			while (this.getContainersSet().iterator().hasNext()){
+				Backpack backpack = this.getContainersSet().iterator().next();
 				if ((backpack.getUsedCapacity(Unit.KG) + weight) > backpack.getMaximumCapacity(Unit.KG)){
 					return false;
 				}
