@@ -5,6 +5,8 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Exceptions.*;
+
 /**
  * A class of ownables.
  * 
@@ -158,16 +160,30 @@ public abstract class Ownable{
 	
 	/**
 	 * Return the holder of this ownable.
+	 * 
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Raw @Basic
-	public Object getHolder(){
+	public Object getHolder() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return this.holder;
 	}
 	/**
 	 * Return the ultimate owner of this ownable.
+	 * 
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Raw
-	public Object getUltimateHolder(){
+	public Object getUltimateHolder() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		Object obj = this.getHolder();
 		if (obj == null || obj instanceof Creature){
 			return obj;
@@ -229,14 +245,16 @@ public abstract class Ownable{
 	 * 
 	 * @param 	holder
 	 * 			The holder to check.
-	 * @return	True if and only if the holder is a creature or a backpack or there is
-	 * 			no holder at all.
-	 * 			| result == ((holder instanceof Creature) || (holder instanceof Backpack) ||
-	 *			|				holder == null)
+	 * @return	True if and only if the holder is a living creature or a non-terminated
+	 * 			backpack or there is no holder at all. 
+	 * 			| result == (holder instanceof Creature && !((Creature) holder).getKilled())
+	 *			|			|| (holder instanceof Backpack && !((Backpack) holder).getTerminated()) ||
+	 *			|			holder == null
 	 */
 	@Raw
 	public boolean canHaveAsHolder(Object holder){
-		return ((holder instanceof Creature) || (holder instanceof Backpack) ||
+		return ((holder instanceof Creature && !((Creature) holder).getKilled())
+				|| (holder instanceof Backpack && !((Backpack) holder).getTerminated()) ||
 				holder == null);
 	}
 	

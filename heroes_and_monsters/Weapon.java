@@ -5,6 +5,8 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Exceptions.OwnableIsTerminatedException;
+
 
 /**
  * A class of weapons.
@@ -62,9 +64,15 @@ public class Weapon extends Ownable implements Damage{
 	 * 		   | result >= 1 && result <= maximumDamage
 	 * @return The resulting number must be a multiple of 7.
 	 * 		   | result % 7 = 0
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override @Basic
-	public int getCurrentDamage() {
+	public int getCurrentDamage() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return this.damage;		
 	}
 
@@ -73,9 +81,15 @@ public class Weapon extends Ownable implements Damage{
 	 * 
 	 * @return The resulting number must be bigger than 1.
 	 * 		   | result >= 1
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public int getMaximumDamage() {
+	public int getMaximumDamage() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return Weapon.maxDamage;
 	}
 
@@ -88,9 +102,15 @@ public class Weapon extends Ownable implements Damage{
 	 * 		  | this.canHaveAsDamage(damage)
 	 * @post  the number to which the damage is set is equal to the given number.
 	 * 		  | new.getCurrentDamage().equals(damage) 
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public void setCurrentDamage(int damage) {
+	public void setCurrentDamage(int damage) throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		this.damage=damage;	
 	}
 
@@ -103,9 +123,15 @@ public class Weapon extends Ownable implements Damage{
 	 * 		  | this.isValidMaximumDamage(damage)
 	 * @post  the number to which the maximum damage is set is equal to the given number.
 	 * 		  | new.getMaximumDamage().equals(damage)
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public void setMaximumDamage(int damage) {
+	public void setMaximumDamage(int damage) throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		if (this.isValidMaximumDamage(damage)){
 			Weapon.maxDamage=damage;
 		}		

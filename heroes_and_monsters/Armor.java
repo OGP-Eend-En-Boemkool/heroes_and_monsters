@@ -5,6 +5,8 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Exceptions.OwnableIsTerminatedException;
+
 /**
  * A class of armors.
  * 
@@ -88,9 +90,15 @@ public class Armor extends Ownable implements Protection{
 	 * 
 	 * @return The resulting number must be bigger than or equal to 1 and smaller than the maximum protection.
 	 * 		   | (result >= 1) && (result <= maxProtection)
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public int getCurrentProtection() {
+	public int getCurrentProtection() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return this.protection;
 	}
 	
@@ -99,9 +107,15 @@ public class Armor extends Ownable implements Protection{
 	 * 
 	 * @return The resulting number must be a valid protection.
 	 * 		   | this.canHaveAsMaxProtection(getMaxProtection())
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Basic
-	public int getMaxProtection() {
+	public int getMaxProtection() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return this.maxProtection;
 	}
 
@@ -114,9 +128,15 @@ public class Armor extends Ownable implements Protection{
 	 * 		  | canHaveAsProtection(protection)
 	 * @post  The number to which the protection is set is equal to the given number.
 	 * 		  | new.getCurrentProtection().equals(protection) 
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public void setCurrentProtection(int protection) {
+	public void setCurrentProtection(int protection) throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		if (canHaveAsProtection(protection)){
 			this.protection = protection;
 		}
@@ -154,11 +174,18 @@ public class Armor extends Ownable implements Protection{
 	 * 		   'decrease' is bigger or equal to the original protection.
 	 * 		   | if ((decrease <= 0)||(decrease >= this.getCurrentProtection()))
 	 * 		   | 	throw new IllegalArgumentException()
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 * @effect The new protection of this object is set to the original protection decreased with 'decrease'
 	 * 		   | setCurrentProtection(this.getCurrentProtection() - decrease)
 	 */
 	@Override
-	public void decreaseProtection(int decrease) throws IllegalArgumentException {
+	public void decreaseProtection(int decrease)
+			throws IllegalArgumentException, OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		if (decrease > 0){
 			int decreasedProtection = this.protection - decrease;
 			if (canHaveAsProtection(decreasedProtection)){
@@ -189,11 +216,18 @@ public class Armor extends Ownable implements Protection{
 	 *  	   or when 'increase' is bigger than the maximum protection decreased with the original 
 	 *  	   protection.
 	 *  	   | if ((increase <= 0)||(increase >= (this.getMaxProtection() - this.getCurrentProtection())))
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 * @effect The new protection of this object is set to the original protection increased with 'increase'
 	 * 		   | setCurrentProtection(this.getCurrentProtection() + increase)
 	 */
 	@Override
-	public void increaseProtection(int increase) throws IllegalArgumentException {
+	public void increaseProtection(int increase)
+			throws IllegalArgumentException, OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		if (increase > 0){
 			int increasedProtection = this.protection + increase;
 			if (canHaveAsProtection(increasedProtection)){
