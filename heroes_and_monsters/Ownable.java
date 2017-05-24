@@ -309,4 +309,25 @@ public abstract class Ownable{
 	protected void removeAllContainers(){
 		this.getContainersSet().clear();
 	}
+	
+	/**********************************
+	 * terminate
+	 **********************************/
+	
+	/**
+	 * Variable referencing if this ownable is terminated or not.
+	 */
+	protected boolean terminated = false;
+	
+	/**
+	 * Return if this ownable is terminated or not.
+	 */
+	public boolean getTerminated(){
+		return this.terminated;
+	}
+	
+	/**
+	 * Terminate this ownable if possible.
+	 */
+	protected abstract void terminate();
 }

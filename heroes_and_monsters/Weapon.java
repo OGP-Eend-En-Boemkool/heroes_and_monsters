@@ -216,4 +216,18 @@ public class Weapon extends Ownable implements Damage{
 			return 1;
 		}
 	}
+	
+	/**********************************
+	 * terminate
+	 **********************************/
+	
+	/**
+	 * Terminate this weapon.
+	 * 
+	 * @post	Terminated is set to true.
+	 * 			| this.terminated = true
+	 */
+	protected void terminate(){
+		this.terminated = true;
+	}
 }

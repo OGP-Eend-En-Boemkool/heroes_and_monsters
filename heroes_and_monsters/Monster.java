@@ -524,7 +524,7 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 			with the generated number, this method returns null.
 	 * 
 	 */
-	private Object chooseTreasure(Creature opponent){
+	protected Object chooseTreasure(Creature opponent){
 		int random = randomNumber();
 		while (getOpponentsPossessions(opponent).iterator().hasNext()){
 			Object object = getOpponentsPossessions(opponent).iterator().next();

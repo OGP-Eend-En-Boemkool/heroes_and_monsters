@@ -106,7 +106,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 			The given object can't be taken out of this storage.
 	 * 			| !canTakeOutOfStorage(object)
 	 */
-	public abstract void takeOutOfStorage(Object object) throws IllegalArgumentException;
+	protected abstract void takeOutOfStorage(Object object) throws IllegalArgumentException;
 	
 	/**
 	 * Check whether the given object can be taken out of this storage.
@@ -147,6 +147,40 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 			One of the objects can't be taken out of this storage. This can't happen.
 	 * 			| !canTakeOutOfStorage(object)
 	 */
-	public abstract void emptyStorage() throws IllegalArgumentException;
+	protected abstract void emptyStorage() throws IllegalArgumentException;
+	
+	/**
+	 * Drop the given object on the ground. If it is an armor or a weapon, it is terminated.
+	 * 
+	 * @param 	object
+	 * 			The object to drop.
+	 * @effect	The given object is taken out of this storage
+	 * 			| takeOutOfStorage(object)
+	 * @effect	If the given object is an ownable, it is terminated (only armors and
+	 * 			weapons really get terminated, backpacks and purses will still exist)
+	 * 			| if (object instanceof Ownable) {
+	 *			|		((Ownable) object).terminate() }
+	 * @throws 	IllegalArgumentException
+	 * 			The given object can't be taken out of this storage.
+	 * 			| !canTakeOutOfStorage(object)
+	 */
+	public void removeFromStorageAndTerminate(Object object)
+			throws IllegalArgumentException {
+		this.takeOutOfStorage(object);
+		if (object instanceof Ownable) {
+			((Ownable) object).terminate();
+		}
+	}
+	
+	/**********************************
+	 * terminate
+	 **********************************/
+	
+	/**
+	 * Terminating a storage is impossible.
+	 */
+	protected void terminate(){
+		this.terminated = false;
+	}
 }
 

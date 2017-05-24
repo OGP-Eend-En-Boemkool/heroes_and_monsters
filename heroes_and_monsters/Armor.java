@@ -349,5 +349,19 @@ public class Armor extends Ownable implements Protection{
 			return value + 1;
 		}
 	}
+	
+	/**********************************
+	 * terminate
+	 **********************************/
+	
+	/**
+	 * Terminate this armor.
+	 * 
+	 * @post	Terminated is set to true.
+	 * 			| this.terminated = true
+	 */
+	protected void terminate(){
+		this.terminated = true;
+	}
 
 }

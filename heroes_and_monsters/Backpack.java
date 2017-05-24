@@ -379,7 +379,7 @@ public class Backpack extends Storage{
 	 * 			| !canTakeOutOfStorage(object)
 	 */
 	@Override
-	public void takeOutOfStorage(Object object) throws IllegalArgumentException {
+	protected void takeOutOfStorage(Object object) throws IllegalArgumentException {
 		if (!canTakeOutOfStorage(object)){
 			throw new IllegalArgumentException("The given object can't be taken out of this backpack.");
 		}
@@ -432,7 +432,7 @@ public class Backpack extends Storage{
 	 * 			| new.getContent().getSize() == 0
 	 */
 	@Override
-	public void emptyStorage()throws IllegalArgumentException {
+	protected void emptyStorage()throws IllegalArgumentException {
 		while (getContent().iterator().hasNext()){
 			this.takeOutOfStorage(getContent().iterator().next());
 		}
