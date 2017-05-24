@@ -395,12 +395,57 @@ public class Hero extends Creature {
 		return allPossessions;
 	}
 	
+	/**
+	 *  // TODO
+	 */
 	@Override
 	protected void addTreasure(Object object, Creature opponent){
 		HashMap<String, ArrayList<Object>> allPossessions = this.getAllPossessions(opponent);
 		this.emptyAllAnchors();
 		opponent.emptyAllAnchors();
 		this.addToAnchor(this.chooseArmor(allPossessions), "Body");
+		this.addToAnchor(this.chooseWeapon(allPossessions), "Right hand");
+		this.addToAnchor(this.chooseWeapon(allPossessions), "Left hand");
+		this.addToAnchor(this.chooseBackpack(allPossessions), "Back");
+		this.addToAnchor(this.choosePurse(allPossessions), "Belt");
+		if (this.getAnchors().get("Belt") != null){
+			Object objectForPurse = this.chooseDucat(allPossessions);
+			Purse purse = (Purse) this.getAnchors().get("Belt");
+			while (objectForPurse != null){
+				Ducat ducat = (Ducat) objectForPurse;
+				if (purse.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= purse.getMaximumCapacity(Unit.KG)){
+					((Purse) this.getAnchors().get("Belt")).addToStorage(ducat);
+					purse = (Purse) this.getAnchors().get("Belt");
+				}
+				objectForPurse = this.chooseDucat(allPossessions);
+			}
+		}
+		if (this.getAnchors().get("Back") != null){
+			Backpack backpack = (Backpack) this.getAnchors().get("Back");
+			Object armorForBackpack = this.chooseArmor(allPossessions);
+			if (armorForBackpack != null){
+				((Backpack) this.getAnchors().get("Back")).addToStorage(armorForBackpack);
+				backpack = (Backpack) this.getAnchors().get("Back");
+			}
+			Object weaponForBackpack = this.chooseWeapon(allPossessions);
+			while (weaponForBackpack != null){
+				Weapon weapon = (Weapon) weaponForBackpack;
+				if (backpack.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
+					((Backpack) this.getAnchors().get("Back")).addToStorage(weapon);
+					backpack = (Backpack) this.getAnchors().get("Back");
+				}
+				weaponForBackpack = this.chooseWeapon(allPossessions);
+			}
+			Object ducatForBackpack = this.chooseDucat(allPossessions);
+			while (ducatForBackpack != null){
+				Ducat ducat = (Ducat) ducatForBackpack;
+				if (backpack.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
+					((Backpack) this.getAnchors().get("Back")).addToStorage(ducat);
+					backpack = (Backpack) this.getAnchors().get("Back");
+				}
+				ducatForBackpack = this.chooseDucat(allPossessions);
+			}
+		}
 	}
 	
 	/**
@@ -411,7 +456,13 @@ public class Hero extends Creature {
 	 * 		   The hashmap that contains all the possessions of the hero and the monster
 	 * @return The armor with the highest protection that the hero is capable of wearing. If there is no armor that meets
 	 * 		   this requirements, null is returned.
-	 * @
+	 * @post   If the hero isn't capable of wearing the armor with the highest protection, 
+	 * 		   this armor is removed from the hashmap and it is terminated.
+	 * 		   | if this.getUsedCapacity(unit) + armor.getOwnWeight(unit) > this.getMaximumCapacity(unit){
+	 * 		   | 	(armor.isTerminated)&& !(allPossessions.get("Armor").contains(armor))
+	 * 		   | }
+	 * @post   The hashmap will no longer contain the armor that was returned.
+	 * 		   | !(new.allPossessions.get("Armor").contains(armor))
 	 */
 	protected Object chooseArmor(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
@@ -427,10 +478,12 @@ public class Hero extends Creature {
 				});
 				Armor armor = (Armor) armorlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
-					allPossessions.get("Armor").get(0).terminate();
+					((Armor)allPossessions.get("Armor").get(0)).terminate();
+					allPossessions.get("Armor").remove(0);
 					armor = (Armor) armorlist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					allPossessions.get("Armor").remove(0);
 					return armor;
 				}
 			}
@@ -444,10 +497,17 @@ public class Hero extends Creature {
 	 * 
 	 * @param  allPossessions
 	 * 		   The hashmap that contains all the possessions of the hero and the monster
-	 * @return The weapon with the highest protection that the hero is capable of wearing. If there is no armor that meets
+	 * @return The weapon with the highest damage that the hero is capable of wearing. If there is no weapon that meets
 	 * 		   this requirements, null is returned.
+	 * @post   If the hero isn't capable of wearing the weapon with the highest damage, 
+	 * 		   this weapon is removed from the hashmap and it is terminated.
+	 * 		   | if this.getUsedCapacity(unit) + weapon.getOwnWeight(unit) > this.getMaximumCapacity(unit){
+	 * 		   | 	(weapon.isTerminated)&& !(allPossessions.get("Weapon").contains(weapon))
+	 * 		   | }
+	 * @post   The hashmap will no longer contain the weapon that was returned.
+	 * 		   | !(new.allPossessions.get("Weapon").contains(weapon))
 	 */
-	protected Object choosewEAPON(HashMap<String, ArrayList<Object>> allPossessions){
+	protected Object chooseWeapon(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Weapon")){
 				ArrayList<Object> weaponlist = allPossessions.get("Weapon");
@@ -461,15 +521,148 @@ public class Hero extends Creature {
 				});
 				Weapon weapon = (Weapon) weaponlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (weaponlist.size()>= 2)){
+					((Weapon)allPossessions.get("Weapon").get(0)).terminate();
 					allPossessions.get("Weapon").remove(0);
 					weapon = (Weapon) weaponlist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					allPossessions.get("Weapon").remove(0);
 					return weapon;
 				}
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * Chooses the Backpack of all the backpacks between all the possessions of the monster and the hero that has the highest
+	 * value for capacity from all the backpacks that the hero has the capacity to wear.
+	 * 
+	 * @param  allPossessions
+	 * 		   The hashmap that contains all the possessions of the hero and the monster
+	 * @return The backpack with the highest capacity that the hero is capable of wearing. If there is no backpack that meets
+	 * 		   this requirements, null is returned.
+	 * @post   If the hero isn't capable of wearing the backpack with the highest capacity, 
+	 * 		   this backpack is removed from the hashmap.
+	 * 		   | if this.getUsedCapacity(unit) + backpack.getOwnWeight(unit) > this.getMaximumCapacity(unit){
+	 * 		   | 	!(allPossessions.get("Backpack").contains(backpack))
+	 * 		   | }
+	 * @post   The hashmap will no longer contain the backpack that was returned.
+	 * 		   | !(new.allPossessions.get("Backpack").contains(backpack))
+	 * @post   The backpack that was returned will be empty.
+	 * 		   | backpack.content.isEmpty()
+	 */
+	protected Object chooseBackpack(HashMap<String, ArrayList<Object>> allPossessions){
+		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
+			if (allPossessions.containsKey("Backpack")){
+				ArrayList<Object> backpacklist = allPossessions.get("Backpack");
+				Collections.sort(backpacklist, new Comparator<Object>() {
+				    @Override
+				    public int compare(Object o1, Object o2) {
+				    	Backpack b1 = (Backpack) o1;
+				    	Backpack b2 = (Backpack) o2;
+				        return compare(b1.getMaximumCapacity(Unit.KG), b2.getMaximumCapacity(Unit.KG));
+				    }
+				});
+				Backpack backpack = (Backpack) backpacklist.get(0);
+				while (!(this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (backpacklist.size()>= 2)){
+					allPossessions.get("Backpack").remove(0);
+					backpack = (Backpack) backpacklist.get(0);					
+				}
+				if (this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					allPossessions.get("Backpack").remove(0);
+					backpack.emptyStorage();
+					return backpack;
+				}
+			}
+		}
+		return null;
+	}
 		
+	/**
+	 * Chooses the Purse of all the purses between all the possessions of the monster and the hero that has the highest
+	 * value for capacity from all the purses that the hero has the capacity to wear.
+	 * 
+	 * @param  allPossessions
+	 * 		   The hashmap that contains all the possessions of the hero and the monster
+	 * @return The purse with the highest capacity that the hero is capable of wearing. If there is no purse that meets
+	 * 		   this requirements, null is returned.
+	 * @post   If the hero isn't capable of wearing the purse with the highest capacity, 
+	 * 		   this purse is removed from the hashmap.
+	 * 		   | if this.getUsedCapacity(unit) + purse.getOwnWeight(unit) > this.getMaximumCapacity(unit){
+	 * 		   | 	!(allPossessions.get("Purse").contains(purse))
+	 * 		   | }
+	 * @post   The hashmap will no longer contain the purse that was returned.
+	 * 		   | !(new.allPossessions.get("Purse").contains(purse))
+	 * @post   The purse that was returned will be empty.
+	 * 		   | purse.content.isEmpty()
+	 */
+	protected Object choosePurse(HashMap<String, ArrayList<Object>> allPossessions){
+		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
+			if (allPossessions.containsKey("Purse")){
+				ArrayList<Object> purselist = allPossessions.get("Purse");
+				Collections.sort(purselist, new Comparator<Object>() {
+				    @Override
+				    public int compare(Object o1, Object o2) {
+				    	Purse p1 = (Purse) o1;
+				    	Purse p2 = (Purse) o2;
+				        return compare(p1.getMaximumCapacity(Unit.KG), p2.getMaximumCapacity(Unit.KG));
+				    }
+				});
+				Purse purse = (Purse) purselist.get(0);
+				while (!(this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (purselist.size()>= 2)){
+					allPossessions.get("Purse").remove(0);
+					purse = (Purse) purselist.get(0);					
+				}
+				if (this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					allPossessions.get("Purse").remove(0);
+					purse.emptyStorage();
+					return purse;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Chooses the Ducat of all the ducats between all the possessions of the monster and the hero that has the highest
+	 * value for value from all the ducats that the hero has the capacity to wear.
+	 * 
+	 * @param  allPossessions
+	 * 		   The hashmap that contains all the possessions of the hero and the monster
+	 * @return The ducat with the highest value that the hero is capable of wearing. If there is no ducat that meets
+	 * 		   this requirements, null is returned.
+	 * @post   If the hero isn't capable of wearing the ducat with the highest value, 
+	 * 		   this ducat is removed from the hashmap.
+	 * 		   | if ((this.getUsedCapacity(unit) + ducat.getOwnWeight(unit) > this.getMaximumCapacity(unit)){
+	 * 		   | 	!(allPossessions.get("Ducat").contains(ducat))
+	 * 		   | }
+	 * @post   The hashmap will no longer contain the ducat that was returned.
+	 * 		   | !(new.allPossessions.get("Ducat").contains(ducat))
+	 */
+	protected Object chooseDucat(HashMap<String, ArrayList<Object>> allPossessions){
+		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
+			if (allPossessions.containsKey("Ducat")){
+				ArrayList<Object> ducatlist = allPossessions.get("Ducat");
+				Collections.sort(ducatlist, new Comparator<Object>() {
+				    @Override
+				    public int compare(Object o1, Object o2) {
+				    	Ducat d1 = (Ducat) o1;
+				    	Ducat d2 = (Ducat) o2;
+				        return compare(d1.getValue(), d2.getValue());
+				    }
+				});
+				Ducat ducat = (Ducat) ducatlist.get(0);
+				while (!(this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (ducatlist.size()>= 2)){
+					allPossessions.get("Ducat").remove(0);
+					ducat = (Ducat) ducatlist.get(0);					
+				}
+				if (this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					allPossessions.get("Ducat").remove(0);
+					return ducat;
+				}
+			}
+		}
+		return null;
+	}
 }
