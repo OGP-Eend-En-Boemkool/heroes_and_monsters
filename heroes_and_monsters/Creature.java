@@ -598,4 +598,41 @@ public abstract class Creature implements Capacity{
 	 **********************************/
 	
 	public abstract int getCurrentProtection();
+	
+	/**********************************
+	 * Capacity
+	 **********************************/
+	
+	/**
+	 * Return the used part of the total capacity of the object.
+	 * 
+	 * @return the resulting number cannot be negative
+	 * 		   | result > 0
+	 * @return the resulting number cannot be larger than the maximum capacity of the object.
+	 * 		   | result <= this.getMaximumCapacity()
+	 */
+	@Override
+	public double getUsedCapacity(Unit unit) {
+		double weight = 0;
+		while (this.getAnchors().values().iterator().hasNext()){
+			Object object = this.getAnchors().keySet().iterator().next();
+			if (object instanceof Ownable){
+				if (object instanceof Storage){
+					Storage storage = (Storage) object;
+					weight = weight + storage.getTotalWeight(unit);
+				}
+				else {
+					Ownable ownable = (Ownable) object;
+					weight = weight + ownable.getOwnWeight(unit);
+				}
+			}
+			else if (object instanceof Ducat){
+				Ducat ducat = (Ducat) object;
+				weight = weight + ducat.getWeight(unit);
+			}
+		}
+		return weight;
+	}
+	
+	
 }
