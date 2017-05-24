@@ -3,6 +3,8 @@ package heroes_and_monsters;
 import be.kuleuven.cs.som.annotate.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Exceptions.CreatureIsDeadException;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -290,24 +292,31 @@ public class Monster extends Creature implements Damage, Protection {
 	/**
 	 * Decreases the current protection with a given integer 'decrease'.
 	 * 
-	 * @param  decrease
-	 * 		   The integer we use to decrease the current protection with.
-	 * @post   The new protection is the original protection decreased with an integer 'decrease'.
-	 * 		   | new.getCurrentProtection().equals(this.getCurrentProtection() - decrease)
-	 * @post   The new protection is smaller than the original protection.
-	 * 		   | new.getCurrentProtection() < this.getCurrentProtection()
-	 * @post   The new protection must be a legal case
-	 * 	       | canHaveAsProtection(new.getCurrentprotection())
-	 * @throws IllegalArgumentException
-	 * 		   Throws an IllegalArgumentException when the integer 'decrease' is not positive or when 
-	 * 		   'decrease' is bigger or equal to the original protection.
-	 * 		   | if ((decrease <= 0)||(decrease >= this.getCurrentProtection()))
-	 * 		   | 	throw new IllegalArgumentException()
-	 * @effect The new protection of this object is set to the original protection decreased with 'decrease'
-	 * 		   | setCurrentProtection(this.getCurrentProtection() - decrease)
+	 * @param  	decrease
+	 * 		   	The integer we use to decrease the current protection with.
+	 * @post   	The new protection is the original protection decreased with an integer 'decrease'.
+	 * 		   	| new.getCurrentProtection().equals(this.getCurrentProtection() - decrease)
+	 * @post   	The new protection is smaller than the original protection.
+	 * 		   	| new.getCurrentProtection() < this.getCurrentProtection()
+	 * @post   	The new protection must be a legal case
+	 * 	       	| canHaveAsProtection(new.getCurrentprotection())
+	 * @throws 	IllegalArgumentException
+	 * 		   	Throws an IllegalArgumentException when the integer 'decrease' is not positive or when 
+	 * 		   	'decrease' is bigger or equal to the original protection.
+	 * 		   	| if ((decrease <= 0)||(decrease >= this.getCurrentProtection()))
+	 * 		   	| 	throw new IllegalArgumentException()
+	 * @throws	CreatureIsDeadException
+	 * 			This monster can't be dead.
+	 * 			| getKilled()
+	 * @effect 	The new protection of this object is set to the original protection decreased with 'decrease'
+	 * 		   	| setCurrentProtection(this.getCurrentProtection() - decrease)
 	 */
 	@Override
-	public void decreaseProtection(int decrease) throws IllegalArgumentException {
+	public void decreaseProtection(int decrease)
+			throws IllegalArgumentException, CreatureIsDeadException {
+		if (getKilled()){
+			throw new CreatureIsDeadException(this);
+		}
 		if (decrease > 0){
 			int decreasedProtection = this.protection - decrease;
 			if (canHaveAsProtection(decreasedProtection)){
@@ -325,24 +334,31 @@ public class Monster extends Creature implements Damage, Protection {
 	/**
 	 * Increases the current protection with a given integer 'increase'.
 	 * 
-	 * @param  increase
-	 * 		   The integer we use to increase the current protection with.
-	 * @post   The new protection is the original protection increased with an integer 'increase'.
-	 * 		   | new.getCurrentProtection().equals(this.getCurrentProtection() + increase)
-	 * @post   The new protection is bigger than the original protection.
-	 * 	  	   | new.getCurrentProtection() > this.getCurrentProtection()
-	 * @post   The new protection must be a legal case
-	 * 	       | canHaveAsProtection(new.getCurrentprotection())
-	 * @throws IllegalArgumentException
-	 * 		   Throws an IllegalArgumentException when the integer 'increase' is not positive
-	 *  	   or when 'increase' is bigger than the maximum protection decreased with the original 
-	 *  	   protection.
-	 *  	   | if ((increase <= 0)||(increase >= (this.maxProtection() - this.getCurrentProtection())))
-	 * @effect The new protection of this object is set to the original protection increased with 'increase'
-	 * 		   | setCurrentProtection(this.getCurrentProtection() + increase)
+	 * @param  	increase
+	 * 		   	The integer we use to increase the current protection with.
+	 * @post   	The new protection is the original protection increased with an integer 'increase'.
+	 * 		   	| new.getCurrentProtection().equals(this.getCurrentProtection() + increase)
+	 * @post   	The new protection is bigger than the original protection.
+	 * 	  	   	| new.getCurrentProtection() > this.getCurrentProtection()
+	 * @post   	The new protection must be a legal case
+	 * 	       	| canHaveAsProtection(new.getCurrentprotection())
+	 * @throws 	IllegalArgumentException
+	 * 		   	Throws an IllegalArgumentException when the integer 'increase' is not positive
+	 *  	   	or when 'increase' is bigger than the maximum protection decreased with the original 
+	 *  	   	protection.
+	 *  	   	| if ((increase <= 0)||(increase >= (this.maxProtection() - this.getCurrentProtection())))
+	 * @throws	CreatureIsDeadException
+	 * 			This monster can't be dead.
+	 * 			| getKilled()
+	 * @effect 	The new protection of this object is set to the original protection increased with 'increase'
+	 * 		   	| setCurrentProtection(this.getCurrentProtection() + increase)
 	 */
 	@Override
-	public void increaseProtection(int increase) throws IllegalArgumentException {
+	public void increaseProtection(int increase)
+			throws IllegalArgumentException, CreatureIsDeadException {
+		if (getKilled()){
+			throw new CreatureIsDeadException(this);
+		}
 		if (increase > 0){
 			int increasedProtection = this.protection + increase;
 			if (canHaveAsProtection(increasedProtection)){
