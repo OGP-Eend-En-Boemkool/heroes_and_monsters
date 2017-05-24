@@ -595,6 +595,8 @@ public abstract class Creature implements Capacity{
 	 * 
 	 * @param object
 	 * 		  The treasure that this creature steals from its opponent.
+	 * @post  The creature will be the new ultimate holder of this object.
+	 * 		  | object.getUltimateHolder().equals(this)
 	 */
 	protected abstract void addTreasure(Object object);
 
