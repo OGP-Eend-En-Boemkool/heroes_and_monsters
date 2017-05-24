@@ -492,8 +492,7 @@ public class Backpack extends Storage{
 	 */
 	private void addToIdentificationNumbers(Ownable ownable){
 		if (this.getIdNumber().containsKey(ownable.getIdentification())){
-			ArrayList<Ownable> arraylist = this.getIdNumber().get(ownable.getIdentification());
-			arraylist.add(ownable);
+			this.getIdNumber().get(ownable.getIdentification()).add(ownable);
 		}
 		else {
 			ArrayList<Ownable> arraylist = new ArrayList<Ownable>();
@@ -557,8 +556,8 @@ public class Backpack extends Storage{
 	 *        | }
 	 */
 	private void removeFromIdentificationNumbers(Ownable ownable){
+		(this.getIdNumber().get(ownable.getIdentification())).remove(ownable);
 		ArrayList<Ownable> arraylist = this.getIdNumber().get(ownable.getIdentification());
-		arraylist.remove(ownable);
 		if (arraylist.isEmpty()){
 			this.getIdNumber().remove(ownable.getIdentification());
 		}
