@@ -590,9 +590,15 @@ public abstract class Creature implements Capacity{
 	 * collect treasures
 	 *************************************/
 	
-
+	
 	protected abstract void collectTreasures(Object object, Creature opponent);
 
+	/**
+	 * Return a set with all the possessions of the opponent in the battle.
+	 * 
+	 * @param  opponent
+	 * 		   The creature that was beaten in the battle.
+	 */
 	protected HashSet<Object> getOpponentsPossessions(Creature opponent){
 		HashSet<Object> opponentsPossessions = new HashSet<Object>();
 		while (this.getAnchors().values().iterator().hasNext()){
