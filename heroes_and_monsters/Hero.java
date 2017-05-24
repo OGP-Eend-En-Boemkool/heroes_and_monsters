@@ -403,6 +403,16 @@ public class Hero extends Creature {
 		this.addToAnchor(this.chooseArmor(allPossessions), "Body");
 	}
 	
+	/**
+	 * Chooses the armor of all the armors between all the possessions of the monster and the hero that has the highest
+	 * value for protection from all the armors that the hero has the capacity to wear.
+	 * 
+	 * @param  allPossessions
+	 * 		   The hashmap that contains all the possessions of the hero and the monster
+	 * @return The armor with the highest protection that the hero is capable of wearing. If there is no armor that meets
+	 * 		   this requirements, null is returned.
+	 * @
+	 */
 	protected Object chooseArmor(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Armor")){
@@ -417,11 +427,45 @@ public class Hero extends Creature {
 				});
 				Armor armor = (Armor) armorlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
-					allPossessions.get("Armor").remove(0);
+					allPossessions.get("Armor").get(0).terminate();
 					armor = (Armor) armorlist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					return armor;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Chooses the weapon of all the weapons between all the possessions of the monster and the hero that has the highest
+	 * value for damage from all the weapons that the hero has the capacity to wear.
+	 * 
+	 * @param  allPossessions
+	 * 		   The hashmap that contains all the possessions of the hero and the monster
+	 * @return The weapon with the highest protection that the hero is capable of wearing. If there is no armor that meets
+	 * 		   this requirements, null is returned.
+	 */
+	protected Object choosewEAPON(HashMap<String, ArrayList<Object>> allPossessions){
+		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
+			if (allPossessions.containsKey("Weapon")){
+				ArrayList<Object> weaponlist = allPossessions.get("Weapon");
+				Collections.sort(weaponlist, new Comparator<Object>() {
+				    @Override
+				    public int compare(Object o1, Object o2) {
+				    	Weapon w1 = (Weapon) o1;
+				    	Weapon w2 = (Weapon) o2;
+				        return compare(w1.getCurrentDamage(), w2.getCurrentDamage());
+				    }
+				});
+				Weapon weapon = (Weapon) weaponlist.get(0);
+				while (!(this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (weaponlist.size()>= 2)){
+					allPossessions.get("Weapon").remove(0);
+					weapon = (Weapon) weaponlist.get(0);					
+				}
+				if (this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+					return weapon;
 				}
 			}
 		}
