@@ -430,5 +430,14 @@ public class Monster extends Creature implements Damage, Protection {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	/*************************************
+	 * collect treasures
+	 *************************************/
+	
+	@Override
+	protected  void collectTreasures(Object object){
+		
+	}
 
 }
