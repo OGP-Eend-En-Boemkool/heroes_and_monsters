@@ -416,5 +416,104 @@ public class Monster extends Creature implements Damage, Protection {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	/*************************************
+	 * collect treasures
+	 *************************************/
+	
+	@Override
+	protected  void collectTreasures(Object object, Creature opponent){
+		dropTreasure(object, opponent);
+		addTreasure(object);
+	}
+	
+	private void addTreasure(Object object){
+		if (object != null){
+			boolean added = false;
+			while (this.getAnchors().keySet().iterator().hasNext() && !added){
+				String anchor = this.getAnchors().keySet().iterator().next();
+				if (this.canAddToAnchor(object, anchor)){
+					this.addToAnchor(object, anchor);
+					added = true;
+				}
+				else if (this.getAnchors().get(anchor) instanceof Storage) {
+					if (((Storage) this.getAnchors().get(anchor)).canAddToStorage(object)){
+						((Storage) this.getAnchors().get(anchor)).addToStorage(object);
+						added = true;
+					}
+				}
+			}
+			double weight = getWeightFromAnchorObject(object);
+			if (!added){
+				while (this.getAnchors().keySet().iterator().hasNext() && !added){
+					String anchor = this.getAnchors().keySet().iterator().next();
+					
+				}
+			}
+		}
+	}
+	
+	private double getWeightFromAnchorObject(Object object){
+		if (object instanceof Ducat){
+			return ((Ducat) object).getWeight(Unit.KG);
+		}
+		else if (object instanceof Storage) {
+			return ((Storage) object).getTotalWeight(Unit.KG);
+		}
+		else if (object instanceof Ownable) {
+			return ((Ownable) object).getOwnWeight(Unit.KG);
+		}
+		else {
+			return 0;
+		}
+	}
+
+	private void dropTreasure(Object object, Creature opponent){
+		if (object != null){
+			if (opponent.canDropFromAnchor(object)){
+				opponent.dropFromAnchor(object);
+			}
+			else {
+				boolean dropped = false;
+				while (opponent.getAnchors().keySet().iterator().hasNext() && !dropped){
+					String anchor = opponent.getAnchors().keySet().iterator().next();
+					if (opponent.getAnchors().get(anchor) instanceof Storage){
+						if (((Storage) opponent.getAnchors().get(anchor)).canTakeOutOfStorage(object)){
+							((Storage) opponent.getAnchors().get(anchor)).takeOutOfStorage(object);
+							dropped = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private Object chooseTreasure(Creature opponent){
+		int random = randomNumber();
+		while (getOpponentsPossessions(opponent).iterator().hasNext()){
+			Object object = getOpponentsPossessions(opponent).iterator().next();
+			if (random < 70){
+				if (object instanceof Purse || object instanceof Ducat){
+					return object;
+				}
+			}
+			if (random >= 70 && random < 83){
+				if (object instanceof Weapon){
+					return object;
+				}
+			}
+			if (random >= 83 && random < 94){
+				if (object instanceof Armor){
+					return object;
+				}
+			}
+			if (random >= 94){
+				if (object instanceof Backpack){
+					return object;
+				}
+			}
+		}
+		return null;
+	}
 
 }

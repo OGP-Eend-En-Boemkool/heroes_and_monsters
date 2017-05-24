@@ -52,6 +52,7 @@ public class Purse extends Storage {
 	 * @post	The identification of this purse is set to identification.
 	 * 			| new.getIdentification() = identification
 	 */
+	@Raw @Override
 	protected void setIdentification(long identification){
 		this.identification = identification;
 		idListPurses.add(identification);

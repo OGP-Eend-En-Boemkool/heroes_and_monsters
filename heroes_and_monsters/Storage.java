@@ -47,7 +47,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 			has its own list). The sizes of the lists are increased by one.
 	 * 			| super.setIdentification(identification)
 	 */
-	@Raw
+	@Raw @Override
 	protected abstract void setIdentification(long identification);
 	
 	
