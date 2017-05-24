@@ -277,7 +277,7 @@ public abstract class Ownable{
 	/**
 	 * Return a set with all the backpacks that contain this ownable object.
 	 */
-	public HashSet<Backpack> getContainersSet(){
+	protected HashSet<Backpack> getContainersSet(){
 		return this.containersSet;
 	}
 	

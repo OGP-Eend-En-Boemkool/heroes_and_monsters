@@ -210,9 +210,9 @@ public class Backpack extends Storage{
 	 * 			just increased.
 	 * 			| if (object instanceof Ducat){
 	 * 			|		if one of the objects in content already is a ducat {
-	 * 			|				this.content.size() == new.content.size() } }
+	 * 			|				this.getContent().size() == new.getContent().size() } }
 	 * 			| else {
-	 * 			| 		this.content.size() + 1 == new.content.size() }
+	 * 			| 		this.getContent().size() + 1 == new.getContent().size() }
 	 * @effect	If the given object is an ownable, its holder is set to this.
 	 * 			| if (object instanceof Ownable){
 	 * 			| 		object.setHolder(this) }
@@ -432,7 +432,7 @@ public class Backpack extends Storage{
 	 * Return a hashmap with all the different identificationnumbers in this backpack as keys and
 	 * the associated objects in an arraylist as values.
 	 */
-	public HashMap<Long, ArrayList<Ownable>> getIdNumber(){
+	private HashMap<Long, ArrayList<Ownable>> getIdNumber(){
 		return this.identificationNumbers;
 	}
 	
@@ -604,11 +604,11 @@ public class Backpack extends Storage{
 			 * 
 			 * @return	True if and only if the size of the content of this backpack
 			 * 			minus the current index is greater than zero.
-			 * 			| result == content.size() - indexCurrent > 0
+			 * 			| result == getContent().size() - indexCurrent > 0
 			 */
 			@Override
 			public boolean hasMoreElements() {
-				return content.size() - indexCurrent > 0;
+				return getContent().size() - indexCurrent > 0;
 			}
 
 			/**
@@ -616,7 +616,7 @@ public class Backpack extends Storage{
 			 */
 			@Override
 			public Object nextElement() {
-				Object object = content.get(indexCurrent);
+				Object object = getContent().get(indexCurrent);
 				if (object instanceof Backpack){
 					Backpack backpack = (Backpack) object;
 					while (backpack.getBackpackIterator().hasMoreElements()){

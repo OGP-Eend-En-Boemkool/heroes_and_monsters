@@ -311,12 +311,7 @@ public abstract class Creature implements Capacity{
 	 */
 	@Raw
 	public static boolean isValidStrength(BigDecimal strength){
-		if (strength == null || strength.signum() == -1){
-			return false;
-		}
-		else {
-			return true;
-		}
+		return (!(strength == null || strength.signum() == -1));
 	}
 	
 	/**
