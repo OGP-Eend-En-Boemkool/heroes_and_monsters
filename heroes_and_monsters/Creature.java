@@ -664,7 +664,7 @@ public abstract class Creature implements Capacity{
 	 * @post  The creature will be the new ultimate holder of this object.
 	 * 		  | object.getUltimateHolder().equals(this)
 	 */
-	protected abstract void addTreasure(Object object);
+	protected abstract void addTreasure(Object object, Creature opponent);
 
 
 	/**
