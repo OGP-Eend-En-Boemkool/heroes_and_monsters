@@ -260,7 +260,7 @@ public class Purse extends Storage {
 				Backpack backpack = (Backpack) this.getHolder();
 				backpack.addToStorage(content);
 			}
-			content = new Ducat(0);
+			this.content.subtract(this);
 			setBroken(true);
 		}
 	}
@@ -336,6 +336,19 @@ public class Purse extends Storage {
 				((Creature) this.getHolder()).dropFromAnchor(this);
 			}
 		}
+	}
+	
+	/**
+	 * The content of this purse is emptied.
+	 * 
+	 * @effect	The content of this purse is taken out of this storage.
+	 * 			| takeOutOfStorage(getContent())
+	 * @post	The value of this purse is 0.
+	 * 			| new.getValue() == 0
+	 */
+	@Override
+	public void emptyStorage() throws IllegalArgumentException {
+		this.takeOutOfStorage(getContent());
 	}
 
 	

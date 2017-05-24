@@ -421,6 +421,34 @@ public class Monster extends Creature implements Damage, Protection {
 	 * collect treasures
 	 *************************************/
 	
+	/**
+	 * This monster will possibly take some of the possessions of its killed opponent. It
+	 * tries 5 times to take an object, so it will take from 0 to 5 objects.
+	 * 
+	 * @param 	opponent
+	 * 			The killed opponent that this monster might take possessions from.
+	 * @effect	The treasure that is chosen is possibly added to the possessions of this
+	 * 			monster.
+	 */
+	private void collectTreasures(Creature opponent){
+		for (int i = 0; i <= 5; i++){
+			addTreasure(chooseTreasure(opponent));
+		}
+	}
+	
+	/**
+	 * Adds one of the possessions of the opponent to its own possessions.
+	 * 
+	 * @param 	object
+	 * 		  	The treasure that this monster steals from its opponent.
+	 * @post	If the given object can be added to one of the anchors or in one of the
+	 * 			storages in an anchor, it is added to that.
+	 * @post	If the previous is not the case, it will be checked if when the monster
+	 * 			drops one of the objects in its anchors, if the monster can carry the given
+	 * 			object. If so, that object will be dropped and the given object will be
+	 * 			added.
+	 * @post	If still not the case, the monster won't take the object with him.
+	 */
 	@Override
 	protected  void addTreasure(Object object){
 		if (object != null){
@@ -457,6 +485,13 @@ public class Monster extends Creature implements Damage, Protection {
 		}
 	}
 	
+	/**
+	 * Return the total weight from the given object.
+	 * 
+	 * @param 	object
+	 * 			The object to get the weight from.
+	 * @return	The total weight from the given object.
+	 */
 	private double getWeightFromAnchorObject(Object object){
 		if (object instanceof Ducat){
 			return ((Ducat) object).getWeight(Unit.KG);
@@ -472,6 +507,23 @@ public class Monster extends Creature implements Damage, Protection {
 		}
 	}
 	
+	/**
+	 * Return an object that belonged to the opponent that this monster killed. There is a
+	 * higher chance that a monster will take a purse or a ducat. After that the order of
+	 * chances that the monster will take something is weapons, armors and then backpacks.
+	 * 
+	 * @param 	opponent
+	 * 			The opponent to take objects from.
+	 * @return	A possession of opponent. If there is at least one purse or ducat, there's
+	 * 			approximately 70% chance one of those is returned. If there's at least one
+	 * 			weapon, there is approximately 13% chance one of those is returned. If
+	 * 			there's at least one armor, there is approximately 11% chance one of those
+	 * 			is returned. If there's at least one backpack, there is approximately 6%
+	 * 			chance one of those is returned. To determine what will be chosen, a random
+	 * 			number is generated. If the opponent doesn't carry an object that is chosen
+	 * 			with the generated number, this method returns null.
+	 * 
+	 */
 	private Object chooseTreasure(Creature opponent){
 		int random = randomNumber();
 		while (getOpponentsPossessions(opponent).iterator().hasNext()){

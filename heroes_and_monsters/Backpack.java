@@ -423,6 +423,22 @@ public class Backpack extends Storage{
 	}
 	
 	/**
+	 * The content of this backpack is emptied.
+	 * 
+	 * @effect	All objects in this backpack are taken out of this storage.
+	 * 			| for all objects in getContent() {
+	 * 			|		takeOutOfStorage(object) }
+	 * @post	The size of content is 0.
+	 * 			| new.getContent().getSize() == 0
+	 */
+	@Override
+	public void emptyStorage()throws IllegalArgumentException {
+		while (getContent().iterator().hasNext()){
+			this.takeOutOfStorage(getContent().iterator().next());
+		}
+	}
+	
+	/**
 	 * A hashmap that contains all the different identificationnumbers in this backpack as keys
 	 * and for every identificationnumber an arraylist of all the objects in this backpack with this identificationnumber.
 	 */

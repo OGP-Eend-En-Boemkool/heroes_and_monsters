@@ -139,5 +139,14 @@ public abstract class Storage extends Ownable implements Capacity {
 		this.takeOutOfStorage(object);
 		other.addToStorage(object);
 	}
+	
+	/**
+	 * The content of this storage is emptied.
+	 * 
+	 * @throws 	IllegalArgumentException
+	 * 			One of the objects can't be taken out of this storage. This can't happen.
+	 * 			| !canTakeOutOfStorage(object)
+	 */
+	public abstract void emptyStorage() throws IllegalArgumentException;
 }
 

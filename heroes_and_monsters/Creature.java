@@ -591,7 +591,7 @@ public abstract class Creature implements Capacity{
 	 *************************************/
 
 	/**
-	 * Adds one of the possessions of the opponent to its own possesions.
+	 * Adds one of the possessions of the opponent to its own possessions.
 	 * 
 	 * @param object
 	 * 		  The treasure that this creature steals from its opponent.
