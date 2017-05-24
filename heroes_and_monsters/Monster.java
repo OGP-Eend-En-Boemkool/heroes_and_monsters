@@ -514,42 +514,65 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 
 	 * @param 	opponent
 	 * 			The opponent to take objects from.
-	 * @return	A possession of opponent. If there is at least one purse or ducat, there's
-	 * 			approximately 70% chance one of those is returned. If there's at least one
-	 * 			weapon, there is approximately 13% chance one of those is returned. If
-	 * 			there's at least one armor, there is approximately 11% chance one of those
-	 * 			is returned. If there's at least one backpack, there is approximately 6%
-	 * 			chance one of those is returned. To determine what will be chosen, a random
-	 * 			number is generated. If the opponent doesn't carry an object that is chosen
-	 * 			with the generated number, this method returns null.
+	 * @return	A possession of opponent. If there is at least one purse, there's
+	 * 			approximately 35% chance one of those is returned. If there is at least one
+	 * 			ducat, there's approximately 35% chance one of those is returned. If
+	 * 			there's at least one weapon, there is approximately 13% chance one of those
+	 * 			is returned. If there's at least one armor, there is approximately 11%
+	 * 			chance one of those is returned. If there's at least one backpack, there is
+	 * 			approximately 6% chance one of those is returned. To determine what will be
+	 * 			chosen, a random number is generated. If the opponent doesn't carry an
+	 * 			object that is chosen with the generated number, this method returns null.
+	 * 			Which object from the chosen class is taken, is also chosen randomly.
 	 * 
 	 */
 	protected Object chooseTreasure(Creature opponent){
 		int random = randomNumber();
-		while (getOpponentsPossessions(opponent).iterator().hasNext()){
-			Object object = getOpponentsPossessions(opponent).iterator().next();
-			if (random < 70){
-				if (object instanceof Purse || object instanceof Ducat){
-					return object;
-				}
+		if (random < 35){
+			if (getOpponentsPossessions(opponent).get("Purse").size() == 0){
+				return null;
 			}
-			if (random >= 70 && random < 83){
-				if (object instanceof Weapon){
-					return object;
-				}
-			}
-			if (random >= 83 && random < 94){
-				if (object instanceof Armor){
-					return object;
-				}
-			}
-			if (random >= 94){
-				if (object instanceof Backpack){
-					return object;
-				}
+			else {
+				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Purse").size());
+				return getOpponentsPossessions(opponent).get("Purse").get(index);
 			}
 		}
-		return null;
+		else if (random >= 35 && random < 70){
+			if (getOpponentsPossessions(opponent).get("Ducat").size() == 0){
+				return null;
+			}
+			else {
+				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Ducat").size());
+				return getOpponentsPossessions(opponent).get("Ducat").get(index);
+			}
+		}
+		else if (random >= 70 && random < 83){
+			if (getOpponentsPossessions(opponent).get("Weapon").size() == 0){
+				return null;
+			}
+			else {
+				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Weapon").size());
+				return getOpponentsPossessions(opponent).get("Weapon").get(index);
+			}
+		}
+		else if (random >= 83 && random < 94){
+			if (getOpponentsPossessions(opponent).get("Armor").size() == 0){
+				return null;
+			}
+			else {
+				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Armor").size());
+				return getOpponentsPossessions(opponent).get("Armor").get(index);
+			}
+		}
+		else {
+			if (getOpponentsPossessions(opponent).get("Backpack").size() == 0){
+				return null;
+			}
+			else {
+				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Backpack").size());
+				return getOpponentsPossessions(opponent).get("Backpack").get(index);
+			}
+		}
 	}
 
 }
