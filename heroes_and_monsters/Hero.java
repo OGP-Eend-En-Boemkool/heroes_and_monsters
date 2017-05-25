@@ -413,7 +413,47 @@ public class Hero extends Creature {
 	 * 			| For all object in opponent.anchors.values(){
 	 * 			|	object == null
 	 * 			| }
-	 * 
+	 * @effect	addToAnchor, the given objects will be added to the given anchors.
+	 * 			| this.addToAnchor(this.chooseArmor(allPossessions),"Body")
+	 * 			| this.addToAnchor(this.chooseWeapon(allPossessions), "Right hand")
+	 * 			| this.addToAnchor(this.chooseWeapon(allPossessions), "Left hand")
+	 * 			| this.addToAnchor(this.chooseBackpack(allPossessions), "Back")
+	 * 			| this.addToAnchor(this.choosePurse(allPossessions), "Belt")
+	 * @effect	addToStorage, If there is a purse, as many ducats as possible will be added to the purse.
+	 * 			| if purse != null {
+	 * 			|	while (purse.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= purse.getMaximumCapacity(Unit.KG)){
+	 * 			|		purse.addToStorage(this.chooseDucat(allPossesions))
+	 * 			|	}
+	 * 			| }
+	 * @effect	addToStorage, If there is a backpack, a armor will be added to the backpack if the hero and the backpack have enough capacity.
+	 * 			| if backpack != null {
+	 * 			|	if (backpack.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
+	 * 			|		backpack.addToStorage(this.chooseArmor(allPossessions))
+	 * 			|	}
+	 * 			| }
+	 * @effect	addToStorage, If there is a backpack, as many weapons as possible will be added to the backpack if the hero and the backpack have enough capacity.
+	 * 			| if backpack != null {
+	 * 			|	while (backpack.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
+	 * 			|		backpack.addToStorage(this.chooseWeapon(allPossessions))
+	 * 			|	}
+	 * 			| }
+	 * @effect	addToStorage, If there is a backpack, as many ducats as possible will be added to the backpack if the hero and the backpack have enough capacity.
+	 * 			| if backpack != null {
+	 * 			|	while (backpack.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
+	 * 			|		backpack.addToStorage(this.chooseDucat(allPossessions))
+	 * 			|	}
+	 * 			| }
+	 * @effect	terminateRemainingObjectsFromClass, The remaining armors and weapons that the hero doesn't take with him will be destroyed.
+	 * 			| terminateRemainingObjectsFromClass("Armor", allPossessions);
+	 * 			| terminateRemainingObjectsFromClass("Weapon", allPossessions);
+	 * @post	If the hero had some items on him before he stole the treasures, he will have some items on him afterwards too.
+	 * 			| if (!( for all anchor in this.getAnchors().keySet(){
+	 * 			|			this.getAnchors().get(anchor) == null
+	 * 			|		 })){
+	 * 			| 				(!(for all anchorSub in new.getAnchors.keySet(){
+	 * 			|						new.getAnchors().get(anchorSub) == null
+	 * 			|				   }))
+	 * 			| }
 	 */
 	@Override
 	protected void addTreasure(Object object, Creature opponent){
