@@ -122,15 +122,18 @@ public class Monster extends Creature implements Damage, Protection {
 			throw new IllegalArgumentException("There can't be more objects than anchors.");
 		}
 		if (anchorObjects != null && anchorObjects.size() != 0){
-			Set<String> set = anchors.keySet();
-			ArrayList<String> list = (ArrayList)set;
 			ArrayList<Integer> full = new ArrayList<>();
-			for (int j = 0; j < anchorObjects.size(); j++){
+			ArrayList<String> anchors = new ArrayList<String>();
+			while (this.anchors.keySet().iterator().hasNext()){
+				anchors.add(this.anchors.keySet().iterator().next());
+			}
+			while (anchorObjects.iterator().hasNext()){
+				Object anchor = anchorObjects.iterator().next();
 				Integer random = ThreadLocalRandom.current().nextInt(0, anchors.size());
 				while (full.contains(random)){
 					random = ThreadLocalRandom.current().nextInt(0, anchors.size());
 				}
-				addToAnchor(anchorObjects.get(j), list.get(random));
+				addToAnchor(anchor, anchors.get(random));
 				full.add(random);
 			}
 		}

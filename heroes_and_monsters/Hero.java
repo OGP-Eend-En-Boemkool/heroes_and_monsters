@@ -1,7 +1,6 @@
 package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
-
 import java.math.*;
 import java.util.*;
 
@@ -409,18 +408,42 @@ public class Hero extends Creature {
 	}
 	
 	/**
-	 *  // TODO
+	 * Adds a few of the possessions of the opponent to its own possessions.
+	 * The hero will first of all choose the armor in all the possessions that he is capable of wearing with the highest protection and put it on his body.
+	 * Secondly, the hero will choose the two weapons in all the possessions that he is capable of wearing with the highest damage and put it in his left and right hand.
+	 * Furthermore, the hero will choose the backpack in all the possessions that he is capable of wearing with the highest capacity and put it on his back.
+	 * Next, he will choose the purse in all the possessions that he is capable of wearing with the highest capacity and put it on his belt.
+	 * Then he will add as much ducats as possible to his purse.
+	 * After that he will add another armor out of all the possessions that he and his backpack are capable of wearing and has the highest protection to his backpack.
+	 * Subsequently he will add as many weapons as possible out of all the possessions that he and his backpack are capable of wearing with damages that are as high as possible to his backpack.
+	 * Finally he will add as many ducats as possible out of all the possessions that he and his backpack are capable of wearing with the highest value as possible to his backpack.
+	 * 
+	 * @param 	object
+	 * 		  	This argument is not important for heroes.
+	 * @param 	opponent
+	 * 		  	The creature that was the opponent from which this creature steals.
+	 * @post  	The opponents anchors will be emptied.
+	 * 			| For all object in opponent.anchors.values(){
+	 * 			|	object == null
+	 * 			| }
+	 * 
 	 */
 	@Override
 	protected void addTreasure(Object object, Creature opponent){
 		HashMap<String, ArrayList<Object>> allPossessions = this.getAllPossessions(opponent);
 		this.emptyAllAnchors();
 		opponent.emptyAllAnchors();
+		// Add the armor with the highest protection of all armors the hero is capable of wearing out of allPossessions.
 		this.addToAnchor(this.chooseArmor(allPossessions), "Body");
+		// Add the weapon with the highest damage of all weapons the hero is capable of wearing out of allPossessions.
 		this.addToAnchor(this.chooseWeapon(allPossessions), "Right hand");
+		// Add the next weapon with the highest damage of all weapons the hero is capable of wearing out of allPossessions.
 		this.addToAnchor(this.chooseWeapon(allPossessions), "Left hand");
+		// Add the backpack with the highest capacity of all backpacks the hero is capable of wearing out of allPossessions.
 		this.addToAnchor(this.chooseBackpack(allPossessions), "Back");
+		// Add the purse with the highest capacity of all purses the hero is capable of wearing out of allPossessions.
 		this.addToAnchor(this.choosePurse(allPossessions), "Belt");
+		// Add as many ducats (with the highest value) as possible to the purse.
 		if (this.getAnchors().get("Belt") != null){
 			Object objectForPurse = this.chooseDucat(allPossessions);
 			Purse purse = (Purse) this.getAnchors().get("Belt");
@@ -434,12 +457,14 @@ public class Hero extends Creature {
 			}
 		}
 		if (this.getAnchors().get("Back") != null){
+			// Add the armor with the highest protection of all armors the hero is capable of wearing out of allPossessions.
 			Backpack backpack = (Backpack) this.getAnchors().get("Back");
 			Object armorForBackpack = this.chooseArmor(allPossessions);
 			if (armorForBackpack != null){
 				((Backpack) this.getAnchors().get("Back")).addToStorage(armorForBackpack);
 				backpack = (Backpack) this.getAnchors().get("Back");
 			}
+			// Add as many weapons (with the highest damage) as possible to the backpack.
 			Object weaponForBackpack = this.chooseWeapon(allPossessions);
 			while (weaponForBackpack != null){
 				Weapon weapon = (Weapon) weaponForBackpack;
@@ -449,6 +474,7 @@ public class Hero extends Creature {
 				}
 				weaponForBackpack = this.chooseWeapon(allPossessions);
 			}
+			// Add as many ducats (with the highest value) as possible to the backpack.
 			Object ducatForBackpack = this.chooseDucat(allPossessions);
 			while (ducatForBackpack != null){
 				Ducat ducat = (Ducat) ducatForBackpack;
@@ -459,6 +485,8 @@ public class Hero extends Creature {
 				ducatForBackpack = this.chooseDucat(allPossessions);
 			}
 		}
+		terminateRemainingObjectsFromClass("Armor", allPossessions);
+		terminateRemainingObjectsFromClass("Weapon", allPossessions);
 	}
 	
 	/**
