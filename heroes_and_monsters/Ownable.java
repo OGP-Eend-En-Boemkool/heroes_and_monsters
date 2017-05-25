@@ -56,22 +56,22 @@ public abstract class Ownable{
 	/**
 	 * Variable where we can store all the id's of armors.
 	 */
-	protected static ArrayList<Long> idListArmors;
+	protected static ArrayList<Long> idListArmors = new ArrayList<Long>();
 	
 	/**
 	 * Variable where we can store all the id's of weapons.
 	 */
-	protected static ArrayList<Long> idListWeapons;
+	protected static ArrayList<Long> idListWeapons = new ArrayList<Long>();
 	
 	/**
 	 * Variable where we can store all the id's of backpacks.
 	 */
-	protected static ArrayList<Long> idListBackpacks;
+	protected static ArrayList<Long> idListBackpacks = new ArrayList<Long>();
 	
 	/**
 	 * Variable where we can store all the id's of purses.
 	 */
-	protected static ArrayList<Long> idListPurses;
+	protected static ArrayList<Long> idListPurses = new ArrayList<Long>();
 	
 	/**
 	 * Return the identification of this ownable.
@@ -288,7 +288,7 @@ public abstract class Ownable{
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)
 	 */
-	protected abstract int getValue();
+	public abstract int getValue();
 	
 	/********************************
 	 * Containers

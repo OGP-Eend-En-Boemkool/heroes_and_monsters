@@ -36,7 +36,7 @@ public class Ducat{
 	/**
 	 * Variable referencing the value of this ducat.
 	 */
-	private final int value;
+	private int value;
 	
 	/**
 	 * Variable referencing one ducat
@@ -90,7 +90,8 @@ public class Ducat{
 		if (other == null){
 			throw new IllegalArgumentException("Other Ducat is not effective");
 		}
-		return new Ducat(this.getValue() + other.getValue());
+		this.value = (this.getValue() + other.getValue());
+		return this;
 	}
 	
 	/**
@@ -108,7 +109,8 @@ public class Ducat{
 		if (purse == null){
 			throw new IllegalArgumentException("Other Ducat is not effective");
 		}
-		return new Ducat(this.getValue() + purse.getValue());
+		this.value = (this.getValue() + purse.getValue());
+		return this;
 	}
 	
 	/**
@@ -132,7 +134,8 @@ public class Ducat{
 		if (other.getValue() > this.getValue()){
 			throw new IllegalArgumentException("The result would be negative, which is invalid");
 		}
-		return new Ducat(this.getValue() - other.getValue());
+		this.value = (this.getValue() - other.getValue());
+		return this;
 	}
 	
 	/**
@@ -156,7 +159,8 @@ public class Ducat{
 		if (purse.getValue() > this.getValue()){
 			throw new IllegalArgumentException("The result would be negative, which is invalid");
 		}
-		return new Ducat(this.getValue() - purse.getValue());
+		this.value = (this.getValue() - purse.getValue());
+		return this;
 	}
 	
 	

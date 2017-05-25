@@ -308,9 +308,9 @@ public class Armor extends Ownable implements Protection{
 	@Raw @Override
 	protected void setIdentification(long identification){
 		if (!canHaveAsIdentification(identification)){
-			identification = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+			identification = ThreadLocalRandom.current().nextLong(0, 1000000);
 			while (!canHaveAsIdentification(identification)){
-				identification = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
+				identification = ThreadLocalRandom.current().nextLong(0, 1000000);
 			}
 		}
 		this.identification = identification;
@@ -374,7 +374,7 @@ public class Armor extends Ownable implements Protection{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int getValue() {
+	public int getValue() {
 		int value = (int)Math.floor(this.getMaxValue()*(this.getCurrentProtection()/this.getMaxProtection()));
 		if (this.isValidValue(value)){
 			return value;

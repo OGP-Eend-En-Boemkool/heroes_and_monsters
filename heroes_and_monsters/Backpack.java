@@ -763,7 +763,7 @@ public class Backpack extends Storage{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int getValue() {
+	public int getValue() {
 		int value = this.standardValue;
 		while (this.getBackpackIterator().hasMoreElements()){
 			Object object = this.getBackpackIterator().nextElement();
