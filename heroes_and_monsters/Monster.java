@@ -429,11 +429,18 @@ public class Monster extends Creature implements Damage, Protection {
 			return attack;
 		}
 	}
-
+	
+	/**
+	 * This monster can have the advantages from killing another creature.
+	 * 
+	 * @param 	opponent
+	 * 			The opponent that this creature has killed.
+	 * @effect	This monster can take some of the possessions of his opponent with him
+	 * 			and possibly drop some of his own possessions.
+	 */
 	@Override
-	protected int deathblow() {
-		// TODO Auto-generated method stub
-		return 0;
+	protected void deathblow(Creature opponent) {
+		collectTreasures(opponent);
 	}
 	
 	/**
@@ -461,11 +468,14 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 			The killed opponent that this monster might take possessions from.
 	 * @effect	The treasure that is chosen is possibly added to the possessions of this
 	 * 			monster.
-	 * @post	The chosen treasure is removed from the possessions that are left from the
-	 * 			opponent.
+	 * @effect	At the end, the remaining armors and weapons that this monster doesn't take
+	 * 			with him, are terminated.
+	 * @post	The chosen treasure and its possible content is removed from the
+	 * 			possessions that are left from the opponent.
 	 */
 	private void collectTreasures(Creature opponent){
 		HashMap<String, ArrayList<Object>> possessions = getOpponentsPossessions(opponent);
+		opponent.emptyAllAnchors();
 		for (int i = 0; i <= 5; i++){
 			Object treasure = chooseTreasure(opponent, possessions);
 			while (possessions.values().iterator().hasNext()){
@@ -474,8 +484,25 @@ public class Monster extends Creature implements Damage, Protection {
 					next.remove(treasure);
 				}
 			}
+			if (treasure instanceof Backpack){
+				while (((Backpack) treasure).getBackpackIterator().hasMoreElements()){
+					Object element = ((Backpack) treasure).getBackpackIterator().nextElement();
+					while (possessions.values().iterator().hasNext()){
+						ArrayList<Object> next = possessions.values().iterator().next();
+						if (next.contains(element)){
+							next.remove(element);
+						}
+				}
+			}
+			if (treasure instanceof Purse){
+				if (possessions.get("Purse").contains(((Purse) treasure).getContent())){
+					possessions.get("Purse").remove(((Purse) treasure).getContent());
+				}
+			}
 			addTreasure(treasure, opponent);
 		}
+		this.terminateRemainingObjectsFromClass("Armor", possessions);
+		this.terminateRemainingObjectsFromClass("Weapon", possessions);
 	}
 	
 	/**
@@ -497,6 +524,11 @@ public class Monster extends Creature implements Damage, Protection {
 	@Override
 	protected  void addTreasure(Object object, Creature opponent){
 		if (object != null){
+			if (object instanceof Ownable){
+				if (((Ownable) object).getHolder() instanceof Storage){
+					(((Storage) (((Ownable) object).getHolder()))).takeOutOfStorage(object);
+				}
+			}
 			boolean added = false;
 			while (this.getAnchors().keySet().iterator().hasNext() && !added){
 				String anchor = this.getAnchors().keySet().iterator().next();

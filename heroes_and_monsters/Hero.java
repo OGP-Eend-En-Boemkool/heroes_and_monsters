@@ -350,10 +350,21 @@ public class Hero extends Creature {
 		}
 	}
 
+	/**
+	 * This hero can have the advantages from killing another creature.
+	 * 
+	 * @param 	opponent
+	 * 			The opponent that this creature has killed.
+	 * @effect	The hero can heal a little and get more hitpoints.
+	 * 			| heal()
+	 * @effect	The hero can add some treasures from his opponents to its own possessions
+	 * 			and he can also let behind the things he doesn't need anymore.
+	 * 			| addTreasure(null, opponent)
+	 */
 	@Override
-	protected int deathblow() {
-		// TODO Auto-generated method stub
-		return 0;
+	protected void deathblow(Creature opponent) {
+		heal();
+		addTreasure(null, opponent);
 	}
 	
 	/**

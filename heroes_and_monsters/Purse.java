@@ -378,5 +378,14 @@ public class Purse extends Storage {
 		return this.content.getWeight(unit);
 	}
 
+	/**********************************
+	 * terminate
+	 **********************************/
 	
+	/**
+	 * Terminating a purse is impossible.
+	 */
+	protected void terminate(){
+		this.terminated = false;
+	}
 }

@@ -679,7 +679,13 @@ public abstract class Creature implements Capacity{
 	 */
 	protected abstract int getResultingDamage();
 	
-	protected abstract int deathblow();
+	/**
+	 * This creature can have the advantages from killing another creature.
+	 * 
+	 * @param 	opponent
+	 * 			The opponent that this creature has killed.
+	 */
+	protected abstract void deathblow(Creature opponent);
 	
 	/**
 	 * Try to hit the given other creature.
@@ -703,7 +709,7 @@ public abstract class Creature implements Capacity{
 	 * @effect	If the other creature has no hitpoints left, this creature can have the
 	 * 			benefits of deathblow.
 	 * 			| if (newHitpointsOther <= 0) {
-	 * 			|		deathblow() }
+	 * 			|		deathblow(other) }
 	 * @throws	CreatureIsDeadException
 	 * 			This creature is dead.
 	 * 			| getKilled()
@@ -728,7 +734,7 @@ public abstract class Creature implements Capacity{
 			}
 			if (newHitpointsOther <= 0){
 				newHitpointsOther = 0;
-				this.deathblow();
+				this.deathblow(other);
 			}
 			other.setHitpoints(newHitpointsOther);
 		}
@@ -823,7 +829,7 @@ public abstract class Creature implements Capacity{
 	 * @param 	allPossessions
 	 * 			The hashmap that contains all the remaining objects.
 	 * @pre		The className should always be "Armor" or "Weapon"
-	 * 			| (className == "Armor")&&(className == "Weapon")
+	 * 			| (className == "Armor") || (className == "Weapon")
 	 * @post	All the objects of the class in this hashmap will be terminated
 	 * 			| for all object in allPossessions.get(className){
 	 * 			|	object.isTerminated()

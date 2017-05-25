@@ -871,4 +871,20 @@ public class Backpack extends Storage{
 		}
 		super.removeAllContainers();
 	}
+	
+	/**********************************
+	 * terminate
+	 **********************************/
+	
+	/**
+	 * Terminate all the items in the backpack that need to be terminated.
+	 */
+	protected void terminate(){
+		while (this.getBackpackIterator().hasMoreElements()){
+			Object next = this.getBackpackIterator().nextElement();
+			if (next instanceof Weapon || next instanceof Armor){
+				((Ownable) next).terminate();
+			}
+		}
+	}
 }
