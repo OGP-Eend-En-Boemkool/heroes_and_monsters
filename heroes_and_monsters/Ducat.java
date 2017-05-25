@@ -17,7 +17,7 @@ public class Ducat{
 
 	/**
 	 * Initialize this new Ducat with the given value as amount.
-	 * @param 	value
+	 * @param 	value 
 	 * 			The value for this new Ducat.
 	 * @post	The value of this new Ducat is equal to the given value.
 	 * 			| new.getValue() == value
