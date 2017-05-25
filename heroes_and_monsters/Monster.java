@@ -433,6 +433,19 @@ public class Monster extends Creature implements Damage, Protection {
 		return 0;
 	}
 	
+	/**
+	 * Check whether this monster can hit the given other creature.
+	 * 
+	 * @param 	other
+	 * 			The other creature to check.
+	 * @return	True if and only if the other creature is not this monster.
+	 * 			| result == (this != other)
+	 */
+	@Override
+	public boolean canHitCreature(Creature other){
+		return (this != other);
+	}
+	
 	/*************************************
 	 * collect treasures
 	 *************************************/
@@ -445,10 +458,20 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 			The killed opponent that this monster might take possessions from.
 	 * @effect	The treasure that is chosen is possibly added to the possessions of this
 	 * 			monster.
+	 * @post	The chosen treasure is removed from the possessions that are left from the
+	 * 			opponent.
 	 */
 	private void collectTreasures(Creature opponent){
+		HashMap<String, ArrayList<Object>> possessions = getOpponentsPossessions(opponent);
 		for (int i = 0; i <= 5; i++){
-			addTreasure(chooseTreasure(opponent), opponent);
+			Object treasure = chooseTreasure(opponent, possessions);
+			while (possessions.values().iterator().hasNext()){
+				ArrayList<Object> next = possessions.values().iterator().next();
+				if (next.contains(treasure)){
+					next.remove(treasure);
+				}
+			}
+			addTreasure(treasure, opponent);
 		}
 	}
 	
@@ -457,13 +480,16 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 
 	 * @param 	object
 	 * 		  	The treasure that this monster steals from its opponent.
+	 * @param	opponent
+	 * 			The opponent to steal from.
 	 * @post	If the given object can be added to one of the anchors or in one of the
 	 * 			storages in an anchor, it is added to that.
 	 * @post	If the previous is not the case, it will be checked if when the monster
 	 * 			drops one of the objects in its anchors, if the monster can carry the given
 	 * 			object. If so, that object will be dropped and the given object will be
-	 * 			added.
-	 * @post	If still not the case, the monster won't take the object with him.
+	 * 			added. The dropped object will be terminated if it's a weapon or an armor.
+	 * @post	If still not the case, the monster won't take the object with him. If the
+	 * 			object is a weapon or an armor, it is terminated.
 	 */
 	@Override
 	protected  void addTreasure(Object object, Creature opponent){
@@ -491,12 +517,18 @@ public class Monster extends Creature implements Damage, Protection {
 						try {
 							this.emptyAnchor(anchor);
 							this.addToAnchor(object, anchor);
+							if (previousObject instanceof Ownable){
+								((Ownable) previousObject).terminate();
+							}
 							added = true;
 						} catch (Exception e) {
 							this.addToAnchor(previousObject, anchor);
 						}
 					}
 				}
+			}
+			if (!added && (object instanceof Ownable)){
+				((Ownable) object).terminate();
 			}
 		}
 	}
@@ -530,6 +562,8 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 
 	 * @param 	opponent
 	 * 			The opponent to take objects from.
+	 * @param	possessions
+	 * 			The possessions from the opponent.
 	 * @return	A possession of opponent. If there is at least one purse, there's
 	 * 			approximately 35% chance one of those is returned. If there is at least one
 	 * 			ducat, there's approximately 35% chance one of those is returned. If
@@ -542,51 +576,51 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 			Which object from the chosen class is taken, is also chosen randomly.
 	 * 
 	 */
-	protected Object chooseTreasure(Creature opponent){
+	protected Object chooseTreasure(Creature opponent, HashMap<String, ArrayList<Object>> possessions){
 		int random = randomNumber();
 		if (random < 35){
-			if (getOpponentsPossessions(opponent).get("Purse").size() == 0){
+			if (possessions.get("Purse").size() == 0){
 				return null;
 			}
 			else {
-				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Purse").size());
-				return getOpponentsPossessions(opponent).get("Purse").get(index);
+				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Purse").size());
+				return possessions.get("Purse").get(index);
 			}
 		}
 		else if (random >= 35 && random < 70){
-			if (getOpponentsPossessions(opponent).get("Ducat").size() == 0){
+			if (possessions.get("Ducat").size() == 0){
 				return null;
 			}
 			else {
-				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Ducat").size());
-				return getOpponentsPossessions(opponent).get("Ducat").get(index);
+				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Ducat").size());
+				return possessions.get("Ducat").get(index);
 			}
 		}
 		else if (random >= 70 && random < 83){
-			if (getOpponentsPossessions(opponent).get("Weapon").size() == 0){
+			if (possessions.get("Weapon").size() == 0){
 				return null;
 			}
 			else {
-				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Weapon").size());
-				return getOpponentsPossessions(opponent).get("Weapon").get(index);
+				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Weapon").size());
+				return possessions.get("Weapon").get(index);
 			}
 		}
 		else if (random >= 83 && random < 94){
-			if (getOpponentsPossessions(opponent).get("Armor").size() == 0){
+			if (possessions.get("Armor").size() == 0){
 				return null;
 			}
 			else {
-				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Armor").size());
-				return getOpponentsPossessions(opponent).get("Armor").get(index);
+				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Armor").size());
+				return possessions.get("Armor").get(index);
 			}
 		}
 		else {
-			if (getOpponentsPossessions(opponent).get("Backpack").size() == 0){
+			if (possessions.get("Backpack").size() == 0){
 				return null;
 			}
 			else {
-				int index = ThreadLocalRandom.current().nextInt(0, getOpponentsPossessions(opponent).get("Backpack").size());
-				return getOpponentsPossessions(opponent).get("Backpack").get(index);
+				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Backpack").size());
+				return possessions.get("Backpack").get(index);
 			}
 		}
 	}

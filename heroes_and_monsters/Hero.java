@@ -356,6 +356,19 @@ public class Hero extends Creature {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	/**
+	 * Check whether this hero can hit the given other creature.
+	 * 
+	 * @param 	other
+	 * 			The other creature to check.
+	 * @return	True if and only if the other creature is a monster.
+	 * 			| result == other instanceof Monster
+	 */
+	@Override
+	public boolean canHitCreature(Creature other){
+		return (other instanceof Monster);
+	}
 
 	
 	/**********************************

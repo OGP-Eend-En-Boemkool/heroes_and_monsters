@@ -682,27 +682,65 @@ public abstract class Creature implements Capacity{
 	protected abstract int deathblow();
 	
 	/**
+	 * Try to hit the given other creature.
 	 * 
 	 * @param 	other
 	 * 		  	The creature that is hit.
+	 * @post	If it is an effective hit with the generated random number, the hitpoints
+	 * 			of the other creature decreased by the resulting damage. If that's not a
+	 * 			correct number for hitpoints and it's still positive, it is decreased until
+	 * 			we reach a correct value or 0. If after that the hitpoints are negative or
+	 * 			0, the hitpoints are set to zero.
+	 * 			| if (effectiveHit(randy)){
+	 *			|		newHitpointsOther = other.getHitpoints() - this.getResultingDamage()
+	 *			|		while (!canHaveAsHitpointsNotFighting(newHitpointsOther) &&
+	 *			|			newHitpointsOther > 0){
+	 *			|				newHitpointsOther-- }
+	 *			|	if (newHitpointsOther <= 0){
+	 *			|	newHitpointsOther = 0 }
+	 *			|	other.setHitpoints(newHitpointsOther)
+	 *			|	}
+	 * @effect	If the other creature has no hitpoints left, this creature can have the
+	 * 			benefits of deathblow.
+	 * 			| if (newHitpointsOther <= 0) {
+	 * 			|		deathblow() }
 	 * @throws	CreatureIsDeadException
 	 * 			This creature is dead.
 	 * 			| getKilled()
+	 * @throws	IllegalArgumentException
+	 * 			This creature can't hit the given other creature.
+	 * 			| !canHitCreature(other)
 	 */
-	public void hit(Creature other) throws CreatureIsDeadException {
+	public void hit(Creature other)
+			throws CreatureIsDeadException, IllegalArgumentException {
 		if (getKilled()){
 			throw new CreatureIsDeadException(this);
+		}
+		if (!canHitCreature(other)){
+			throw new IllegalArgumentException("This creature can't hit the given creature.");
 		}
 		int randy = Creature.randomNumber();
 		if (effectiveHit(randy)){
 			int newHitpointsOther = other.getHitpoints() - this.getResultingDamage();
-			if (newHitpointsOther < 0){
+			while (!canHaveAsHitpointsNotFighting(newHitpointsOther) &&
+					newHitpointsOther > 0){
+				newHitpointsOther--;
+			}
+			if (newHitpointsOther <= 0){
 				newHitpointsOther = 0;
 				this.deathblow();
 			}
 			other.setHitpoints(newHitpointsOther);
 		}
 	}
+	
+	/**
+	 * Check whether this creature can hit the given other creature.
+	 * 
+	 * @param 	other
+	 * 			The other creature to check.
+	 */
+	public abstract boolean canHitCreature(Creature other);
 	
 	/*************************************
 	 * collect treasures
