@@ -94,8 +94,13 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 
 	 * @param 	object
 	 * 			The object to check.
+	 * @return	True if and only if this ownable and the given object are not terminated.
+	 * 			| result == !getTerminated()
 	 */
-	public abstract boolean canAddToStorage(Object object);
+	public boolean canAddToStorage(Object object){
+		return !getTerminated() &&
+				(!(object instanceof Ownable) || !((Ownable) object).getTerminated());
+	}
 	
 	/**
 	 * Take the given object out of this storage.
@@ -113,8 +118,13 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 
 	 * @param 	object
 	 * 			The object to check.
+	 * @return	True if and only if this ownable and the given object are not terminated.
+	 * 			| result == !getTerminated()
 	 */
-	public abstract boolean canTakeOutOfStorage(Object object);
+	public boolean canTakeOutOfStorage(Object object){
+		return !getTerminated() &&
+				(!(object instanceof Ownable) || !((Ownable) object).getTerminated());
+	}
 	
 	/**
 	 * Transfer an object from this storage to the given storage.

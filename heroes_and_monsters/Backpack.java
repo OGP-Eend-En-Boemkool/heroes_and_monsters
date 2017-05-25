@@ -5,6 +5,8 @@ import java.math.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import Exceptions.OwnableIsTerminatedException;
+
 /**
  * A class of backpacks.
  * 
@@ -141,9 +143,15 @@ public class Backpack extends Storage{
 	 * 
 	 * @return the resulting number cannot be negative
 	 * 		   | result > 0
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public double getMaximumCapacity(Unit unit) {
+	public double getMaximumCapacity(Unit unit) throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return unit.convertFromKilogram(maximumCapacity);
 	}
 
@@ -154,9 +162,15 @@ public class Backpack extends Storage{
 	 * 		   | result > 0
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
 	 * 		   | result <= this.getMaximumCapacity()
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Override
-	public double getUsedCapacity(Unit unit) {
+	public double getUsedCapacity(Unit unit) throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		double weight = this.getOwnWeight(unit);
 		while (this.getBackpackIterator().hasMoreElements()){
 			Object object = this.getBackpackIterator().nextElement();
@@ -189,8 +203,15 @@ public class Backpack extends Storage{
 	
 	/**
 	 * Return the content of this backpack.
+	 * 
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
-	public ArrayList<Object> getContent(){
+	public ArrayList<Object> getContent() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return new ArrayList<Object>(this.content);
 	}
 	
@@ -253,13 +274,15 @@ public class Backpack extends Storage{
 	 * 
 	 * @param 	object
 	 * 			The object to check.
-	 * @return	False if the object is not an ownable or a ducat. Also false if when the
-	 * 			object is a ownable, it already has a holder. Also false if with this
-	 * 			object the maximum capacity of this backpack would be exceeded. Also false
-	 * 			if by adding an armor to a backpack, a hero would carry too many armors.
-	 * 			Also false if this backpack is in 1 or more other backpacks and one of
-	 * 			their capacities could be exceeded.
-	 * 			| result == ( (object instanceof Ownable || object instanceof Ducat) &&
+	 * @return	False if this object can't be added to any storage. Also false if the
+	 * 			object is not an ownable or a ducat. Also false if when the object is an
+	 * 			ownable, it already has a holder. Also false if with this object the
+	 * 			maximum capacity of this backpack would be exceeded. Also false if by
+	 * 			adding an armor to a backpack, a hero would carry too many armors. Also
+	 * 			false if this backpack is in 1 or more other backpacks and one of their
+	 * 			capacities could be exceeded.
+	 * 			| result == ( super.canAddToStorage(object) &&
+	 * 			|				(object instanceof Ownable || object instanceof Ducat) &&
 	 * 			|				ownable.getHolder() == null &&
 	 * 			|				(this.getUsedCapacity(Unit.KG) + weight <=
 	 * 			|				this.getMaximumCapacity(Unit.KG)) &&
@@ -269,6 +292,9 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	public boolean canAddToStorage(Object object){
+		if (!super.canAddToStorage(object)){
+			return false;
+		}
 		double weight = 0;
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
@@ -313,9 +339,14 @@ public class Backpack extends Storage{
 	 * 
 	 * @param 	object
 	 * 			The object to check.
-	 * @return	True if the given object ownable and it is direct or indirect content of this backpack.
+	 * @return	False if the given object can't be taken out of any storage. True if the
+	 * 			given object ownable and it is direct or indirect content of this backpack.
 	 * 			Also true if the given object is a ducat and the value of all the ducats
-	 * 			in this backpack is greater than or equal to the given ducat. False otherwise.
+	 * 			in this backpack is greater than or equal to the given ducat. False
+	 * 			otherwise.
+	 * 			| if (!super.canAddToStorage(object)){
+	 *			|		result == false
+	 *			| }
 	 * 			| if (object instanceof Ownable){
 	 * 			|		result == this.OwnableInBackpack(object)
 	 * 			| }
@@ -329,6 +360,9 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
+		if (!super.canAddToStorage(object)){
+			return false;
+		}
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
 			return this.OwnableInBackpack(ownable);
@@ -584,8 +618,14 @@ public class Backpack extends Storage{
 	 * 		   The ownable from which it is tested if the backpack contains it.
 	 * @return True if the backpack contains it, false otherwise.
 	 * 		   | result == this.getContent().contains(ownable)
+	 * @throws	OwnableIsTerminatedException
+	 * 			The given ownable is terminated.
+	 * 			| ownable.getTerminated()
 	 */
-	public boolean OwnableInBackpack(Ownable ownable){
+	public boolean OwnableInBackpack(Ownable ownable) throws OwnableIsTerminatedException {
+		if (ownable.getTerminated()){
+			throw new OwnableIsTerminatedException(ownable);
+		}
 		long idNumber = ownable.getIdentification();
 		if (this.getIdNumber().get(idNumber) != null){
 			ArrayList<Ownable> arraylist = this.getIdNumber().get(idNumber);

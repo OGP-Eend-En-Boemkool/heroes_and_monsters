@@ -91,9 +91,16 @@ public abstract class Creature implements Capacity{
 	
 	/**
 	 * Return the name of this creature.
+	 * 
+	 * @throws	CreatureIsDeadException
+	 * 			This creature is dead.
+	 * 			| getKilled()
 	 */
 	@Raw @Basic
-	public String getName(){
+	public String getName() throws CreatureIsDeadException {
+		if (getKilled()){
+			throw new CreatureIsDeadException(this);
+		}
 		return this.name;
 	}
 	
@@ -269,9 +276,16 @@ public abstract class Creature implements Capacity{
 	
 	/**
 	 * Return the strength of this creature.
+	 * 
+	 * @throws	CreatureIsDeadException
+	 * 			This creature is dead.
+	 * 			| getKilled()
 	 */
 	@Raw @Basic
-	public BigDecimal getStrength(){
+	public BigDecimal getStrength() throws CreatureIsDeadException {
+		if (getKilled()){
+			throw new CreatureIsDeadException(this);
+		}
 		return this.strength;
 	}
 	

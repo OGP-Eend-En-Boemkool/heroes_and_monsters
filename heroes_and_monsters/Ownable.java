@@ -75,9 +75,16 @@ public abstract class Ownable{
 	
 	/**
 	 * Return the identification of this ownable.
+	 * 
+	 * @throws	OwnableIsTerminatedException
+	 * 			This ownable is terminated.
+	 * 			| getTerminated()
 	 */
 	@Raw @Basic
-	public long getIdentification(){
+	public long getIdentification() throws OwnableIsTerminatedException {
+		if (getTerminated()){
+			throw new OwnableIsTerminatedException(this);
+		}
 		return this.identification;
 	}
 	

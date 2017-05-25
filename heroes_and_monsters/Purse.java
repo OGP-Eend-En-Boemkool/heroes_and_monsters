@@ -174,13 +174,21 @@ public class Purse extends Storage {
 	/**
 	 * Check whether the given object can be added to this purse.
 	 * 
-	 * @return	True if the object is a ducat, the purse isn't broken, all the backpacks in which it's located have enough capacity to store the extra weight
-	 * 			and the capacity of the ultimate holder is big enough to support the extra weight.
-	 * 			False otherwise.
-	 * 			| result == ((object instanceof Ducat) && (!(this.getBroken())) && for all 
+	 * @return	True if the object can be added to any storage and is a ducat, the purse
+	 * 			isn't broken, all the backpacks in which it's located have enough capacity
+	 * 			to store the extra weight and the capacity of the ultimate holder is big
+	 * 			enough to support the extra weight. False otherwise
+	 * 			| result == super.canAddToStorage(object) && (object instanceof Ducat)
+	 * 			|			&& (!(this.getBroken())) &&
+	 * 			|			(for all holders of this {
+	 * 			|					holder.getUsedCapacity(Unit.KG) + weight <=
+	 * 			|					holder.getMaximumCapacity(Unit.KG) } )
 	 */
 	@Override
 	public boolean canAddToStorage(Object object){
+		if (!super.canAddToStorage(object)){
+			return false;
+		}
 		if ((object instanceof Ducat)&&(!(this.getBroken()))){
 			Ducat ducat = (Ducat) object;
 			double weight = ducat.getWeight(Unit.KG);
@@ -270,12 +278,17 @@ public class Purse extends Storage {
 	 * 
 	 * @param 	object
 	 * 			The object to check.
-	 * @return	True if and only if the given object is a ducat and its value is smaller
-	 * 			than or equal to the value of the content of this purse.
-	 * 			| result == object instanceof Ducat && object.getValue() <= content.getValue()
+	 * @return	True if and only if the given object can be taken out of any storage and
+	 * 			is a ducat and its value is smaller than or equal to the value of the
+	 * 			content of this purse.
+	 * 			| result == super.canAddToStorage(object) && object instanceof Ducat &&
+	 * 			|			object.getValue() <= content.getValue()
 	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
+		if (!super.canAddToStorage(object)){
+			return false;
+		}
 		if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
 			return ducat.getValue() <= content.getValue();
