@@ -30,8 +30,9 @@ public class Purse extends Storage {
 	 * 			| super(calculateValidIdentification(), ownWeight, unit)
 	 */
 	@Raw
-	public Purse(double ownWeight, Unit unit){
+	public Purse(double ownWeight, Unit unit, double maxCapacity){
 		super(calculateValidIdentification(), ownWeight, unit);
+		setMaxCapacity(maxCapacity, unit);
 	}
 	
 	/*******************************
@@ -124,6 +125,10 @@ public class Purse extends Storage {
 	 */
 	private double maximumCapacity;
 	
+	private void setMaxCapacity(double maxCapacity, Unit unit){
+		this.maximumCapacity = unit.convertToKilogram(maxCapacity);
+	}
+	
 	/**
 	 * Return the maximum capacity of the object.
 	 * 
@@ -161,7 +166,7 @@ public class Purse extends Storage {
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	protected int getValue() {
+	public int getValue() {
 		return this.content.getValue();
 	}
 	
@@ -219,6 +224,10 @@ public class Purse extends Storage {
 		return new Ducat(content.getValue());
 	}
 	
+	private void setContent(Ducat ducat){
+		this.content = ducat;
+	}
+	
 	/**
 	 * Variable referencing if this purse is broken or not.
 	 */
@@ -260,13 +269,13 @@ public class Purse extends Storage {
 			throw new IllegalArgumentException("The given object can't be added to this purse.");
 		}
 		Ducat ducat = (Ducat) object;
-		content.add(ducat);
-		if (content.getWeight(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
+		setContent(getContent().add(ducat));
+		if (getContent().getWeight(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
 			if (this.getHolder() instanceof Backpack){
 				Backpack backpack = (Backpack) this.getHolder();
-				backpack.addToStorage(content);
+				backpack.addToStorage(getContent());
 			}
-			this.content.subtract(this);
+			setContent(getContent().subtract(this));
 			setBroken(true);
 		}
 	}
