@@ -119,7 +119,7 @@ public abstract class Ownable{
 	 * @return The resulting number must be bigger than or equal to 0.
 	 * 		   | result >= 0
 	 */
-	protected double getOwnWeight(Unit unit){
+	public double getOwnWeight(Unit unit){
 		return (unit.convertFromKilogram(this.ownWeight));
 	}
 	
@@ -138,7 +138,7 @@ public abstract class Ownable{
 	 * 		  | then new.getOwnWeight().equals(0)
 	 */
 	protected void setOwnWeight(double weight, Unit unit){
-		if (this.isValidOwnWeight(weight)){
+		if (isValidOwnWeight(weight)){
 			this.ownWeight = unit.convertToKilogram(weight);
 		}
 	}
@@ -151,7 +151,7 @@ public abstract class Ownable{
 	 * @return False if the given integer is negative, true otherwise.
 	 * 		   | result == (weight >= 0)
 	 */
-	protected boolean isValidOwnWeight(double weight){
+	public static boolean isValidOwnWeight(double weight){
 		return (weight >= 0);
 	}	
 		
@@ -278,7 +278,7 @@ public abstract class Ownable{
 	 * 		   | if (value < 0) return False
 	 * @note   This return must be left open in order for the subclasses to be able to change it.
 	 */
-	protected boolean isValidValue(int value){
+	public boolean isValidValue(int value){
 		return (value >= 0);
 	}
 	

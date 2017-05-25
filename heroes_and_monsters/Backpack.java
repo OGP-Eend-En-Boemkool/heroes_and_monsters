@@ -417,10 +417,10 @@ public class Backpack extends Storage{
 		}
 		else {
 			if (object instanceof Ownable){
-				((Ownable) object).setHolder();
 				((Backpack)(((Ownable) object).getHolder())).content.remove(object);
 				((Ownable) object).removeAllContainers();
 				this.removeFromIdentificationNumbers((Ownable) object);
+				((Ownable) object).setHolder();
 			}
 			else if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;

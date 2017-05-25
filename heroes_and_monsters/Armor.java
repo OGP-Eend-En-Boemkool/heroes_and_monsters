@@ -282,14 +282,12 @@ public class Armor extends Ownable implements Protection{
 	 * 			of the first 1000 armors, it must also be unique.
 	 */
 	public static boolean canHaveAsIdentification(long identification){
-		boolean prime = true;
-		for (int i=1; i <= Math.round(Math.sqrt(identification)); i++){
+		for (int i=2; i <= Math.round(Math.sqrt(identification)); i++){
 			if (identification % i == 0){
-				prime = false;
-				break;
+				return false;
 			}
 		}
-		return (identification >= 0 && prime && (idListArmors.size() >= 1000 ||
+		return (identification >= 2 && (idListArmors.size() >= 1000 ||
 				!idListArmors.contains(identification)));
 	}
 	
@@ -308,9 +306,9 @@ public class Armor extends Ownable implements Protection{
 	@Raw @Override
 	protected void setIdentification(long identification){
 		if (!canHaveAsIdentification(identification)){
-			identification = ThreadLocalRandom.current().nextLong(0, 1000000);
+			identification = 2;
 			while (!canHaveAsIdentification(identification)){
-				identification = ThreadLocalRandom.current().nextLong(0, 1000000);
+				identification += 1;
 			}
 		}
 		this.identification = identification;
@@ -350,7 +348,7 @@ public class Armor extends Ownable implements Protection{
 	 * 		   | this.isValidValue(result)
 	 */
 	@Basic
-	protected int getMaxValue(){
+	public int getMaxValue(){
 		return this.maxValue;
 	}
 	
@@ -363,7 +361,7 @@ public class Armor extends Ownable implements Protection{
 	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0)
 	 */
 	@Override
-	protected boolean isValidValue(int value){
+	public boolean isValidValue(int value){
 		return (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0));
 	}
 	
@@ -376,6 +374,9 @@ public class Armor extends Ownable implements Protection{
 	@Override
 	public int getValue() {
 		int value = (int)Math.floor(this.getMaxValue()*(this.getCurrentProtection()/this.getMaxProtection()));
+		if (value == 0){
+			return 2;
+		}
 		if (this.isValidValue(value)){
 			return value;
 		}
