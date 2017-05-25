@@ -709,10 +709,12 @@ public abstract class Creature implements Capacity{
 	 *************************************/
 
 	/**
-	 * Adds one of the possessions of the opponent to its own possessions.
+	 * Adds one of the or a few of the possessions of the opponent to its own possessions.
 	 * 
 	 * @param object
 	 * 		  The treasure that this creature steals from its opponent.
+	 * @param opponent
+	 * 		  The creature that was the opponent from which this creature steals.
 	 * @post  The creature will be the new ultimate holder of this object.
 	 * 		  | object.getUltimateHolder().equals(this)
 	 */
@@ -772,6 +774,26 @@ public abstract class Creature implements Capacity{
 			ArrayList<Object> arraylist = new ArrayList<Object>();
 			arraylist.add(object);
 			opponentsPossessions.put(classObject, arraylist);
+		}
+	}
+	
+	/**
+	 * Terminate all the remaining objects from a certain class (weapon or armor), the ones that the creature doesn't take with him.
+	 * 
+	 * @param 	className
+	 * 			The name of the class, from which all the remaining objects should be destroyed
+	 * @param 	allPossessions
+	 * 			The hashmap that contains all the remaining objects.
+	 * @pre		The className should always be "Armor" or "Weapon"
+	 * 			| (className == "Armor")&&(className == "Weapon")
+	 * @post	All the objects of the class in this hashmap will be terminated
+	 * 			| for all object in allPossessions.get(className){
+	 * 			|	object.isTerminated()
+	 * 			| }
+	 */
+	protected void terminateRemainingObjectsFromClass(String className, HashMap<String, ArrayList<Object>> allPossessions){
+		while (allPossessions.get(className).iterator().hasNext()){
+			((Ownable) allPossessions.get(className).iterator().next()).terminate();
 		}
 	}
 	
