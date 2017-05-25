@@ -1,8 +1,6 @@
 package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
-import java.math.*;
-import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import Exceptions.OwnableIsTerminatedException;
@@ -40,8 +38,10 @@ public class Armor extends Ownable implements Protection{
 	 * @effect	This armor is initialized as an ownable with the given identification, 
 	 * 			weight and unit. If the given identification is not a correct
 	 * 			identification, the identification is set to a correct identification.
-	 * @post  	The maxValue of this armor is set to the given maxValue.
+	 * @post  	If the given value is valid, the maxValue of this armor is set to the given maxValue. 
 	 * @post  	If the given value isn't valid, maxValue is set to the default.
+	 * @post	If the given value is valid, the maxProtection of this armor is set to the given maxProtection.
+	 * @post	If the given value isn't valid, maxProtecion is set to the default.
 	 */
 	@Raw
 	public Armor(long identification, int maxProtection, int maxValue,
@@ -62,9 +62,6 @@ public class Armor extends Ownable implements Protection{
 	
 	/**
 	 * Return the type of the armor.
-	 * 
-	 * @return The resulting type must be a valid type.
-	 * 		   | (type instanceof ArmorType)
 	 */
 	private ArmorType getType(){
 		return this.type;
@@ -88,7 +85,7 @@ public class Armor extends Ownable implements Protection{
 	/**
 	 * Returns the current value for the protection of an armor.
 	 * 
-	 * @return The resulting number must be bigger than or equal to 1 and smaller than the maximum protection.
+	 * @return The resulting number will be bigger than or equal to 1 and smaller than the maximum protection.
 	 * 		   | (result >= 1) && (result <= maxProtection)
 	 * @throws	OwnableIsTerminatedException
 	 * 			This ownable is terminated.
