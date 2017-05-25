@@ -1,7 +1,6 @@
 package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 import Exceptions.OwnableIsTerminatedException;
 
@@ -280,7 +279,7 @@ public class Armor extends Ownable implements Protection{
 	 */
 	public static boolean canHaveAsIdentification(long identification){
 		boolean prime = true;
-		for (int i=1; i <= Math.round(Math.sqrt(identification)); i++){
+		for (int i=1; i <= Math.floor(Math.sqrt(identification)); i++){
 			if (identification % i == 0){
 				prime = false;
 				break;
@@ -305,9 +304,9 @@ public class Armor extends Ownable implements Protection{
 	@Raw @Override
 	protected void setIdentification(long identification){
 		if (!canHaveAsIdentification(identification)){
-			identification = ThreadLocalRandom.current().nextLong(0, 1000000);
+			identification = 2;
 			while (!canHaveAsIdentification(identification)){
-				identification = ThreadLocalRandom.current().nextLong(0, 1000000);
+				identification = identification + 1;
 			}
 		}
 		this.identification = identification;

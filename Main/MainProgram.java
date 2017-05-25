@@ -19,9 +19,9 @@ public class MainProgram {
 		ArrayList<Object> anchorObjects = new ArrayList<Object>(Arrays.asList(geweer, zwaard, rugzak, harnas, geldbeurs));
 		Hero eend = new Hero("Eend", new BigDecimal("264.15") , 137, anchorObjects);
 		int totaleWaarde = 0;
-		Iterator iterator = eend.getAnchors().keySet().iterator();
+		Iterator<String> iterator = eend.getAnchors().keySet().iterator();
 		while (iterator.hasNext()){
-			Object anchor = iterator.next();
+			String anchor = iterator.next();
 			Object voorwerp = eend.getAnchors().get(anchor);
 			if (voorwerp != null){
 				if (voorwerp instanceof Ownable){
@@ -35,12 +35,12 @@ public class MainProgram {
 		System.out.println("Waarde bezittingen eend: " + totaleWaarde);
 		
 		// Monster
-		Weapon mes = new Weapon(361, Unit.GRAM, 28);
-		Weapon pijlEnBoog = new Weapon(20, Unit.KG, 49);
-		Armor harnas2 = new Armor(65, 62, 456, 68, Unit.KG);
-		Backpack rugzak2 = new Backpack(98, 541, 2, Unit.KG);
-		rugzak2.addToStorage(pijlEnBoog);
-		Ducat eenDukaat = Ducat.ONE_DUCAT;
-		ArrayList<Object> anchors = new ArrayList<Object>(Arrays.asList("Hand 1", "Hand 2", "Hand 3", "Hand 4", "Tail", "Horns"));
+				Weapon mes = new Weapon(361, Unit.GRAM, 28);
+				Weapon pijlEnBoog = new Weapon(20, Unit.KG, 49);
+				Armor harnas2 = new Armor(65, 62, 456, 68, Unit.KG);
+				Backpack rugzak2 = new Backpack(98, 541, 2, Unit.KG);
+				rugzak2.addToStorage(pijlEnBoog);
+				Ducat eenDukaat = Ducat.ONE_DUCAT;
+				ArrayList<Object> anchors = new ArrayList<Object>(Arrays.asList("Hand 1", "Hand 2", "Hand 3", "Hand 4", "Tail", "Horns"));
 	}
 }
