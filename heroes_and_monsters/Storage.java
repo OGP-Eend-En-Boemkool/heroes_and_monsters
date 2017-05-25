@@ -1,7 +1,5 @@
 package heroes_and_monsters;
 
-import java.util.ArrayList;
-
 import be.kuleuven.cs.som.annotate.*;
 
 /**
