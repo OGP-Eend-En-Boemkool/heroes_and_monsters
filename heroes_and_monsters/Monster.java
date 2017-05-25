@@ -414,8 +414,10 @@ public class Monster extends Creature implements Damage, Protection {
 	 **************************************/
 	
 	/**
-	 * Return the resulting damage of a certain hit of this creature
-	 * //TODO
+	 * Return the resulting damage of a certain hit of this monster
+	 * 
+	 * @return the resulting number will be greater than or equal to 0.
+	 * 		   | result >= 0
 	 */
 	@Override
 	protected int getResultingDamage() {
