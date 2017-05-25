@@ -505,6 +505,7 @@ public class Monster extends Creature implements Damage, Protection {
 		}
 		this.terminateRemainingObjectsFromClass("Armor", possessions);
 		this.terminateRemainingObjectsFromClass("Weapon", possessions);
+		}
 	}
 	
 	/**
