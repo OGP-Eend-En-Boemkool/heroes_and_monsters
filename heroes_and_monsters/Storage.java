@@ -15,7 +15,7 @@ public abstract class Storage extends Ownable implements Capacity {
 
 	/******************************************
 	 * Constructors
-	 ******************************************
+	 ******************************************/
 	
 	/**
 	 * Initialize this new storage with an identification, own weight and unit.
