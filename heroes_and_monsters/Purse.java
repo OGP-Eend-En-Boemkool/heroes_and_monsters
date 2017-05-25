@@ -383,8 +383,8 @@ public class Purse extends Storage {
 	 * 		   | canHaveAsTotalWeight(result)
 	 */
 	@Override
-	protected double getTotalWeight(Unit unit) {
-		return this.content.getWeight(unit);
+	public double getTotalWeight(Unit unit) {
+		return this.getContent().getWeight(unit) + this.getOwnWeight(Unit.KG);
 	}
 
 	/**********************************

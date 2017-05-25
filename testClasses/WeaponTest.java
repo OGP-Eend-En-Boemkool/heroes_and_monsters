@@ -14,6 +14,7 @@ public class WeaponTest {
 	public void setUpFixture(){
 		weapon = new Weapon(20, Unit.KG, 42);
 		backpack = new Backpack(132, 261, 1, Unit.KG);
+		backpack.addToStorage(weapon);
 	}
 	
 	@Test
@@ -26,5 +27,51 @@ public class WeaponTest {
 		assertTrue(weapon.isValidValue(weapon.getValue()));
 	}
 	
+	@Test (expected = OwnableIsTerminatedException.class)
+	public void testGetCurrentDamageTerminated() throws OwnableIsTerminatedException {
+		backpack.removeFromStorageAndTerminate(weapon);
+		weapon.getCurrentDamage();
+	}
 	
+	@Test (expected = OwnableIsTerminatedException.class)
+	public void testGetMaximumDamageTerminated() throws OwnableIsTerminatedException {
+		backpack.removeFromStorageAndTerminate(weapon);
+		weapon.getMaximumDamage();
+	}
+	
+	@Test (expected = OwnableIsTerminatedException.class)
+	public void testSetCurrentDamageTerminated() throws OwnableIsTerminatedException {
+		backpack.removeFromStorageAndTerminate(weapon);
+		weapon.setCurrentDamage(20);
+	}
+	
+	@Test (expected = OwnableIsTerminatedException.class)
+	public void testSetMaximumDamageTerminated() throws OwnableIsTerminatedException {
+		backpack.removeFromStorageAndTerminate(weapon);
+		weapon.setMaximumDamage(98);
+	}
+	
+	@Test
+	public void testIllegalDamage(){
+		assertFalse(weapon.canHaveAsDamage(0));
+		assertFalse(weapon.canHaveAsDamage(-7));
+		assertFalse(weapon.canHaveAsDamage(105));
+		assertFalse(weapon.canHaveAsDamage(55));
+	}
+	
+	@Test
+	public void testIllegalMaximumDamage(){
+		assertFalse(weapon.isValidMaximumDamage(0));
+	}
+	
+	@Test
+	public void testIllegalIdentification(){
+		assertFalse(Weapon.canHaveAsIdentification(5));
+	}
+	
+	@Test
+	public void testInvalidValue(){
+		assertFalse(weapon.isValidValue(-1));
+		assertFalse(weapon.isValidValue(201));
+	}
 }
