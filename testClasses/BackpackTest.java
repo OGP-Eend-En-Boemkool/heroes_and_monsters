@@ -93,7 +93,6 @@ public class BackpackTest {
 		assertTrue(backpack3.getTotalWeight(Unit.KG) == 0.7);
 		backpack3.addToStorage(ducat3);
 		assertTrue(backpack3.getTotalWeight(Unit.KG) == 0.95);
-		assertTrue(backpack3.getTotalWeight(Unit.KG) >= backpack3.getOwnWeight(Unit.KG));
 	}
 
 	@Test (expected = IllegalArgumentException.class)
@@ -133,7 +132,21 @@ public class BackpackTest {
 	}
 	
 	@Test 
-	public void testBackpack_contentTakeOutOfStorageNotInBackpack(){
-		assertFalse(backpack3.canTakeOutOfStorage(armor2));
+	public void testBackpack_contentCanAddToStorage(){
+		assertTrue(backpack3.canAddToStorage(null));
+		assertTrue(backpack3.canAddToStorage(weapon1));
+		backpack3.addToStorage(weapon1);
+		backpack3.removeFromStorageAndTerminate(weapon1);
+		assertFalse(backpack3.canAddToStorage(weapon1));
+		assertFalse(backpack3.canAddToStorage(armor1));
 	}
+	
+	@Test 
+	public void testBackpack_contentTakeOutOfStorage(){
+		assertFalse(backpack3.canTakeOutOfStorage(armor2));
+		assertFalse(backpack3.canTakeOutOfStorage(ducat2));
+		backpack3.addToStorage(ducat1);
+		assertTrue(backpack3.)
+	}
+
 }
