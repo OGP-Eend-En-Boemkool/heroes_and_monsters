@@ -531,12 +531,14 @@ public class Hero extends Creature {
 			Backpack backpack = (Backpack) this.getAnchors().get("Back");
 			Object armorForBackpack = this.chooseArmor(allPossessions);
 			if (armorForBackpack != null){
+				((Armor) armorForBackpack).setHolder();
 				((Backpack) this.getAnchors().get("Back")).addToStorage(armorForBackpack);
 				backpack = (Backpack) this.getAnchors().get("Back");
 			}
 			// Add as many weapons (with the highest damage) as possible to the backpack.
 			Object weaponForBackpack = this.chooseWeapon(allPossessions);
 			while (weaponForBackpack != null){
+				((Weapon) weaponForBackpack).setHolder();
 				Weapon weapon = (Weapon) weaponForBackpack;
 				if (backpack.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
 					((Backpack) this.getAnchors().get("Back")).addToStorage(weapon);
@@ -584,17 +586,19 @@ public class Hero extends Creature {
 				while (iterator.hasNext()){
 					armorlist.add((Armor) iterator.next());
 				}
-				Collections.sort(armorlist);
-				Armor armor = (Armor) armorlist.get(0);
-				while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
-					((Armor)(allPossessions.get("Armor")).get(0)).terminate();
-					allPossessions.get("Armor").remove(0);
-					armorlist.remove(0);
-					armor = (Armor) armorlist.get(0);
-				}
-				if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
-					allPossessions.get("Armor").remove(0);
-					return armor;
+				while (!armorlist.isEmpty()){
+					Collections.sort(armorlist);
+					Armor armor = (Armor) armorlist.get(0);
+					while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
+						((Armor)(allPossessions.get("Armor")).get(0)).terminate();
+						allPossessions.get("Armor").remove(0);
+						armorlist.remove(0);
+						armor = (Armor) armorlist.get(0);
+					}
+					if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+						allPossessions.get("Armor").remove(0);
+						return armor;
+					}
 				}
 			}
 		}
@@ -627,17 +631,19 @@ public class Hero extends Creature {
 					weaponlist.add((Weapon) iterator.next());
 				}
 				Collections.sort(weaponlist);
-				Weapon weapon = (Weapon) weaponlist.get(0);
-				while (!(this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (weaponlist.size()>= 2)){
-					((Weapon)allPossessions.get("Weapon").get(0)).terminate();
-					allPossessions.get("Weapon").remove(0);
-					weaponlist.remove(0);
-					weapon = (Weapon) weaponlist.get(0);					
-				}
-				if (this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
-					allPossessions.get("Weapon").remove(0);
-					weaponlist.remove(0);
-					return weapon;
+				while (!weaponlist.isEmpty()){
+					Weapon weapon = (Weapon) weaponlist.get(0);
+					while (!(this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (weaponlist.size()>= 2)){
+						((Weapon)allPossessions.get("Weapon").get(0)).terminate();
+						allPossessions.get("Weapon").remove(0);
+						weaponlist.remove(0);
+						weapon = (Weapon) weaponlist.get(0);					
+					}
+					if (this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+						allPossessions.get("Weapon").remove(0);
+						weaponlist.remove(0);
+						return weapon;
+					}
 				}
 			}
 		}
@@ -672,17 +678,19 @@ public class Hero extends Creature {
 					backpacklist.add((Backpack) iterator.next());
 				}
 				Collections.sort(backpacklist);
-				Backpack backpack = (Backpack) backpacklist.get(0);
-				while (!(this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (backpacklist.size()>= 2)){
-					allPossessions.get("Backpack").remove(0);
-					backpacklist.remove(0);
-					backpack = (Backpack) backpacklist.get(0);					
-				}
-				if (this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
-					allPossessions.get("Backpack").remove(0);
-					backpacklist.remove(0);
-					backpack.emptyStorage();
-					return backpack;
+				while (!backpacklist.isEmpty()){
+					Backpack backpack = (Backpack) backpacklist.get(0);
+					while (!(this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (backpacklist.size()>= 2)){
+						allPossessions.get("Backpack").remove(0);
+						backpacklist.remove(0);
+						backpack = (Backpack) backpacklist.get(0);					
+					}
+					if (this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+						allPossessions.get("Backpack").remove(0);
+						backpacklist.remove(0);
+						backpack.emptyStorage();
+						return backpack;
+					}
 				}
 			}
 		}
@@ -717,17 +725,19 @@ public class Hero extends Creature {
 					purselist.add((Purse) iterator.next());
 				}
 				Collections.sort(purselist);
-				Purse purse = (Purse) purselist.get(0);
-				while (!(this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (purselist.size()>= 2)){
-					allPossessions.get("Purse").remove(0);
-					purselist.remove(0);
-					purse = (Purse) purselist.get(0);					
-				}
-				if (this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
-					allPossessions.get("Purse").remove(0);
-					purselist.remove(0);
-					purse.emptyStorage();
-					return purse;
+				while (!purselist.isEmpty()){
+					Purse purse = (Purse) purselist.get(0);
+					while (!(this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (purselist.size()>= 2)){
+						allPossessions.get("Purse").remove(0);
+						purselist.remove(0);
+						purse = (Purse) purselist.get(0);					
+					}
+					if (this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+						allPossessions.get("Purse").remove(0);
+						purselist.remove(0);
+						purse.emptyStorage();
+						return purse;
+					}
 				}
 			}
 		}
@@ -759,17 +769,19 @@ public class Hero extends Creature {
 				while (iterator.hasNext()){
 					ducatlist.add((Ducat) iterator.next());
 				}
-				Collections.sort(ducatlist);
-				Ducat ducat = (Ducat) ducatlist.get(0);
-				while (!(this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (ducatlist.size()>= 2)){
-					allPossessions.get("Ducat").remove(0);
-					ducatlist.remove(0);
-					ducat = (Ducat) ducatlist.get(0);					
-				}
-				if (this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
-					allPossessions.get("Ducat").remove(0);
-					ducatlist.remove(0);
-					return ducat;
+				while (!ducatlist.isEmpty()){
+					Collections.sort(ducatlist);
+					Ducat ducat = (Ducat) ducatlist.get(0);
+					while (!(this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (ducatlist.size()>= 2)){
+						allPossessions.get("Ducat").remove(0);
+						ducatlist.remove(0);
+						ducat = (Ducat) ducatlist.get(0);					
+					}
+					if (this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
+						allPossessions.get("Ducat").remove(0);
+						ducatlist.remove(0);
+						return ducat;
+					}
 				}
 			}
 		}

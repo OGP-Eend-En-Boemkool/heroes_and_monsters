@@ -27,7 +27,7 @@ public class CreatureTest {
 		backpack = new Backpack(132, 261, 1, Unit.KG);
 		hero1 = new Hero("Superman", new BigDecimal(219.23), 127, new ArrayList<Object>(Arrays.asList(weapon1, null, null, armor1, purse)));
 		hero2 = new Hero("Spiderman", new BigDecimal(256.49), 163, new ArrayList<Object>(Arrays.asList(null, weapon2, backpack, armor2, null)));
-		monster1 = new Monster("Frankenstein", new BigDecimal(321.64), 97, new ArrayList<String>(Arrays.asList("Left hand", "Right hand", "Back", "Tail")), new ArrayList<Object>(Arrays.asList(weapon3)), 77, 52);
+		monster1 = new Monster("Frankenstein", new BigDecimal(321.64), 7, new ArrayList<String>(Arrays.asList("Left hand", "Right hand", "Back", "Tail")), new ArrayList<Object>(Arrays.asList(weapon3)), 77, 52);
 		monster2 = new Monster("Dracula", new BigDecimal(41.23), 73, new ArrayList<String>(Arrays.asList("Left hand", "Right hand")), new ArrayList<Object>(), 49, 46);
 	}
 	
@@ -76,8 +76,6 @@ public class CreatureTest {
 	@Test
 	public void testHit_Hero_LegalCase(){
 		hero2.hit(monster1);
-		System.out.println(monster1.getHitpoints());
-		System.out.println(monster1.getMaxHitpoints());
 		assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
 		assertTrue(hero1.canHitCreature(monster2));
 	}
@@ -85,8 +83,6 @@ public class CreatureTest {
 	@Test
 	public void testHit_Monster_LegalCase(){
 		monster1.hit(monster2);
-		//System.out.println(monster2.getHitpoints());
-		//System.out.println(monster2.getMaxHitpoints());
 		assertTrue(monster2.getHitpoints() <= monster2.getMaxHitpoints());
 	}
 	
