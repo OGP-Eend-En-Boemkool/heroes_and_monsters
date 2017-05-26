@@ -76,8 +76,6 @@ public class CreatureTest {
 	@Test
 	public void testHit_LegalCase(){
 		hero1.hit(monster1);
-		System.out.println(monster1.getHitpoints());
-		System.out.println(monster1.getMaxHitpoints());
 		assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
 		assertTrue(monster1.canHitCreature(monster2));
 	}

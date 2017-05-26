@@ -582,14 +582,13 @@ public class Hero extends Creature {
 				Collections.sort(armorlist);
 				Armor armor = (Armor) armorlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
-					((Armor)allPossessions.get("Armor").get(0)).terminate();
+					((Armor)(allPossessions.get("Armor")).get(0)).terminate();
 					allPossessions.get("Armor").remove(0);
 					armorlist.remove(0);
 					armor = (Armor) armorlist.get(0);
 				}
 				if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					allPossessions.get("Armor").remove(0);
-					armorlist.remove(0);
 					return armor;
 				}
 			}

@@ -483,9 +483,10 @@ public abstract class Creature implements Capacity{
 				return false;
 			}
 		}
-		return (this.getAnchors().keySet().contains(anchor) &&
-				this.getAnchors().get(anchor) == null && !getKilled() &&
-				((object instanceof Ownable) || (object instanceof Ducat)));	
+		return ((object == null) || (this.getAnchors().keySet().contains(anchor) &&
+				this.getAnchors().get(anchor) == null && !getKilled()) &&
+				((object instanceof Ownable) || (object instanceof Ducat)));
+		
 	}
 	
 	/**
@@ -506,7 +507,7 @@ public abstract class Creature implements Capacity{
 		if (!canEmptyAnchor(anchor)){
 			throw new IllegalArgumentException("Anchor cannot be emptied.");
 		}
-		Object object = this.anchors.remove(anchor);
+		Object object = this.anchors.put(anchor, null);
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
 			ownable.setHolder();
