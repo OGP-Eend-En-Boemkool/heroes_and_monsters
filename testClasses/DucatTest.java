@@ -46,6 +46,9 @@ public class DucatTest {
 		ducat2.subtract(purse);
 		assertTrue(ducat2.getValue() == 2);
 		assertTrue(ducat2.getWeight(Unit.KG) == 0.1);
+		ducat1.add(ducat2);
+		assertTrue(ducat1.equals(ducat2));
+		assertFalse(ducat1 == ducat2);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -95,5 +98,12 @@ public class DucatTest {
 	@Test (expected = IllegalArgumentException.class)
 	public void testSubtractPurseIsTooBig() throws IllegalArgumentException{;
 		ducat2.subtract(purse);
+	}
+	
+	@Test 
+	public void testEqualsFalse(){
+		assertFalse(ducat2.equals(null));
+		assertFalse(ducat2.equals(purse));
+		assertFalse(ducat2.equals(ducat3));
 	}
 }

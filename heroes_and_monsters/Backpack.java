@@ -169,7 +169,7 @@ public class Backpack extends Storage{
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
 		}
-		double weight = this.getOwnWeight(unit);
+		double weight = 0;
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();
@@ -260,7 +260,9 @@ public class Backpack extends Storage{
 			if (!alreadyDucat){
 				this.content.add(ducat);
 			}
-			ducat.subtract(ducat);
+			else{
+				ducat.subtract(ducat);
+			}
 		}
 		else if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
@@ -697,7 +699,7 @@ public class Backpack extends Storage{
 							inside = iterator.nextElement();
 						}
 						else {
-							indexBackpack = 1;
+							indexBackpack = 0;
 							inside = null;
 						}
 					}
