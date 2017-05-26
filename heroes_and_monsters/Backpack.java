@@ -258,11 +258,9 @@ public class Backpack extends Storage{
 				}
 			}
 			if (!alreadyDucat){
-				this.content.add(ducat);
+				this.content.add(new Ducat(ducat.getValue()));
 			}
-			else{
-				ducat.subtract(ducat);
-			}
+			ducat.subtract(ducat);
 		}
 		else if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
@@ -834,7 +832,6 @@ public class Backpack extends Storage{
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();
-			System.out.println(object.toString());
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				weight = weight + ducat.getWeight(unit);
@@ -844,7 +841,6 @@ public class Backpack extends Storage{
 				weight = weight + ownable.getOwnWeight(unit);
 			}
 		}
-		System.out.println("total");
 		return weight;
 	}
 	

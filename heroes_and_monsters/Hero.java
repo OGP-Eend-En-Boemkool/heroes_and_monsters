@@ -706,15 +706,8 @@ public class Hero extends Creature {
 	protected Object choosePurse(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Purse")){
-				ArrayList<Object> purselist = allPossessions.get("Purse");
-				Collections.sort(purselist, new Comparator<Object>() {
-				    @Override
-				    public int compare(Object o1, Object o2) {
-				    	Purse p1 = (Purse) o1;
-				    	Purse p2 = (Purse) o2;
-				        return compare(p1.getMaximumCapacity(Unit.KG), p2.getMaximumCapacity(Unit.KG));
-				    }
-				});
+				ArrayList<Purse> purselist = (allPossessions.get("Purse"));;
+				Collections.sort(purselist);
 				Purse purse = (Purse) purselist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (purselist.size()>= 2)){
 					allPossessions.get("Purse").remove(0);

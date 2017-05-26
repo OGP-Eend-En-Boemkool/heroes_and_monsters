@@ -13,7 +13,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @version	1.0
  */
 @Value
-public class Ducat{
+public class Ducat implements Comparable<Ducat>{
 
 	/**
 	 * Initialize this new Ducat with the given value as amount.
@@ -183,4 +183,19 @@ public class Ducat{
  		Ducat otherDucat = (Ducat) other;
  		return (this.getValue() == otherDucat.getValue());		
  	}
+ 	
+ 	/**********************************
+	 * comparable
+	 **********************************/
+	
+	/**
+	 * Compare this ducat to another by their value.
+	 * 
+	 * @return The subtraction of the value of this ducat and the value of the other ducat.
+	 * 		   | result == (this.getValue() - other.getValue())
+	 */
+	@Override
+	public int compareTo(Ducat other) {
+		return (this.getValue() - other.getValue());
+	}
 }
