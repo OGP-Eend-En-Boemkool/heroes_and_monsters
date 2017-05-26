@@ -82,8 +82,8 @@ public class CreatureTest {
 	
 	@Test
 	public void testHit_Monster_LegalCase(){
-		monster1.hit(monster2);
-		assertTrue(monster2.getHitpoints() <= monster2.getMaxHitpoints());
+		monster2.hit(monster1);
+		assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
 	}
 	
 	@Test
