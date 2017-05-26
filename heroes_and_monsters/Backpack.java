@@ -431,8 +431,9 @@ public class Backpack extends Storage{
 				Ducat ducat = (Ducat) object;
 				Ducat newDucat = new Ducat(0);
 				while (ducat.getValue() != newDucat.getValue()){
-					while (this.getBackpackIterator().hasMoreElements()){
-						Object objectInBackpack = this.getBackpackIterator().nextElement();
+					Enumeration<Object> iterator = this.getBackpackIterator();
+					while (iterator.hasMoreElements()){
+						Object objectInBackpack = iterator.nextElement();
 						if (objectInBackpack instanceof Purse){
 							if ( ((Purse) objectInBackpack).getContent().getValue() >= (ducat.getValue()-newDucat.getValue())){
 								 ((Purse) objectInBackpack).getContent().subtract(ducat).add(newDucat);
@@ -470,8 +471,9 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	protected void emptyStorage()throws IllegalArgumentException {
-		while (getContent().iterator().hasNext()){
-			this.takeOutOfStorage(getContent().iterator().next());
+		Iterator<Object> iterator = getContent().iterator();
+		while (iterator.hasNext()){
+			this.takeOutOfStorage(iterator.next());
 		}
 	}
 	
@@ -538,16 +540,18 @@ public class Backpack extends Storage{
 		}
 		if (ownable instanceof Backpack){
 			Backpack backpack = (Backpack) ownable;
-			while (backpack.getBackpackIterator().hasMoreElements()){
-				Object object = backpack.getBackpackIterator().nextElement();
+			Enumeration<Object> enumeration = backpack.getBackpackIterator();
+			while (enumeration.hasMoreElements()){
+				Object object = enumeration.nextElement();
 				if (object instanceof Ownable){
 					ownable = (Ownable) object;
 					this.addToIdentificationNumbers(ownable);
 				}
 			}
 		}
-		while (this.getContainersSet().iterator().hasNext()){
-			Backpack container = this.getContainersSet().iterator().next();
+		Iterator<Backpack> iterator = this.getContainersSet().iterator();
+		while (iterator.hasNext()){
+			Backpack container = iterator.next();
 			container.addToIdentificationNumbers(ownable);
 		}
 	}
@@ -600,16 +604,18 @@ public class Backpack extends Storage{
 		}
 		if (ownable instanceof Backpack){
 			Backpack backpack = (Backpack) ownable;
-			while (backpack.getBackpackIterator().hasMoreElements()){
-				Object object = backpack.getBackpackIterator().nextElement();
+			Enumeration<Object> enumeration = backpack.getBackpackIterator();
+			while (enumeration.hasMoreElements()){
+				Object object = enumeration.nextElement();
 				if (object instanceof Ownable){
 					ownable = (Ownable) object;
 					this.removeFromIdentificationNumbers(ownable);
 				}
 			}
 		}
-		while (this.getContainersSet().iterator().hasNext()){
-			Backpack container = this.getContainersSet().iterator().next();
+		Iterator<Backpack> iterator = this.getContainersSet().iterator();
+		while (iterator.hasNext()){
+			Backpack container = iterator.next();
 			container.removeFromIdentificationNumbers(ownable);
 		}
 	}
@@ -632,8 +638,9 @@ public class Backpack extends Storage{
 		long idNumber = ownable.getIdentification();
 		if (this.getIdNumber().get(idNumber) != null){
 			ArrayList<Ownable> arraylist = this.getIdNumber().get(idNumber);
-			while (arraylist.iterator().hasNext()){
-				Ownable ownableInList = arraylist.iterator().next();
+			Iterator<Ownable> iterator = arraylist.iterator();
+			while (iterator.hasNext()){
+				Ownable ownableInList = iterator.next();
 				if (ownable == ownableInList){
 					return true;
 				}
@@ -677,8 +684,9 @@ public class Backpack extends Storage{
 				Object object = getContent().get(indexCurrent);
 				if (object instanceof Backpack){
 					Backpack backpack = (Backpack) object;
-					while (backpack.getBackpackIterator().hasMoreElements()){
-						return backpack.getBackpackIterator().nextElement();
+					Enumeration<Object> iterator = backpack.getBackpackIterator();
+					while (iterator.hasMoreElements()){
+						return iterator.nextElement();
 					}
 				}
 				indexCurrent++;
@@ -804,8 +812,9 @@ public class Backpack extends Storage{
 	@Override
 	public double getTotalWeight(Unit unit) {
 		double weight = unit.convertFromKilogram(this.ownWeight);
-		while (this.getBackpackIterator().hasMoreElements()){
-			Object object = this.getBackpackIterator().nextElement();
+		Enumeration<Object> iterator = this.getBackpackIterator();
+		while (iterator.hasMoreElements()){
+			Object object = iterator.nextElement();
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				weight = weight + ducat.getWeight(unit);
@@ -844,8 +853,9 @@ public class Backpack extends Storage{
 	@Override
 	protected void addAllContainersToContainersSet(Backpack container){
 		super.addAllContainersToContainersSet(container);
-		while (this.getBackpackIterator().hasMoreElements()){
-			Object object = this.getBackpackIterator().nextElement();
+		Enumeration<Object> iterator = this.getBackpackIterator();
+		while (iterator.hasMoreElements()){
+			Object object = iterator.nextElement();
 			if (object instanceof Ownable){
 				Ownable ownable = (Ownable) object;
 				ownable.addAllContainersToContainersSet(container);
@@ -868,8 +878,9 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	protected void removeAllContainers(){
-		while (this.getBackpackIterator().hasMoreElements()){
-			Object object = this.getBackpackIterator().nextElement();
+		Enumeration<Object> iterator = this.getBackpackIterator();
+		while (iterator.hasMoreElements()){
+			Object object = iterator.nextElement();
 			if (object instanceof Ownable){
 				Ownable ownable = (Ownable) object;
 				ownable.getContainersSet().removeAll(this.getContainersSet());
@@ -886,8 +897,9 @@ public class Backpack extends Storage{
 	 * Terminate all the items in the backpack that need to be terminated.
 	 */
 	protected void terminate(){
-		while (this.getBackpackIterator().hasMoreElements()){
-			Object next = this.getBackpackIterator().nextElement();
+		Enumeration<Object> iterator = this.getBackpackIterator();
+		while (iterator.hasMoreElements()){
+			Object next = iterator.nextElement();
 			if (next instanceof Weapon || next instanceof Armor){
 				((Ownable) next).terminate();
 			}

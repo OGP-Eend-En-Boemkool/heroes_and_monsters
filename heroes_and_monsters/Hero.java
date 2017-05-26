@@ -417,8 +417,9 @@ public class Hero extends Creature {
 	 */
 	private HashMap<String, ArrayList<Object>> getAllPossessions(Creature opponent){
 		HashMap<String, ArrayList<Object>> allPossessions = this.getOpponentsPossessions(opponent);
-		while (this.getOpponentsPossessions(this).keySet().iterator().hasNext()){
-			String key = (this.getOpponentsPossessions(this)).keySet().iterator().next();
+		Iterator<String> iterator = this.getOpponentsPossessions(this).keySet().iterator();
+		while (iterator.hasNext()){
+			String key = iterator.next();
 			if (allPossessions.containsKey(key)){
 				allPossessions.get(key).addAll(this.getOpponentsPossessions(this).get(key));
 			}

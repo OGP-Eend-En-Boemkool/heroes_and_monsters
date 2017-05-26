@@ -807,12 +807,14 @@ public abstract class Creature implements Capacity{
 	 */
 	protected HashMap<String, ArrayList<Object>> getOpponentsPossessions(Creature opponent){
 		HashMap<String, ArrayList<Object>> opponentsPossessions = new HashMap<String, ArrayList<Object>>();
-		while (this.getAnchors().values().iterator().hasNext()){
-			Object object = this.getAnchors().values().iterator().next();
+		Iterator<Object> iterator = this.getAnchors().values().iterator();
+		while (iterator.hasNext()){
+			Object object = iterator.next();
 			this.addToPossessions(object, opponentsPossessions);
 			if (object instanceof Backpack){
-				while (((Backpack)object).getBackpackIterator().hasMoreElements()){
-					Object objectInBackpack = ((Backpack)object).getBackpackIterator().nextElement();
+				Enumeration<Object> enumeration = ((Backpack)object).getBackpackIterator();
+				while (enumeration.hasMoreElements()){
+					Object objectInBackpack = enumeration.nextElement();
 					this.addToPossessions(objectInBackpack, opponentsPossessions);
 				}
 			}
@@ -861,8 +863,9 @@ public abstract class Creature implements Capacity{
 	 * 			| }
 	 */
 	protected void terminateRemainingObjectsFromClass(String className, HashMap<String, ArrayList<Object>> allPossessions){
-		while (allPossessions.get(className).iterator().hasNext()){
-			((Ownable) allPossessions.get(className).iterator().next()).terminate();
+		Iterator<Object> iterator = allPossessions.get(className).iterator();
+		while (iterator.hasNext()){
+			((Ownable) iterator.next()).terminate();
 		}
 	}
 	
