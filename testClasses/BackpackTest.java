@@ -145,8 +145,16 @@ public class BackpackTest {
 	public void testBackpack_contentTakeOutOfStorage(){
 		assertFalse(backpack3.canTakeOutOfStorage(armor2));
 		assertFalse(backpack3.canTakeOutOfStorage(ducat2));
+		assertFalse(backpack3.canTakeOutOfStorage(weapon1));
 		backpack3.addToStorage(ducat1);
-		//assertTrue(backpack3.)
+		assertTrue(backpack3.canTakeOutOfStorage(ducat1));
+		assertFalse(backpack3.canTakeOutOfStorage(new Ducat(30)));
+		
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testRemoveFromStorageException() throws IllegalArgumentException {
+		backpack3.removeFromStorageAndTerminate(weapon1);
 	}
 
 }
