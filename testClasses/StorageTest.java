@@ -30,37 +30,34 @@ public class StorageTest {
 	
 	@Test
 	public void testStorage_LegalCase(){
-		//assertTrue(purse.canHaveAsTotalWeight(purse.getTotalWeight(Unit.KG)));
-		//assertTrue(backpack1.canHaveAsTotalWeight(backpack1.getTotalWeight(Unit.KG)));
+		assertTrue(purse.canHaveAsTotalWeight(purse.getTotalWeight(Unit.KG)));
+		assertTrue(backpack1.canHaveAsTotalWeight(backpack1.getTotalWeight(Unit.KG)));
 	}
 	
 	@Test
 	public void testTransferToStorage(){
-		//backpack1.addToStorage(armor);
-		//backpack1.transferToStorage(backpack2, armor);
-		//assertTrue(backpack2.OwnableInBackpack(armor));
-		//backpack1.addToStorage(ducat);
-		//backpack1.transferToStorage(backpack2, ducat);
-		//assertTrue(backpack1.getValue() == backpack1.getStandardValue());
-		//backpack2.transferToStorage(purse, ducat);
-		//assertTrue(backpack2.getValue() == backpack2.getStandardValue() + armor.getValue());
-		//assertTrue(purse.getValue() == ducat.getValue());
+		backpack1.addToStorage(armor);
+		backpack1.transferToStorage(backpack2, armor);
+		assertTrue(backpack2.OwnableInBackpack(armor));
+		backpack1.addToStorage(ducat);
+		backpack1.transferToStorage(backpack2, ducat);
+		assertTrue(backpack1.getValue() == backpack1.getStandardValue());
+		backpack2.transferToStorage(purse, ducat);
+		assertTrue(backpack2.getValue() == backpack2.getStandardValue() + armor.getValue());
+		assertTrue(purse.getValue() == ducat.getValue());
 	}
 	
 	@Test
 	public void testTransferToCreature(){
-		//backpack1.addToStorage(weapon);
-		//backpack1.transferToCreature(weapon, hero, "Left hand");
-		//assertTrue(weapon.getHolder() == hero);
-		//backpack2.addToStorage(purse);
-		//System.out.println(5);
-		//backpack1.addToStorage(backpack2);
-		//System.out.println(5);
-		//assertTrue(purse.getHolder() == backpack2);
-		//assertTrue(purse.getUltimateHolder() == backpack1);
-		//hero.addToAnchor(backpack1, "Back");
-		//System.out.println(5);
-		//assertTrue(purse.getUltimateHolder() == hero);
+		backpack1.addToStorage(weapon);
+		backpack1.transferToCreature(weapon, hero, "Left hand");
+		assertTrue(weapon.getHolder() == hero);
+		backpack2.addToStorage(purse);
+		backpack1.addToStorage(backpack2);
+		assertTrue(purse.getHolder() == backpack2);
+		assertTrue(purse.getUltimateHolder() == backpack1);
+		hero.addToAnchor(backpack1, "Back");
+		assertTrue(purse.getUltimateHolder() == hero);
 		
 	}
 
