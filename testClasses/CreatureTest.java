@@ -74,16 +74,79 @@ public class CreatureTest {
 	}
 	
 	@Test
-	public void testHit_Hero_LegalCase(){
-		hero2.hit(monster1);
+	public void testHit_Hero1_Monster1_LegalCase(){
+		hero1.hit(monster1);
 		assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
-		assertTrue(hero1.canHitCreature(monster2));
 	}
 	
 	@Test
-	public void testHit_Monster_LegalCase(){
+	public void testHit_Hero1_Monster2_LegalCase(){
+		hero1.hit(monster2);
+		assertTrue(monster2.getHitpoints() <= monster2.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Hero2_Monster1_LegalCase(){
+		hero2.hit(monster1);
+		assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Hero2_Monster2_LegalCase(){
+		Armor a = new Armor(83, 84, 752, 41, Unit.KG);
+		Purse p = new Purse(12, Unit.KG, 5);
+		Ducat d = new Ducat(7);
+		monster2.addToAnchor(p, "Left hand");
+		monster2.addToAnchor(a, "Right hand");
+		p.addToStorage(d);
+		hero2.hit(monster2);
+		assertTrue(monster2.getHitpoints() <= monster2.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Monster1_Monster2_LegalCase(){
 		monster1.hit(monster2);
 		assertTrue(monster2.getHitpoints() <= monster2.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Monster2_Monster1_LegalCase(){
+		monster2.hit(monster1);
+		assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Monster1_Hero1_LegalCase(){
+		monster1.hit(hero1);
+		assertTrue(hero1.getHitpoints() <= hero1.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Monster1_Hero2_LegalCase(){
+		monster1.hit(hero2);
+		assertTrue(hero2.getHitpoints() <= hero2.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Monster2_Hero1_LegalCase(){
+		Weapon w = new Weapon(60, Unit.KG, 49);
+		Armor a = new Armor(53, 84, 752, 46, Unit.KG);
+		Backpack b = new Backpack(132, 261, 1, Unit.KG);
+		Ducat d1 = new Ducat(12);
+		Ducat d2 = new Ducat(74);
+		hero1.addToAnchor(b, "Back");
+		purse.addToStorage(d1);
+		b.addToStorage(d2);
+		b.addToStorage(a);
+		hero1.addToAnchor(w, "Right hand");
+		monster2.hit(hero1);
+		assertTrue(hero1.getHitpoints() <= hero1.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testHit_Monster2_Hero2_LegalCase(){
+		monster2.hit(hero2);
+		assertTrue(hero2.getHitpoints() <= hero2.getMaxHitpoints());
 	}
 	
 	@Test
