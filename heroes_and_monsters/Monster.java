@@ -608,50 +608,61 @@ public class Monster extends Creature implements Damage, Protection {
 	protected Object chooseTreasure(Creature opponent, HashMap<String, ArrayList<Object>> possessions){
 		int random = randomNumber();
 		if (random < 35){
-			if (possessions.get("Purse").size() == 0){
-				return null;
-			}
-			else {
-				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Purse").size());
-				return possessions.get("Purse").get(index);
+			if (possessions.containsKey("Purse")){
+				if ((possessions.get("Purse")).size() == 0){
+					return null;
+				}
+				else {
+					int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Purse").size());
+					return possessions.get("Purse").get(index);
+				}
 			}
 		}
 		else if (random >= 35 && random < 70){
-			if (possessions.get("Ducat").size() == 0){
-				return null;
-			}
-			else {
-				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Ducat").size());
-				return possessions.get("Ducat").get(index);
+			if (possessions.containsKey("Ducat")){
+				if (possessions.get("Ducat").size() == 0){
+					return null;
+				}
+				else {
+					int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Ducat").size());
+					return possessions.get("Ducat").get(index);
+				}
 			}
 		}
 		else if (random >= 70 && random < 83){
-			if (possessions.get("Weapon").size() == 0){
-				return null;
-			}
-			else {
-				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Weapon").size());
-				return possessions.get("Weapon").get(index);
+			if (possessions.containsKey("Weapon")){
+				if (possessions.get("Weapon").size() == 0){
+					return null;
+				}
+				else {
+					int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Weapon").size());
+					return possessions.get("Weapon").get(index);
+				}
 			}
 		}
 		else if (random >= 83 && random < 94){
-			if (possessions.get("Armor").size() == 0){
-				return null;
-			}
-			else {
-				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Armor").size());
-				return possessions.get("Armor").get(index);
+			if (possessions.containsKey("Armor")){
+				if (possessions.get("Armor").size() == 0){
+					return null;
+				}
+				else {
+					int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Armor").size());
+					return possessions.get("Armor").get(index);
+				}
 			}
 		}
 		else {
-			if (possessions.get("Backpack").size() == 0){
-				return null;
-			}
-			else {
-				int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Backpack").size());
-				return possessions.get("Backpack").get(index);
+			if (possessions.containsKey("Backpack")){
+				if (possessions.get("Backpack").size() == 0){
+					return null;
+				}
+				else {
+					int index = ThreadLocalRandom.current().nextInt(0, possessions.get("Backpack").size());
+					return possessions.get("Backpack").get(index);
+				}
 			}
 		}
+		return null;
 	}
 
 }

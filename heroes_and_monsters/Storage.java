@@ -96,8 +96,8 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 * 			| result == !getTerminated()
 	 */
 	public boolean canAddToStorage(Object object){
-		return !getTerminated() &&
-				(!(object instanceof Ownable) || !((Ownable) object).getTerminated());
+		return ((object == null)||(!getTerminated() &&
+				(!(object instanceof Ownable) || !((Ownable) object).getTerminated())));
 	}
 	
 	/**

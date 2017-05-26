@@ -850,6 +850,9 @@ public abstract class Creature implements Capacity{
 				arraylist.add(object);
 				opponentsPossessions.put(classObject, arraylist);
 			}
+			if (object instanceof Ownable){
+				((Ownable) object).setHolder();
+			}
 		}
 	}
 	
@@ -868,9 +871,11 @@ public abstract class Creature implements Capacity{
 	 * 			| }
 	 */
 	protected void terminateRemainingObjectsFromClass(String className, HashMap<String, ArrayList<Object>> allPossessions){
-		Iterator<Object> iterator = allPossessions.get(className).iterator();
-		while (iterator.hasNext()){
-			((Ownable) iterator.next()).terminate();
+		if (allPossessions.containsKey(className)){
+			Iterator<Object> iterator = allPossessions.get(className).iterator();
+			while (iterator.hasNext()){
+				((Ownable) iterator.next()).terminate();
+			}
 		}
 	}
 	

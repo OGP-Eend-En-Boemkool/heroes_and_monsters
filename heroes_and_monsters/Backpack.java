@@ -310,7 +310,7 @@ public class Backpack extends Storage{
 			weight = ducat.getWeight(Unit.KG);
 		}
 		else {
-			return false;
+			return (object == null);
 		}
 		if (this.getUsedCapacity(Unit.KG) + weight > this.getMaximumCapacity(Unit.KG)){
 			return false;
