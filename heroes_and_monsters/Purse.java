@@ -272,13 +272,17 @@ public class Purse extends Storage {
 		}
 		Ducat ducat = (Ducat) object;
 		setContent(getContent().add(ducat));
+		((Ducat) object).subtract(ducat);
 		if (getContent().getWeight(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
 			if (this.getHolder() instanceof Backpack){
 				Backpack backpack = (Backpack) this.getHolder();
 				backpack.addToStorage(getContent());
 			}
-			setContent(getContent().subtract(this));
-			setBroken(true);
+			else {
+				((Ducat) object).add(this.getContent());
+				setContent(getContent().subtract(this));
+				setBroken(true);
+			}
 		}
 	}
 	
