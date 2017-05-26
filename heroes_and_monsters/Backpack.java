@@ -303,7 +303,12 @@ public class Backpack extends Storage{
 			if (ownable.getHolder() != null){
 				return false;
 			}
-			weight = ownable.getOwnWeight(Unit.KG);
+			if (ownable instanceof Storage){
+				weight = ((Storage)ownable).getTotalWeight(Unit.KG);
+			}
+			else{
+				weight = ownable.getOwnWeight(Unit.KG);
+			}
 		}
 		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
@@ -368,7 +373,7 @@ public class Backpack extends Storage{
 		}
 		if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;
-			return this.OwnableInBackpack(ownable);
+			return (this.ownableInBackpack(ownable));
 		}
 		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
@@ -632,7 +637,7 @@ public class Backpack extends Storage{
 	 * 			The given ownable is terminated.
 	 * 			| ownable.getTerminated()
 	 */
-	public boolean OwnableInBackpack(Ownable ownable) throws OwnableIsTerminatedException {
+	public boolean ownableInBackpack(Ownable ownable) throws OwnableIsTerminatedException {
 		if (ownable.getTerminated()){
 			throw new OwnableIsTerminatedException(ownable);
 		}
