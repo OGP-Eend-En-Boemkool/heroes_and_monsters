@@ -258,11 +258,9 @@ public class Backpack extends Storage{
 				}
 			}
 			if (!alreadyDucat){
-				this.content.add(ducat);
+				this.content.add(new Ducat(ducat.getValue()));
 			}
-			else{
-				ducat.subtract(ducat);
-			}
+			ducat.subtract(ducat);
 		}
 		else if (object instanceof Ownable){
 			Ownable ownable = (Ownable) object;

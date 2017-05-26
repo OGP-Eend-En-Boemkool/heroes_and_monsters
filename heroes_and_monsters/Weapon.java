@@ -16,7 +16,7 @@ import Exceptions.OwnableIsTerminatedException;
  * @author Linde en Lotte
  * @version 1.0
  */
-public class Weapon extends Ownable implements Damage{
+public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 
 	/******************************************
 	 * Constructors
@@ -254,5 +254,20 @@ public class Weapon extends Ownable implements Damage{
 	 */
 	protected void terminate(){
 		this.terminated = true;
+	}
+
+	/**********************************
+	 * comparable
+	 **********************************/
+	
+	/**
+	 * Compare the damages of this weapon and another.
+	 * 
+	 * @return The subtraction of the current damage of this weapon and the current damage of the other weapon.
+	 * 		   | result == (this.getCurrentDamage() - other.getCurrentDamage())
+	 */
+	@Override
+	public int compareTo(Weapon other) {
+		return (this.getCurrentDamage() - other.getCurrentDamage());
 	}
 }

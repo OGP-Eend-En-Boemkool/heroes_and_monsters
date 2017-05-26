@@ -12,7 +12,7 @@ public class BackpackTest {
 	Backpack backpack1, backpack2, backpack3;
 	Purse purse;
 	Ducat ducat1, ducat2, ducat3;
-	Armor armor;
+	Armor armor1, armor2, armor3, armor4;
 	Weapon weapon;
 	Hero hero;
 	Monster monster;
@@ -26,9 +26,12 @@ public class BackpackTest {
 		ducat1 = new Ducat(2);
 		ducat2 = new Ducat(20);
 		ducat3 = new Ducat(5);
-		armor = new Armor(13, 90, 830, 26, Unit.KG);
+		armor1 = new Armor(13, 90, 830, 26, Unit.KG);
+		armor2 = new Armor(7, 92, 850, 27, Unit.KG);
+		armor3 = new Armor(17, 99, 710, 24, Unit.KG);
+		armor4 = new Armor(19, 80, 615, 8, Unit.KG);
 		weapon = new Weapon(5.67, Unit.KG, 84);
-		ArrayList<Object> anchorList = new ArrayList<Object>((Arrays.asList(null, null, null, armor, null)));
+		ArrayList<Object> anchorList = new ArrayList<Object>((Arrays.asList(null, null, null, armor1, null)));
 		hero = new Hero("Special K", new BigDecimal(13.02), 2477, anchorList);
 	}
 	
@@ -37,12 +40,18 @@ public class BackpackTest {
 		assertTrue(backpack1.getMaximumCapacity(Unit.GRAM) == 500000);
 		assertTrue(backpack1.getMaximumCapacity(Unit.KG) == 500);
 		assertTrue(backpack2.getMaximumCapacity(Unit.KG) == 1);
+		int sizeBefore1 = backpack1.getContent().size();
 		backpack1.addToStorage(weapon);
+		int sizeAfter1 = backpack1.getContent().size();
+		assertTrue(sizeBefore1 == sizeAfter1 -1);
 		assertTrue(backpack1.getUsedCapacity(Unit.KG) == 5.67);
+		int sizeBefore3 = backpack3.getContent().size();
 		backpack3.addToStorage(backpack1);
 		assertTrue(backpack3.getUsedCapacity(Unit.KG) == 15.67);
 		backpack2.addToStorage(ducat1);
 		backpack3.addToStorage(backpack2);
+		int sizeAfter3 = backpack3.getContent().size();
+		assertTrue(sizeAfter3 == sizeBefore3 + 2);
 		assertTrue(backpack3.getUsedCapacity(Unit.KG) == 16.37);
 	}
 	
@@ -50,11 +59,61 @@ public class BackpackTest {
 	public void testBackpack_contentLegalCase(){
 		backpack3.addToStorage(ducat2);
 		int sizeBefore = backpack3.getContent().size();
-		assertTrue(backpack3.getContent().get(sizeBefore - 1) == ducat2);
+		assertTrue((backpack3.getContent().get(sizeBefore - 1)).equals(new Ducat(20)));
 		backpack3.addToStorage(ducat3);
-		assertTrue(((Ducat)backpack3.getContent().get(backpack3.getContent().size() - 1)).equals(new Ducat(25)));
-		
+		int sizeAfter = backpack3.getContent().size();
+		assertTrue(((Ducat)backpack3.getContent().get(sizeAfter - 1)).equals(new Ducat(25)));
+		assertTrue(sizeBefore == sizeAfter);	
+		assertTrue(backpack3.canAddToStorage(purse));
+		backpack3.addToStorage(armor3);
+		assertTrue(backpack3.canTakeOutOfStorage(armor3));
+		backpack3.removeFromStorageAndTerminate(armor3);
+		assertTrue(armor3.getTerminated());
+		backpack3.addToStorage(backpack1);
+		assertTrue(backpack3.OwnableInBackpack(backpack1));
+		backpack1.addToStorage(armor4);
+		assertTrue(backpack1.OwnableInBackpack(armor4));
+		assertTrue(backpack3.OwnableInBackpack(armor4));
+	}
+
+	@Test
+	public void testBackpack_valueLegalCase(){
+		assertTrue(backpack3.getStandardValue() == 15);
+		assertTrue(backpack2.getStandardValue() == 200);
+		assertTrue(backpack1.getStandardValue() == 10);
+		backpack3.addToStorage(ducat3);
+		backpack1.addToStorage(armor4);
+		backpack3.addToStorage(backpack1);
+		assertTrue(backpack3.getValue() == 32);
 	}
 	
+	@Test
+	public void testBackpack_weightLegalCase(){
+		assertTrue(backpack3.getTotalWeight(Unit.KG) == 0.7);
+		backpack3.addToStorage(ducat3);
+		assertTrue(backpack3.getTotalWeight(Unit.KG) == 0.95);
+		assertTrue(backpack3.getTotalWeight(Unit.KG) >= backpack3.getOwnWeight(Unit.KG));
+	}
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testBackpack_contentAddToStorageAlreadyHasAnOwner() throws IllegalArgumentException{
+		backpack3.addToStorage(armor1);
+	}
 	
+	@Test (expected = IllegalArgumentException.class)
+	public void testBackpack_contentAddToStorageTooHeavy() throws IllegalArgumentException{
+		backpack2.addToStorage(armor2);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testBackpack_contentAddToStorageOwnerNotStrong() throws IllegalArgumentException{
+		hero.addToAnchor(backpack3, "Back");
+		backpack3.addToStorage(armor2);
+		backpack3.addToStorage(armor3);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testBackpack_contentAddToStorageHolderNotBig() throws IllegalArgumentException{
+		
+	}
 }

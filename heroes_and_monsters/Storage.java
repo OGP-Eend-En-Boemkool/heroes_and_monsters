@@ -11,7 +11,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @author Linde en Lotte
  * @version 1.0
  */
-public abstract class Storage extends Ownable implements Capacity {
+public abstract class Storage extends Ownable implements Capacity, Comparable<Storage> {
 
 	/******************************************
 	 * Constructors
@@ -216,6 +216,21 @@ public abstract class Storage extends Ownable implements Capacity {
 	 */
 	protected void terminate(){
 		this.terminated = false;
+	}
+	
+	/**********************************
+	 * comparable
+	 **********************************/
+	
+	/**
+	 * Compare the maximum capacities of this storage and another.
+	 * 
+	 * @return The subtraction of the maximum capacity of this storage and the maximum capacity of the other storage.
+	 * 		   | result == (this.getMaximumCapacity(Unit.KG) - other.getMaximumCapacity(Unit.KG))
+	 */
+	@Override
+	public int compareTo(Storage other) {
+		return ((int)Math.round(this.getMaximumCapacity(Unit.KG) - other.getMaximumCapacity(Unit.KG)));
 	}
 }
 
