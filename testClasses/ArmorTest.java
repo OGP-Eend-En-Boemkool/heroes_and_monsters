@@ -7,12 +7,13 @@ import Exceptions.*;
 
 public class ArmorTest {
 	
-	Armor armor;
+	Armor armor, armor2;
 	Backpack backpack;
 	
 	@Before
 	public void setUpFixture(){
 		armor = new Armor(2477, 84, 752, 73, Unit.KG);
+		armor2 = new Armor(65, 84, 752, 73, Unit.KG);
 		backpack = new Backpack(132, 261, 1, Unit.KG);
 		backpack.addToStorage(armor);
 	}
@@ -113,6 +114,11 @@ public class ArmorTest {
 		assertFalse(armor.isValidValue(-2));
 		assertFalse(armor.isValidValue(1002));
 		assertFalse(armor.isValidValue(501));
+	}
+	
+	@Test
+	public void testStartWithIllegalIdentification(){
+		assertFalse(armor2.getIdentification() == 65);
 	}
 
 }

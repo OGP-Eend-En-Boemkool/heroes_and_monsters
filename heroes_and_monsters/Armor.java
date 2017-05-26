@@ -305,11 +305,8 @@ public class Armor extends Ownable implements Protection{
 	 */
 	@Raw @Override
 	protected void setIdentification(long identification){
-		if (!canHaveAsIdentification(identification)){
-			identification = 2;
-			while (!canHaveAsIdentification(identification)){
-				identification += 1;
-			}
+		while (!canHaveAsIdentification(identification)){
+			identification++;
 		}
 		this.identification = identification;
 		Ownable.idListArmors.add(identification);
