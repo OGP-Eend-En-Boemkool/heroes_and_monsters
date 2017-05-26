@@ -148,12 +148,12 @@ public class Monster extends Creature implements Damage, Protection {
 	/**
 	 * Variable registering the value of the current damage.
 	 */
-	public int damage = 7;
+	private int damage = 7;
 	
 	/**
 	 * Variable registering the maximum value of the monster.
 	 */
-	public static int maxDamage = 100;
+	private static int maxDamage = 100;
 	
 	/**
 	 * Returns the current value for the damage of the monster.
@@ -243,12 +243,12 @@ public class Monster extends Creature implements Damage, Protection {
 	/**
 	 * Variable registering the value of the current damage.
 	 */
-	public int protection = 1;
+	private int protection = 1;
 	
 	/**
 	 * Variable registering the maximum value of the damage.
 	 */
-	public final int maxProtection = 100;
+	private final int maxProtection = 100;
 	
 	/**
 	 * Returns the current value for the protection of a monster.

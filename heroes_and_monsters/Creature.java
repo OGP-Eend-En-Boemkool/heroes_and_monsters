@@ -733,6 +733,9 @@ public abstract class Creature implements Capacity{
 	 * 			benefits of deathblow.
 	 * 			| if (newHitpointsOther <= 0) {
 	 * 			|		deathblow(other) }
+	 * @effect	If the other creature has no hitpoints left, it is killed.
+	 * 			| if (newHitpointsOther <= 0){
+				|		other.kill() }
 	 * @throws	CreatureIsDeadException
 	 * 			This creature is dead.
 	 * 			| getKilled()
@@ -757,6 +760,7 @@ public abstract class Creature implements Capacity{
 			}
 			if (newHitpointsOther <= 0){
 				newHitpointsOther = 0;
+				other.kill();
 				this.deathblow(other);
 			}
 			other.setHitpoints(newHitpointsOther);

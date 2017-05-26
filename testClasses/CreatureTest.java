@@ -83,6 +83,20 @@ public class CreatureTest {
 	}
 	
 	@Test
+	public void testHit_Monster_LegalCase(){
+		monster1.hit(monster2);
+		System.out.println(monster2.getHitpoints());
+		System.out.println(monster2.getMaxHitpoints());
+		assertTrue(monster2.getHitpoints() <= monster2.getMaxHitpoints());
+	}
+	
+	@Test
+	public void testIllegalName(){
+		assertFalse(hero1.canHaveAsName(null));
+		assertFalse(monster2.canHaveAsName("monster"));
+	}
+	
+	@Test
 	public void testIllegalHitpointsFighting(){
 		assertFalse(hero1.canHaveAsHitpointsFighting(-5));
 		assertFalse(hero2.canHaveAsHitpointsNotFighting(-2));
@@ -113,5 +127,56 @@ public class CreatureTest {
 		assertFalse(monster2.canAddToAnchor(rugzak, "Right hand"));
 		Weapon wapen2 = new Weapon(800000000, Unit.KG, 77);
 		assertFalse(monster2.canAddToAnchor(wapen2, "Right hand"));
+		Weapon wapen3 = new Weapon(12, Unit.KG, 7);
+		assertFalse(monster2.canAddToAnchor(wapen3, "Head"));
+		assertFalse(hero2.canAddToAnchor(wapen3, "Right hand"));
+		assertFalse(hero1.canAddToAnchor(monster2, "Right hand"));
+	}
+	
+	@Test
+	public void testCannotEmptyAnchor(){
+		assertFalse(hero1.canEmptyAnchor("Tail"));
+	}
+	
+	@Test
+	public void testCannotDropFromAnchor(){
+		assertFalse(hero1.canDropFromAnchor(weapon2));
+		assertFalse(hero1.canDropFromAnchor(hero2));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testPassAlongException1() throws IllegalArgumentException {
+		hero1.passAlong(weapon3, hero2, "Left hand");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testPassAlongException2() throws IllegalArgumentException {
+		hero1.passAlong(weapon1, hero2, "Right hand");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testPassToStorageException1() throws IllegalArgumentException {
+		hero1.passToStorage(weapon2, backpack);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testPassToStorageException2() throws IllegalArgumentException {
+		Purse extra = new Purse(1, Unit.KG, 5);
+		hero1.passToStorage(weapon1, extra);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testEmptyAnchorAndTerminate() throws IllegalArgumentException {
+		monster1.emptyAnchorAndTerminate("Body");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testDropFromAnchorAndTerminate() throws IllegalArgumentException {
+		monster1.dropFromAnchorAndTerminate(weapon1);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testHitIllegalCreature() throws IllegalArgumentException {
+		hero1.hit(hero2);
 	}
 }
