@@ -124,11 +124,13 @@ public class Monster extends Creature implements Damage, Protection {
 		if (anchorObjects != null && anchorObjects.size() != 0){
 			ArrayList<Integer> full = new ArrayList<>();
 			ArrayList<String> anchors = new ArrayList<String>();
-			while (this.anchors.keySet().iterator().hasNext()){
-				anchors.add(this.anchors.keySet().iterator().next());
+			Iterator<String> iterator1 = this.anchors.keySet().iterator();
+			while (iterator1.hasNext()){
+				anchors.add(iterator1.next());
 			}
-			while (anchorObjects.iterator().hasNext()){
-				Object anchor = anchorObjects.iterator().next();
+			Iterator<Object> iterator2 = anchorObjects.iterator();
+			while (iterator2.hasNext()){
+				Object anchor = iterator2.next();
 				Integer random = ThreadLocalRandom.current().nextInt(0, anchors.size());
 				while (full.contains(random)){
 					random = ThreadLocalRandom.current().nextInt(0, anchors.size());
@@ -480,17 +482,20 @@ public class Monster extends Creature implements Damage, Protection {
 		opponent.emptyAllAnchors();
 		for (int i = 0; i <= 5; i++){
 			Object treasure = chooseTreasure(opponent, possessions);
-			while (possessions.values().iterator().hasNext()){
-				ArrayList<Object> next = possessions.values().iterator().next();
+			Iterator<ArrayList<Object>> iterator1 = possessions.values().iterator();
+			while (iterator1.hasNext()){
+				ArrayList<Object> next = iterator1.next();
 				if (next.contains(treasure)){
 					next.remove(treasure);
 				}
 			}
 			if (treasure instanceof Backpack){
-				while (((Backpack) treasure).getBackpackIterator().hasMoreElements()){
-					Object element = ((Backpack) treasure).getBackpackIterator().nextElement();
-					while (possessions.values().iterator().hasNext()){
-						ArrayList<Object> next = possessions.values().iterator().next();
+				Enumeration<Object> enumeration = ((Backpack) treasure).getBackpackIterator();
+				while (enumeration.hasMoreElements()){
+					Object element = enumeration.nextElement();
+					Iterator<ArrayList<Object>> iterator2 = possessions.values().iterator();
+					while (iterator2.hasNext()){
+						ArrayList<Object> next = iterator2.next();
 						if (next.contains(element)){
 							next.remove(element);
 						}
@@ -533,8 +538,9 @@ public class Monster extends Creature implements Damage, Protection {
 				}
 			}
 			boolean added = false;
-			while (this.getAnchors().keySet().iterator().hasNext() && !added){
-				String anchor = this.getAnchors().keySet().iterator().next();
+			Iterator<String> iterator1 = this.getAnchors().keySet().iterator();
+			while (iterator1.hasNext() && !added){
+				String anchor = iterator1.next();
 				if (this.canAddToAnchor(object, anchor)){
 					this.addToAnchor(object, anchor);
 					added = true;
@@ -548,8 +554,9 @@ public class Monster extends Creature implements Damage, Protection {
 			}
 			double weight = getWeightFromAnchorObject(object);
 			if (!added){
-				while (this.getAnchors().keySet().iterator().hasNext() && !added){
-					String anchor = this.getAnchors().keySet().iterator().next();
+				Iterator<String> iterator2 = this.getAnchors().keySet().iterator();
+				while (iterator2.hasNext() && !added){
+					String anchor = iterator2.next();
 					if (getWeightFromAnchorObject(this.getAnchors().get(anchor)) > weight){
 						Object previousObject = this.getAnchors().get(anchor);
 						try {

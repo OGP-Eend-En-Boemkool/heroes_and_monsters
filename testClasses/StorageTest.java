@@ -34,10 +34,10 @@ public class StorageTest {
 		backpack1.addToStorage(armor);
 		backpack1.transferToStorage(backpack2, armor);
 		assertTrue(backpack2.OwnableInBackpack(armor));
-		//backpack1.addToStorage(ducat);
-		//backpack1.transferToStorage(backpack2, ducat);
-		//backpack2.transferToStorage(purse, ducat);
-		//assertTrue(purse.getValue() == ducat.getValue());
+		backpack1.addToStorage(ducat);
+		backpack1.transferToStorage(backpack2, ducat);
+		backpack2.transferToStorage(purse, ducat);
+		assertTrue(purse.getValue() == ducat.getValue());
 	}
 
 }
