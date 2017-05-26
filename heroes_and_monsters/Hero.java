@@ -61,13 +61,13 @@ public class Hero extends Creature {
 	 * @param	maxHitpoints
 	 * 			The maximum and current hitpoints of this hero.
 	 * @effect	This hero is initialized as a hero with the given name, maximum hitpoints
-	 * 			and maximum hitpoints. The strength is the default strength and no objects
-	 * 			are added to the anchors.
-	 * 			| this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>())
+	 * 			and maximum hitpoints. The strength is the default strength and only the
+	 * 			given armor is added to the anchors.
+	 * 			| this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>(Arrays.asList(null, null, null, armor, null)))
 	 */
 	@Raw
-	public Hero(String name, int maxHitpoints){
-		this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>());
+	public Hero(String name, int maxHitpoints, Armor armor){
+		this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>(Arrays.asList(null, null, null, armor, null)));
 	}
 	
 	/****************************************

@@ -2,6 +2,7 @@ package heroes_and_monsters;
 
 import be.kuleuven.cs.som.annotate.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
 
 /**
  * A class of purses.
@@ -195,8 +196,9 @@ public class Purse extends Storage {
 		if ((object instanceof Ducat)&&(!(this.getBroken()))){
 			Ducat ducat = (Ducat) object;
 			double weight = ducat.getWeight(Unit.KG);
-			while (this.getContainersSet().iterator().hasNext()){
-				Backpack backpack = this.getContainersSet().iterator().next();
+			Iterator<Backpack> iterator = this.getContainersSet().iterator();
+			while (iterator.hasNext()){
+				Backpack backpack = iterator.next();
 				if ((backpack.getUsedCapacity(Unit.KG) + weight) > backpack.getMaximumCapacity(Unit.KG)){
 					return false;
 				}
@@ -383,8 +385,8 @@ public class Purse extends Storage {
 	 * 		   | canHaveAsTotalWeight(result)
 	 */
 	@Override
-	protected double getTotalWeight(Unit unit) {
-		return this.content.getWeight(unit);
+	public double getTotalWeight(Unit unit) {
+		return this.getContent().getWeight(unit) + this.getOwnWeight(Unit.KG);
 	}
 
 	/**********************************

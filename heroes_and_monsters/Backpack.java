@@ -170,16 +170,19 @@ public class Backpack extends Storage{
 			throw new OwnableIsTerminatedException(this);
 		}
 		double weight = this.getOwnWeight(unit);
-		while (this.getBackpackIterator().hasMoreElements()){
-			Object object = this.getBackpackIterator().nextElement();
+		Enumeration<Object> iterator = this.getBackpackIterator();
+		while (iterator.hasMoreElements()){
+			Object object = iterator.nextElement();
 			if (object instanceof Ownable){
-				if (object instanceof Storage){
-					Storage storage = (Storage) object;
-					weight = weight + storage.getOwnWeight(unit);
-				}
-				else {
-					Ownable ownable = (Ownable) object;
-					weight = weight + ownable.getOwnWeight(unit);
+				if (!(((Ownable) object).getTerminated())){
+					if (object instanceof Storage){
+						Storage storage = (Storage) object;
+						weight = weight + storage.getOwnWeight(unit);
+					}
+					else {
+						Ownable ownable = (Ownable) object;
+						weight = weight + ownable.getOwnWeight(unit);
+					}
 				}
 			}
 			else if (object instanceof Ducat){
@@ -244,7 +247,7 @@ public class Backpack extends Storage{
 		if (!canAddToStorage(object)){
 			throw new IllegalArgumentException("The given object can't be added to this backpack.");
 		}
-		if (object instanceof Ducat){
+		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
 			boolean alreadyDucat = false;
 			for (Object obj: getContent()){
@@ -319,8 +322,9 @@ public class Backpack extends Storage{
 				}
 			}
 		}
-		while (this.getContainersSet().iterator().hasNext()){
-			Backpack backpack = this.getContainersSet().iterator().next();
+		Iterator<Backpack> iterator = this.getContainersSet().iterator();
+		while (iterator.hasNext()){
+			Backpack backpack = iterator.next();
 			if ((backpack.getUsedCapacity(Unit.KG) + weight) > backpack.getMaximumCapacity(Unit.KG)){
 				return false;
 			}
@@ -342,7 +346,7 @@ public class Backpack extends Storage{
 	 * 			Also true if the given object is a ducat and the value of all the ducats
 	 * 			in this backpack is greater than or equal to the given ducat. False
 	 * 			otherwise.
-	 * 			| if (!super.canAddToStorage(object)){
+	 * 			| if (!super.canTakeOutOfStorage(object)){
 	 *			|		result == false
 	 *			| }
 	 * 			| if (object instanceof Ownable){
@@ -358,7 +362,7 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
-		if (!super.canAddToStorage(object)){
+		if (!super.canTakeOutOfStorage(object)){
 			return false;
 		}
 		if (object instanceof Ownable){
@@ -368,8 +372,9 @@ public class Backpack extends Storage{
 		else if (object instanceof Ducat){
 			Ducat ducat = (Ducat) object;
 			Ducat newDucat = new Ducat(0);
-			while (this.getBackpackIterator().hasMoreElements()){
-				Object objectInBackpack = this.getBackpackIterator().nextElement();
+			Enumeration<Object> iterator = this.getBackpackIterator();
+			while (iterator.hasMoreElements()){
+				Object objectInBackpack = iterator.nextElement();
 				if (objectInBackpack instanceof Ducat){
 					Ducat other = (Ducat) objectInBackpack;
 					newDucat = newDucat.add(other);
@@ -417,10 +422,10 @@ public class Backpack extends Storage{
 		}
 		else {
 			if (object instanceof Ownable){
-				((Ownable) object).setHolder();
 				((Backpack)(((Ownable) object).getHolder())).content.remove(object);
 				((Ownable) object).removeAllContainers();
 				this.removeFromIdentificationNumbers((Ownable) object);
+				((Ownable) object).setHolder();
 			}
 			else if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
@@ -796,7 +801,7 @@ public class Backpack extends Storage{
 	 * 		   | canHaveAsTotalWeight(result)
 	 */
 	@Override
-	protected double getTotalWeight(Unit unit) {
+	public double getTotalWeight(Unit unit) {
 		double weight = unit.convertFromKilogram(this.ownWeight);
 		while (this.getBackpackIterator().hasMoreElements()){
 			Object object = this.getBackpackIterator().nextElement();

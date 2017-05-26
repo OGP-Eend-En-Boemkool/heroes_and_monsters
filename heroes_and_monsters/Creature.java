@@ -450,17 +450,25 @@ public abstract class Creature implements Capacity{
 	 * @return	True if and only if this creature has such anchor, that anchor doesn't
 	 * 			already have another object, this creature is still alive and the object
 	 * 			is an ownable or a ducat. But if it's a ducat and its value is not equal
-	 * 			to one, it is false 'though.
+	 * 			to one, it is false 'though. And if the object is terminated, it's also
+	 * 			false.
 	 * 			| result == this.getAnchors().keySet().contains(anchor) &&
 	 *			|			this.getAnchors().get(anchor) == null && !getKilled() &&
 	 *			|			((object instanceof Ownable) || (object instanceof Ducat)) &&
 	 *			|			(if (object instanceof Ducat) {
-	 *			|					object.getValue() == 1 } )
+	 *			|					object.getValue() == 1 } ) &&
+	 *			|			(if (object instanceof Ownable) {
+	 *			|					!object.getTerminated() } )
 	 */
 	@Raw
 	public boolean canAddToAnchor(Object object, String anchor){
 		if (object instanceof Ducat){
 			if (((Ducat) object).getValue() != 1){
+				return false;
+			}
+		}
+		else if (object instanceof Ownable) {
+			if (((Ownable) object).getTerminated()){
 				return false;
 			}
 			else if ((((Ducat) object).getWeight(Unit.KG)) + this.getUsedCapacity(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
@@ -549,12 +557,14 @@ public abstract class Creature implements Capacity{
 	 * 
 	 * @param	object
 	 * 			The object to check.
-	 * @return	True if and only if this creature carries this object and it's not dead.
+	 * @return	True if and only if this creature carries this object and the creature is
+	 * 			not dead and if the object is an ownable, it's not terminated.
 	 * 			| getAnchors().containsValue(object) && !getKilled()
 	 */
 	@Raw
 	public boolean canDropFromAnchor(Object object){
-		return (getAnchors().containsValue(object) && !getKilled());
+		return (getAnchors().containsValue(object) && !getKilled() &&
+				(!(object instanceof Ownable) || !((Ownable) object).getTerminated()));
 	}
 	
 	/**

@@ -60,7 +60,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * 		   The value that needs to be checked.
 	 * @return True if the given value is bigger than or equal to the own weight of the storage object.
 	 */
-	protected boolean canHaveAsTotalWeight(double weight){
+	public boolean canHaveAsTotalWeight(double weight){
 		return ((weight>=this.getOwnWeight(Unit.KG)));
 	}
 	
@@ -70,7 +70,7 @@ public abstract class Storage extends Ownable implements Capacity {
 	 * @return The new total weight must be a valid value for total weight.
 	 * 		   | canHaveAsTotalWeight(result)
 	 */
-	protected abstract double getTotalWeight(Unit unit);
+	public abstract double getTotalWeight(Unit unit);
 	
 	/******************************************
 	 * storage
