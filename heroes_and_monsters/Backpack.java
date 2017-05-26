@@ -678,6 +678,11 @@ public class Backpack extends Storage{
 			}
 
 			/**
+			 * Variable referencing an iterator to use for a backpack in a backpack.
+			 */
+			private Enumeration<Object> iterator = getBackpackIterator();
+			
+			/**
 			 * Return the next element of the content of this backpack.
 			 */
 			@Override
@@ -816,6 +821,7 @@ public class Backpack extends Storage{
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();
+			System.out.println(object.toString());
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				weight = weight + ducat.getWeight(unit);
@@ -825,6 +831,7 @@ public class Backpack extends Storage{
 				weight = weight + ownable.getOwnWeight(unit);
 			}
 		}
+		System.out.println("total");
 		return weight;
 	}
 	

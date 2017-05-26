@@ -302,7 +302,7 @@ public abstract class Ownable{
 	 * Return a set with all the backpacks that contain this ownable object.
 	 */
 	protected HashSet<Backpack> getContainersSet(){
-		return this.containersSet;
+		return new HashSet<Backpack>(this.containersSet);
 	}
 	
 	/**
@@ -317,9 +317,10 @@ public abstract class Ownable{
 	 * 		  | new.getContainersSet().containsAll(container.getContainersSet())
 	 */
 	protected void addAllContainersToContainersSet(Backpack container){
-		this.getContainersSet().add(container);
-		while (container.getContainersSet().iterator().hasNext()){
-			this.getContainersSet().add(container.getContainersSet().iterator().next());
+		this.containersSet.add(container);
+		Iterator<Backpack> iterator = container.getContainersSet().iterator();
+		while (iterator.hasNext()){
+			this.containersSet.add(iterator.next());
 		}
 	}
 	
