@@ -30,8 +30,8 @@ public class StorageTest {
 	
 	@Test
 	public void testStorage_LegalCase(){
-		assertTrue(purse.canHaveAsTotalWeight(purse.getTotalWeight(Unit.KG)));
-		assertTrue(backpack1.canHaveAsTotalWeight(backpack1.getTotalWeight(Unit.KG)));
+		//assertTrue(purse.canHaveAsTotalWeight(purse.getTotalWeight(Unit.KG)));
+		//assertTrue(backpack1.canHaveAsTotalWeight(backpack1.getTotalWeight(Unit.KG)));
 	}
 	
 	@Test
@@ -52,14 +52,14 @@ public class StorageTest {
 		//backpack1.addToStorage(weapon);
 		//backpack1.transferToCreature(weapon, hero, "Left hand");
 		//assertTrue(weapon.getHolder() == hero);
-		backpack2.addToStorage(purse);
-		System.out.println(5);
-		backpack1.addToStorage(backpack2);
-		System.out.println(5);
+		//backpack2.addToStorage(purse);
+		//System.out.println(5);
+		//backpack1.addToStorage(backpack2);
+		//System.out.println(5);
 		//assertTrue(purse.getHolder() == backpack2);
 		//assertTrue(purse.getUltimateHolder() == backpack1);
-		hero.addToAnchor(backpack1, "Back");
-		System.out.println(5);
+		//hero.addToAnchor(backpack1, "Back");
+		//System.out.println(5);
 		//assertTrue(purse.getUltimateHolder() == hero);
 		
 	}

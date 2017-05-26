@@ -179,7 +179,6 @@ public class Hero extends Creature {
 				this.addToAnchor(anchorObjects.get(i), anchorsStandard.get(i));
 			}
 		}
-		System.out.println("einde hero");
 	}
 	
 	/**
@@ -217,7 +216,6 @@ public class Hero extends Creature {
 	 */
 	@Raw
 	protected boolean canAddArmor(Object object){
-		System.out.println("armor");
 		ArrayList<Object> armors = new ArrayList<Object>();
 		if (object instanceof Armor){
 			Iterator<Object> iterator = getAnchors().values().iterator();
