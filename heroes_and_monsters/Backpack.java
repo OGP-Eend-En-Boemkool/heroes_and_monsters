@@ -678,9 +678,9 @@ public class Backpack extends Storage{
 			}
 
 			/**
-			 * Variable referencing an iterator to use for a backpack in a backpack.
+			 * Variable referencing 
 			 */
-			private Enumeration<Object> iterator = getBackpackIterator();
+			private int indexBackpack = 1;
 			
 			/**
 			 * Return the next element of the content of this backpack.
@@ -691,8 +691,19 @@ public class Backpack extends Storage{
 				if (object instanceof Backpack){
 					Backpack backpack = (Backpack) object;
 					Enumeration<Object> iterator = backpack.getBackpackIterator();
-					while (iterator.hasMoreElements()){
-						return iterator.nextElement();
+					Object inside = null;
+					for (int i = 0; i < indexBackpack; i++){
+						if (iterator.hasMoreElements()){
+							inside = iterator.nextElement();
+						}
+						else {
+							indexBackpack = 1;
+							inside = null;
+						}
+					}
+					indexBackpack++;
+					if (inside != null){
+						return inside;
 					}
 				}
 				indexCurrent++;
