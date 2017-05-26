@@ -290,12 +290,12 @@ public class Purse extends Storage {
 	 * @return	True if and only if the given object can be taken out of any storage and
 	 * 			is a ducat and its value is smaller than or equal to the value of the
 	 * 			content of this purse.
-	 * 			| result == super.canAddToStorage(object) && object instanceof Ducat &&
+	 * 			| result == super.canTakeOutOfStorage(object) && object instanceof Ducat &&
 	 * 			|			object.getValue() <= content.getValue()
 	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
-		if (!super.canAddToStorage(object)){
+		if (!super.canTakeOutOfStorage(object)){
 			return false;
 		}
 		if (object instanceof Ducat){
@@ -339,6 +339,14 @@ public class Purse extends Storage {
 	 * 			The object to transfer.
 	 * @effect	The given object is taken out of this storage and added to the other storage.
 	 * 			| super.transferToStorage(other, object)
+	 * @post	If this purse is empty after the transfer and it was transferred to another purse, this
+	 * 			purse is taken out of the backpack it's in or dropped from the anchor it's on (if it is any
+	 * 			of those).
+	 * 			| if (this.getContent().getValue() == 0 && other instanceof Purse) {
+	 * 			|		if (this.getHolder() instanceof Backpack) {
+	 * 			|				getHolder()).takeOutOfStorage(this) }
+	 * 			|		else if (this.getHolder() instanceof Creature) {
+	 * 			|				getHolder()).dropFromAnchor(this) } }
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this storage.
 	 * 			| !this.canTakeOutOfStorage(object)

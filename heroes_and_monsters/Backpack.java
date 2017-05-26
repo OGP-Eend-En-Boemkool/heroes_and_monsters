@@ -770,8 +770,9 @@ public class Backpack extends Storage{
 	@Override
 	public int getValue() {
 		int value = this.standardValue;
-		while (this.getBackpackIterator().hasMoreElements()){
-			Object object = this.getBackpackIterator().nextElement();
+		Enumeration<Object> iterator = this.getBackpackIterator();
+		while (iterator.hasMoreElements()){
+			Object object = iterator.nextElement();
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				value = value + ducat.getValue();

@@ -209,21 +209,23 @@ public class Hero extends Creature {
 	protected boolean canAddArmor(Object object){
 		ArrayList<Object> armors = new ArrayList<Object>();
 		if (object instanceof Armor){
-			for (Object obj: getAnchors().values()){			
+			Iterator<Object> iterator = getAnchors().values().iterator();
+			while (iterator.hasNext()){
+				Object obj = iterator.next();
 				if (obj instanceof Armor){
 					armors.add(obj);
 				}
 				if (obj instanceof Backpack){
 					Backpack backpack =  (Backpack) obj;
-					while (backpack.getBackpackIterator().hasMoreElements()){
-							Object next = backpack.getBackpackIterator().nextElement();
-							if (next instanceof Armor){
-								armors.add(next);
-							}
-						
+					Enumeration<Object> enumeration = backpack.getBackpackIterator();
+					while (enumeration.hasMoreElements()){
+						Object next = enumeration.nextElement();
+						if (next instanceof Armor){
+							armors.add(next);
+						}
 					}
 				}
-			}
+			}		
 		}
 		return (armors.size() < 2);
 	}

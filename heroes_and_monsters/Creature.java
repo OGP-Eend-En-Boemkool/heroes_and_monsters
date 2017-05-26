@@ -531,10 +531,11 @@ public abstract class Creature implements Capacity{
 		if (!canDropFromAnchor(object)){
 			throw new IllegalArgumentException("Object cannot be dropped.");
 		}
-		while (this.getAnchors().values().iterator().hasNext()){
-			String anchor = this.getAnchors().keySet().iterator().next();
+		Iterator<String> iterator = this.getAnchors().keySet().iterator();
+		while (iterator.hasNext()){
+			String anchor = iterator.next();
 			if ( this.getAnchors().get(anchor) == object){
-				this.getAnchors().remove(anchor);
+				this.emptyAnchor(anchor);
 			}
 		}
 	}
@@ -612,8 +613,9 @@ public abstract class Creature implements Capacity{
 	 * 			|		emptyAnchor(anchor) }
 	 */
 	protected void emptyAllAnchors() throws IllegalArgumentException {
-		while (this.getAnchors().keySet().iterator().hasNext()){
-			this.emptyAnchor(this.getAnchors().keySet().iterator().next());
+		Iterator<String> iterator = this.getAnchors().keySet().iterator();
+		while (iterator.hasNext()){
+			this.emptyAnchor(iterator.next());
 		}
 	}
 	
@@ -875,8 +877,9 @@ public abstract class Creature implements Capacity{
 	@Override
 	public double getUsedCapacity(Unit unit) {
 		double weight = 0;
-		while (this.getAnchors().values().iterator().hasNext()){
-			Object object = this.getAnchors().keySet().iterator().next();
+		Iterator<Object> iterator = this.getAnchors().values().iterator();
+		while (iterator.hasNext()){
+			Object object = iterator.next();
 			if (object instanceof Ownable){
 				if (object instanceof Storage){
 					Storage storage = (Storage) object;
