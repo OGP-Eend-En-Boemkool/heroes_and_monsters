@@ -761,8 +761,8 @@ public abstract class Creature implements Capacity{
 			}
 			if (newHitpointsOther <= 0){
 				newHitpointsOther = 0;
-				other.kill();
 				this.deathblow(other);
+				other.kill();
 			}
 			other.setHitpoints(newHitpointsOther);
 		}
