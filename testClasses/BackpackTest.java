@@ -20,8 +20,8 @@ public class BackpackTest {
 	@Before
 	public void setUpFixture(){
 		backpack1 = new Backpack(10, 500, 10, Unit.KG);
-		backpack2 = new Backpack(200, 1000, 600, Unit.KG);
-		backpack3 = new Backpack(10, 50, 0.7, Unit.KG);
+		backpack2 = new Backpack(200, 1000, 600, Unit.GRAM);
+		backpack3 = new Backpack(15, 50, 0.7, Unit.KG);
 		purse = new Purse(100, Unit.GRAM, 5000);
 		ducat1 = new Ducat(20);
 		ducat2 = new Ducat(200);
@@ -33,8 +33,12 @@ public class BackpackTest {
 	}
 	
 	@Test
-	public void testSetAndGetIdentificationLegal(){
-		System.out.println(backpack1.getIdentification());
+	public void testBackpack_LegalCase(){
+		assertTrue(backpack1.getMaximumCapacity(Unit.GRAM) == 500000);
+		assertTrue(backpack1.getMaximumCapacity(Unit.KG) == 500);
+		assertTrue(backpack2.getMaximumCapacity(Unit.KG) == 1);
+		backpack1.addToStorage(weapon);
+		//assertTrue(backpack1.getUsedCapacity(Unit.KG) == 5.67);
 	}
 	
 	
