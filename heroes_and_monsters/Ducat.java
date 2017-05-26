@@ -165,4 +165,22 @@ public class Ducat{
 	}
 	
 	
+	/**
+ 	 * Check whether or not this amount of ducats is the same as the given object.
+ 	 * 
+ 	 * @return True if and only if the given object is effective, if the given object and this object
+ 	 * 		   belong to the same class and this amount of ducats is the same as the amount of ducats of the given object.
+ 	 * 		   | result == 
+ 	 * 		   |	( (other != null)
+ 	 * 		   |	&& (this.getClass() == other.getClass())
+ 	 * 		   |	&& (this.getValue() == other.getValue()) )
+ 	 */
+ 	@Override
+ 	public boolean equals(Object other){
+ 		if ((other == null)||(this.getClass() != other.getClass())){
+ 			return false;
+ 		}
+ 		Ducat otherDucat = (Ducat) other;
+ 		return (this.getValue() == otherDucat.getValue());		
+ 	}
 }
