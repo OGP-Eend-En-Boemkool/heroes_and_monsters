@@ -43,6 +43,7 @@ public class MonsterTest {
 		assertTrue(monster2.getCurrentProtection() == 41);
 		monster2.increaseProtection(5);
 		assertTrue(monster2.getCurrentProtection() == 46);
+		assertTrue(monster1.getMaximumCapacity(Unit.KG) == 2894.76);
 		assertTrue(monster1.canHaveAsProtection(monster1.getCurrentProtection()));
 		assertTrue(monster2.canHitCreature(monster1));
 	}

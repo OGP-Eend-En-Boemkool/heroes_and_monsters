@@ -158,6 +158,11 @@ public class Hero extends Creature {
 	 * 			an armor.
 	 * 			| anchorObjects.get(3) == null || !(anchorObjects.get(3) instanceof Armor
 	 * @throws	IllegalArgumentException
+	 * 			The object on the fifth position is effective, but not a purse, or a purse that doesn't have a
+	 * 			capacity of 5.
+	 * 			| anchorObjects.get(4) != null && (!(anchorObjects.get(4) instanceof Purse) ||
+	 * 			|	((Purse) anchorObjects.get(4)).getMaximumCapacity(Unit.KG) != 5)
+	 * @throws	IllegalArgumentException
 	 * 			One of the objects can't be added to its associated anchor.
 	 * 			| !canAddToAnchor(object, anchor)
 	 */
@@ -171,8 +176,8 @@ public class Hero extends Creature {
 			throw new IllegalArgumentException("At birth, the object on the fourth position "
 					+ "must be effective and its class must be Armor.");
 		}
-		if ((anchorObjects.get(4) instanceof Purse) && (((Purse) anchorObjects.get(4)).getMaximumCapacity(Unit.KG) != 5)){
-			throw new IllegalArgumentException("Not the right capacity for the purse, the purse must have a capacity of 100 ducats");
+		if (anchorObjects.get(4) != null && (!(anchorObjects.get(4) instanceof Purse) || ((Purse) anchorObjects.get(4)).getMaximumCapacity(Unit.KG) != 5)){
+			throw new IllegalArgumentException("Fifth object must be a purse with capacity 5.");
 		}
 		for (int i = 0; i < anchorObjects.size(); i++){
 			if (anchorObjects.get(i) != null){
@@ -272,7 +277,7 @@ public class Hero extends Creature {
 	/**
 	 * Variable registering the value of the standard protection of a hero.
 	 */
-	public final int standardProtection = 10;
+	private final int standardProtection = 10;
 	
 	/**
 	 * Returns the current value for the protection of a hero.
@@ -330,7 +335,7 @@ public class Hero extends Creature {
 			int i = (int)Math.ceil(strength);
 			capacity =  capacities.get(i-11);			
 		}
-		return (unit.convertFromKilogram(constant*capacity));
+		return ((double)Math.round(unit.convertFromKilogram(constant*capacity)* 1000d) / 1000d);
 	}
 
 	/**********************************

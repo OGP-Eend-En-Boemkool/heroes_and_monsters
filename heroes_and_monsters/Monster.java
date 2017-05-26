@@ -392,7 +392,7 @@ public class Monster extends Creature implements Damage, Protection {
 	@Override
 	public double getMaximumCapacity(Unit unit) {
 		float strength = this.getStrength().floatValue();
-		return (unit.convertFromKilogram(strength * 9));
+		return ((double)Math.round(unit.convertFromKilogram(strength * 9)* 1000d) / 1000d);
 	}
 
 	/**************************************
