@@ -697,7 +697,7 @@ public class Backpack extends Storage{
 							inside = iterator.nextElement();
 						}
 						else {
-							indexBackpack = 1;
+							indexBackpack = 0;
 							inside = null;
 						}
 					}
@@ -832,7 +832,6 @@ public class Backpack extends Storage{
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();
-			System.out.println(object.toString());
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
 				weight = weight + ducat.getWeight(unit);
@@ -842,7 +841,6 @@ public class Backpack extends Storage{
 				weight = weight + ownable.getOwnWeight(unit);
 			}
 		}
-		System.out.println("total");
 		return weight;
 	}
 	

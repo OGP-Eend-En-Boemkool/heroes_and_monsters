@@ -17,7 +17,7 @@ public class OwnableTest {
 		weapon = new Weapon(20, Unit.KG, 42);
 		backpack = new Backpack(132, 261, 1, Unit.KG);
 		armor = new Armor(2477, 84, 752, 73, Unit.KG);
-		hero = new Hero("Hero", 123, armor);
+		hero = new Hero("Hero", 89, armor);
 		backpack.addToStorage(weapon);
 	}
 	

@@ -21,7 +21,7 @@ public class PurseTest {
 		ducat = new Ducat(79);
 		backpack = new Backpack(132, 40, 1, Unit.KG);
 		armor = new Armor(2477, 84, 752, 0, Unit.KG);
-		hero = new Hero("Hero", 102, armor);
+		hero = new Hero("Hero", 101, armor);
 		weapon = new Weapon(38, Unit.KG, 21);
 	}
 	

@@ -212,14 +212,12 @@ public abstract class Creature implements Capacity{
 		if (hitpoints < 0){
 			return false;
 		}
-		boolean prime = true;
-		for (int i=1; i <= Math.round(Math.sqrt(hitpoints)); i++){
+		for (int i=2; i <= Math.round(Math.sqrt(hitpoints)); i++){
 			if (hitpoints % i == 0){
-				prime = false;
-				break;
+				return false;
 			}
 		}
-		return prime;
+		return true;
 	}
 	
 	/**
@@ -249,7 +247,7 @@ public abstract class Creature implements Capacity{
 	 * 			| new.getMaxHitpoints() == maxHitpoints
 	 */
 	protected void changeMaxHitpoints(int maxHitpoints){
-		
+		this.maxHitpoints = maxHitpoints;
 	}
 	
 	/************************************

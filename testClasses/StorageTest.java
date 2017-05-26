@@ -25,7 +25,7 @@ public class StorageTest {
 		weapon = new Weapon(20, Unit.KG, 42);
 		armor = new Armor(2477, 84, 752, 73, Unit.KG);
 		armor2 = new Armor(13, 64, 654, 12, Unit.KG);
-		hero = new Hero("Hero", new BigDecimal(219.23), 123, new ArrayList<Object>(Arrays.asList(null, null, null, armor2, null)));
+		hero = new Hero("Hero", new BigDecimal(219.23), 137, new ArrayList<Object>(Arrays.asList(null, null, null, armor2, null)));
 	}
 	
 	@Test
@@ -58,7 +58,52 @@ public class StorageTest {
 		assertTrue(purse.getUltimateHolder() == backpack1);
 		hero.addToAnchor(backpack1, "Back");
 		assertTrue(purse.getUltimateHolder() == hero);
-		
+		backpack2.transferToCreature(purse, hero, "Belt");
+		assertTrue(purse.getHolder() == hero);
+		assertFalse(backpack2.OwnableInBackpack(purse));
+		assertTrue(purse.getHolder() == purse.getUltimateHolder());
+	}
+	
+	@Test
+	public void testRemoveFromStorageAndTerminate(){
+		backpack1.addToStorage(weapon);
+		backpack1.removeFromStorageAndTerminate(weapon);
+		assertTrue(weapon.getTerminated());
+		backpack2.addToStorage(purse);
+		backpack2.removeFromStorageAndTerminate(purse);
+		assertFalse(purse.getTerminated());
+	}
+	
+	@Test
+	public void testIllegalTotalWeight(){
+		assertFalse(backpack1.canHaveAsTotalWeight(0.5));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testTransferToStorageException1() throws IllegalArgumentException {
+		backpack1.addToStorage(weapon);
+		backpack1.transferToStorage(purse, weapon);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testTransferToStorageException2() throws IllegalArgumentException {
+		backpack1.transferToStorage(backpack2, weapon);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testTransferToCreatureException1() throws IllegalArgumentException {
+		backpack1.addToStorage(weapon);
+		backpack1.transferToCreature(weapon, hero, "Belt");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testTransferToCreatureException2() throws IllegalArgumentException {
+		backpack1.transferToCreature(purse, hero, "Belt");
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testRemoveFromStorageAndTerminateException() throws IllegalArgumentException {
+		backpack1.removeFromStorageAndTerminate(armor);
 	}
 
 }
