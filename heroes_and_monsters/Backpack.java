@@ -133,7 +133,7 @@ public class Backpack extends Storage{
 	 * 			| new.getMaximumCapacity(unit) == maximumCapacity
 	 */
 	private void setMaxCapacity(double maximumCapacity, Unit unit){
-		this.maximumCapacity = maximumCapacity;
+		this.maximumCapacity = unit.convertToKilogram(maximumCapacity);
 	}
 	
 	/**
