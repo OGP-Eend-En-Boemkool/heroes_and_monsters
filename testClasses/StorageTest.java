@@ -38,7 +38,7 @@ public class StorageTest {
 	public void testTransferToStorage(){
 		backpack1.addToStorage(armor);
 		backpack1.transferToStorage(backpack2, armor);
-		assertTrue(backpack2.OwnableInBackpack(armor));
+		assertTrue(backpack2.ownableInBackpack(armor));
 		backpack1.addToStorage(ducat);
 		backpack1.transferToStorage(backpack2, ducat);
 		assertTrue(backpack1.getValue() == backpack1.getStandardValue());
@@ -60,7 +60,7 @@ public class StorageTest {
 		assertTrue(purse.getUltimateHolder() == hero);
 		backpack2.transferToCreature(purse, hero, "Belt");
 		assertTrue(purse.getHolder() == hero);
-		assertFalse(backpack2.OwnableInBackpack(purse));
+		assertFalse(backpack2.ownableInBackpack(purse));
 		assertTrue(purse.getHolder() == purse.getUltimateHolder());
 	}
 	
