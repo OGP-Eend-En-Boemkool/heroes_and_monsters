@@ -1,6 +1,6 @@
 package heroes_and_monsters;
 
-import be.kuleuven.cs.som.annotate.*;
+
 
 /**
  * The capacity interface is an interface that we use to implement the capacity of certain objects. 

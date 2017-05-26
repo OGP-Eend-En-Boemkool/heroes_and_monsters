@@ -471,10 +471,23 @@ public abstract class Creature implements Capacity{
 			if (((Ownable) object).getTerminated()){
 				return false;
 			}
+			else if ((((Ducat) object).getWeight(Unit.KG)) + this.getUsedCapacity(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
+				return false;
+			}
+		}
+		else if (object instanceof Storage){
+			if ((((Storage) object).getTotalWeight(Unit.KG)) + this.getUsedCapacity(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
+				return false;
+			}
+		}
+		else if (object instanceof Ownable){
+			if ((((Ownable) object).getOwnWeight(Unit.KG)) + this.getUsedCapacity(Unit.KG) > this.getMaximumCapacity(Unit.KG)){
+				return false;
+			}
 		}
 		return (this.getAnchors().keySet().contains(anchor) &&
 				this.getAnchors().get(anchor) == null && !getKilled() &&
-				((object instanceof Ownable) || (object instanceof Ducat)));
+				((object instanceof Ownable) || (object instanceof Ducat)));	
 	}
 	
 	/**

@@ -19,9 +19,9 @@ public class MainProgram {
 		ArrayList<Object> anchorObjects = new ArrayList<Object>(Arrays.asList(geweer, zwaard, rugzak, harnas, geldbeurs));
 		Hero eend = new Hero("Eend", new BigDecimal("264.15") , 137, anchorObjects);
 		int totaleWaarde = 0;
-		Iterator iterator = eend.getAnchors().keySet().iterator();
+		Iterator<String> iterator = eend.getAnchors().keySet().iterator();
 		while (iterator.hasNext()){
-			Object anchor = iterator.next();
+			String anchor = iterator.next();
 			Object voorwerp = eend.getAnchors().get(anchor);
 			if (voorwerp != null){
 				if (voorwerp instanceof Ownable){
@@ -44,6 +44,6 @@ public class MainProgram {
 		ArrayList<String> anchors = new ArrayList<String>(Arrays.asList("Hand 1", "Hand 2", "Hand 3", "Hand 4", "Tail", "Horns"));
 		ArrayList<Object> anchorObjects2 = new ArrayList<Object>(Arrays.asList(mes, harnas2, rugzak2, eenDukaat));
 		Monster boemkool = new Monster("Boemkool", new BigDecimal(312.48), 101, anchors, anchorObjects2, 35, 72);
-		System.out.println(1);
+
 	}
 }

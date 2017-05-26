@@ -33,11 +33,17 @@ public class Hero extends Creature {
 	 * 			| super(name, strength, maxHitpoints, anchorsStandard, anchorObjects)
 	 * @throws 	IllegalArgumentException
 	 * 			The list anchorObjects must have 5 objects.
-	 * 			| anchorObjects.size() != anchorsStandard.size()
+	 * 			| if (anchorObjects.size() != anchorsStandard.size())
+	 * 			|	throw new IllegalArgumentException()
 	 * @throws	IllegalArgumentException
 	 * 			The object on the fourth position must be effective and it must be
 	 * 			an armor.
-	 * 			| anchorObjects.get(3) == null || !(anchorObjects.get(3) instanceof Armor)
+	 * 			| if (anchorObjects.get(3) == null || !(anchorObjects.get(3) instanceof Armor))
+	 * 			|	throw new IllegalArgumentException()
+	 * @throws	IllegalArgumentException
+	 * 			The object on the fifth position must be a purse with a capacity of 100 ducats if it's effective.
+	 * 			| if ((anchorObjects.get(4) != null) && ((anchorObjects.get(4)).getMaximumCapacity() != 5))
+	 * 			|	throw new IllegalArgumentException()
 	 */
 	@Raw
 	public Hero(String name, BigDecimal strength, int maxHitpoints,
@@ -164,6 +170,9 @@ public class Hero extends Creature {
 		if (anchorObjects.get(3) == null || !(anchorObjects.get(3) instanceof Armor)){
 			throw new IllegalArgumentException("At birth, the object on the fourth position "
 					+ "must be effective and its class must be Armor.");
+		}
+		if ((anchorObjects.get(4) instanceof Purse) && (((Purse) anchorObjects.get(4)).getMaximumCapacity(Unit.KG) != 5)){
+			throw new IllegalArgumentException("Not the right capacity for the purse, the purse must have a capacity of 100 ducats");
 		}
 		for (int i = 0; i < anchorObjects.size(); i++){
 			if (anchorObjects.get(i) != null){
