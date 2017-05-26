@@ -179,6 +179,7 @@ public class Hero extends Creature {
 				this.addToAnchor(anchorObjects.get(i), anchorsStandard.get(i));
 			}
 		}
+		System.out.println("einde hero");
 	}
 	
 	/**
@@ -216,6 +217,7 @@ public class Hero extends Creature {
 	 */
 	@Raw
 	protected boolean canAddArmor(Object object){
+		System.out.println("armor");
 		ArrayList<Object> armors = new ArrayList<Object>();
 		if (object instanceof Armor){
 			Iterator<Object> iterator = getAnchors().values().iterator();
@@ -314,19 +316,21 @@ public class Hero extends Creature {
 		float strength = this.getStrength().floatValue();
 		int constant = 1;
 		float capacity = 0;
-		while (strength > 20){
-			constant = constant * 4;
-			strength = strength - 10;
+		if (strength > 20){
+			this.setStrength(getStrength().subtract(new BigDecimal(10)));
+			double answer = 4 * getMaximumCapacity(unit);
+			this.setStrength(getStrength().add(new BigDecimal(10)));
+			return answer;
 		}
-		if (strength < 1.00){
+		else if (strength < 1.00){
 			capacity =  0;
 		}
 		else if (strength <= 10){
 			capacity = (strength * 10);
 		}
 		else if (strength <= 20){
-			int i = (int)Math.floor(strength);
-			capacity =  capacities.get(i);			
+			int i = (int)Math.ceil(strength);
+			capacity =  capacities.get(i-11);			
 		}
 		return (unit.convertFromKilogram(constant*capacity));
 	}
