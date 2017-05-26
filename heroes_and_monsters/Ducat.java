@@ -72,7 +72,8 @@ public class Ducat{
 	 * 			| result == (unit.convertFromKilogram(this.getValue()*0.050))
 	 */
 	public double getWeight(Unit unit){
-		return (unit.convertFromKilogram(this.getValue()*0.050));
+		double weight = (double)Math.round(this.getValue()*0.050 * 100000d) / 100000d;
+		return (unit.convertFromKilogram(weight));
 	}
 	
 	/**
