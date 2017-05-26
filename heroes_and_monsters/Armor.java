@@ -14,7 +14,7 @@ import Exceptions.OwnableIsTerminatedException;
  * @author Linde en Lotte
  * @version 1.0
  */
-public class Armor extends Ownable implements Protection{
+public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	
 	/******************************************
 	 * Constructors
@@ -392,4 +392,18 @@ public class Armor extends Ownable implements Protection{
 		this.terminated = true;
 	}
 
+	/**********************************
+	 * comparable
+	 **********************************/
+	
+	/**
+	 * Compare the protections of this armor and another.
+	 * 
+	 * @return The subtraction of the current protection of this armor and the current protection of the other armor.
+	 * 		   | result == (this.getCurrentProtection() - other.getCurrentProtection())
+	 */
+	@Override
+	public int compareTo(Armor other) {
+		return (this.getCurrentProtection() - other.getCurrentProtection());
+	}
 }

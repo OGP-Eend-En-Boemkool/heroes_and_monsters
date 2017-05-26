@@ -573,20 +573,19 @@ public class Hero extends Creature {
 	protected Object chooseArmor(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Armor")){
-				ArrayList<Object> armorlist = allPossessions.get("Armor");
-				Collections.sort(armorlist, new Comparator<Object>() {
-				    @Override
-				    public int compare(Object o1, Object o2) {
-				    	Armor a1 = (Armor) o1;
-				    	Armor a2 = (Armor) o2;
-				        return compare(a1.getCurrentProtection(), a2.getCurrentProtection());
-				    }
-				});
+				ArrayList<Object> objectlist = (allPossessions.get("Armor"));
+				ArrayList<Armor> armorlist = new ArrayList<Armor>();
+				Iterator<Object> iterator = objectlist.iterator();
+				while (iterator.hasNext()){
+					armorlist.add((Armor) iterator.next());
+				}
+				Collections.sort(armorlist);
 				Armor armor = (Armor) armorlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (armorlist.size()>= 2)){
-					((Armor)allPossessions.get("Armor").get(0)).terminate();
+					((Armor)(allPossessions.get("Armor")).get(0)).terminate();
 					allPossessions.get("Armor").remove(0);
-					armor = (Armor) armorlist.get(0);					
+					armorlist.remove(0);
+					armor = (Armor) armorlist.get(0);
 				}
 				if (this.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					allPossessions.get("Armor").remove(0);
@@ -616,23 +615,23 @@ public class Hero extends Creature {
 	protected Object chooseWeapon(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Weapon")){
-				ArrayList<Object> weaponlist = allPossessions.get("Weapon");
-				Collections.sort(weaponlist, new Comparator<Object>() {
-				    @Override
-				    public int compare(Object o1, Object o2) {
-				    	Weapon w1 = (Weapon) o1;
-				    	Weapon w2 = (Weapon) o2;
-				        return compare(w1.getCurrentDamage(), w2.getCurrentDamage());
-				    }
-				});
+				ArrayList<Object> objectlist = (allPossessions.get("Weapon"));
+				ArrayList<Weapon> weaponlist = new ArrayList<Weapon>();
+				Iterator<Object> iterator = objectlist.iterator();
+				while (iterator.hasNext()){
+					weaponlist.add((Weapon) iterator.next());
+				}
+				Collections.sort(weaponlist);
 				Weapon weapon = (Weapon) weaponlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (weaponlist.size()>= 2)){
 					((Weapon)allPossessions.get("Weapon").get(0)).terminate();
 					allPossessions.get("Weapon").remove(0);
+					weaponlist.remove(0);
 					weapon = (Weapon) weaponlist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					allPossessions.get("Weapon").remove(0);
+					weaponlist.remove(0);
 					return weapon;
 				}
 			}
@@ -661,22 +660,22 @@ public class Hero extends Creature {
 	protected Object chooseBackpack(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Backpack")){
-				ArrayList<Object> backpacklist = allPossessions.get("Backpack");
-				Collections.sort(backpacklist, new Comparator<Object>() {
-				    @Override
-				    public int compare(Object o1, Object o2) {
-				    	Backpack b1 = (Backpack) o1;
-				    	Backpack b2 = (Backpack) o2;
-				        return compare(b1.getMaximumCapacity(Unit.KG), b2.getMaximumCapacity(Unit.KG));
-				    }
-				});
+				ArrayList<Object> objectlist = (allPossessions.get("Backpack"));
+				ArrayList<Backpack> backpacklist = new ArrayList<Backpack>();
+				Iterator<Object> iterator = objectlist.iterator();
+				while (iterator.hasNext()){
+					backpacklist.add((Backpack) iterator.next());
+				}
+				Collections.sort(backpacklist);
 				Backpack backpack = (Backpack) backpacklist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (backpacklist.size()>= 2)){
 					allPossessions.get("Backpack").remove(0);
+					backpacklist.remove(0);
 					backpack = (Backpack) backpacklist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + backpack.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					allPossessions.get("Backpack").remove(0);
+					backpacklist.remove(0);
 					backpack.emptyStorage();
 					return backpack;
 				}
@@ -706,22 +705,22 @@ public class Hero extends Creature {
 	protected Object choosePurse(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Purse")){
-				ArrayList<Object> purselist = allPossessions.get("Purse");
-				Collections.sort(purselist, new Comparator<Object>() {
-				    @Override
-				    public int compare(Object o1, Object o2) {
-				    	Purse p1 = (Purse) o1;
-				    	Purse p2 = (Purse) o2;
-				        return compare(p1.getMaximumCapacity(Unit.KG), p2.getMaximumCapacity(Unit.KG));
-				    }
-				});
+				ArrayList<Object> objectlist = (allPossessions.get("Purse"));
+				ArrayList<Purse> purselist = new ArrayList<Purse>();
+				Iterator<Object> iterator = objectlist.iterator();
+				while (iterator.hasNext()){
+					purselist.add((Purse) iterator.next());
+				}
+				Collections.sort(purselist);
 				Purse purse = (Purse) purselist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (purselist.size()>= 2)){
 					allPossessions.get("Purse").remove(0);
+					purselist.remove(0);
 					purse = (Purse) purselist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + purse.getOwnWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					allPossessions.get("Purse").remove(0);
+					purselist.remove(0);
 					purse.emptyStorage();
 					return purse;
 				}
@@ -749,22 +748,22 @@ public class Hero extends Creature {
 	protected Object chooseDucat(HashMap<String, ArrayList<Object>> allPossessions){
 		if (this.getUsedCapacity(Unit.KG) < this.getMaximumCapacity(Unit.KG)){
 			if (allPossessions.containsKey("Ducat")){
-				ArrayList<Object> ducatlist = allPossessions.get("Ducat");
-				Collections.sort(ducatlist, new Comparator<Object>() {
-				    @Override
-				    public int compare(Object o1, Object o2) {
-				    	Ducat d1 = (Ducat) o1;
-				    	Ducat d2 = (Ducat) o2;
-				        return compare(d1.getValue(), d2.getValue());
-				    }
-				});
+				ArrayList<Object> objectlist = (allPossessions.get("Ducat"));
+				ArrayList<Ducat> ducatlist = new ArrayList<Ducat>();
+				Iterator<Object> iterator = objectlist.iterator();
+				while (iterator.hasNext()){
+					ducatlist.add((Ducat) iterator.next());
+				}
+				Collections.sort(ducatlist);
 				Ducat ducat = (Ducat) ducatlist.get(0);
 				while (!(this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)) && (ducatlist.size()>= 2)){
 					allPossessions.get("Ducat").remove(0);
+					ducatlist.remove(0);
 					ducat = (Ducat) ducatlist.get(0);					
 				}
 				if (this.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= this.getMaximumCapacity(Unit.KG)){
 					allPossessions.get("Ducat").remove(0);
+					ducatlist.remove(0);
 					return ducat;
 				}
 			}
