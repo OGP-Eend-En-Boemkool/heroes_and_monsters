@@ -45,6 +45,73 @@ public class CreatureTest {
 		assertTrue(hero2.getHitpoints() == 163);
 		assertTrue(monster1.canHaveAsHitpointsNotFighting(monster1.getHitpoints()));
 		assertTrue(monster2.canHaveAsHitpointsFighting(4));
-		//assertTrue(Creature.getDefaultStrength().equals(0));
+		assertTrue(Creature.getDefaultStrength().compareTo(new BigDecimal(0.00)) == 0);
+		assertTrue(hero2.getStrength().floatValue() == 156.49F);
+		assertTrue(Creature.isValidStrength(hero1.getStrength()));
+		assertTrue(monster2.getUsedCapacity(Unit.KG) == 0);
+		assertFalse(hero1.getKilled());
+	}
+	
+	@Test
+	public void testAnchors_LegalCase(){
+		assertTrue(monster1.getAnchors().keySet().equals(new HashSet<Object>(Arrays.asList("Left hand", "Right hand", "Back", "Tail"))));
+		assertTrue(hero1.getAnchors().values().containsAll(new HashSet<Object>(Arrays.asList(weapon1, armor1, purse))));
+		Armor armor = new Armor(19, 54, 546, 16, Unit.KG);
+		monster2.addToAnchor(armor, "Left hand");
+		assertTrue(armor.getHolder() == monster2);
+		Weapon weapon = new Weapon(10, Unit.KG, 7);
+		assertTrue(monster2.canAddToAnchor(weapon, "Right hand"));
+		assertTrue(hero1.canEmptyAnchor("Left hand"));
+		assertTrue(hero2.canDropFromAnchor(weapon2));
+		hero1.passAlong(purse, hero2, "Belt");
+		assertTrue(purse.getHolder() == hero2);
+		monster1.passToStorage(weapon3, backpack);
+		assertTrue(weapon3.getHolder() == backpack);
+		hero1.emptyAnchorAndTerminate("Left hand");
+		assertTrue(weapon1.getTerminated());
+		hero2.dropFromAnchorAndTerminate(weapon2);
+		assertTrue(weapon2.getTerminated());
+	}
+	
+	@Test
+	public void testHit_LegalCase(){
+		//hero1.hit(monster1);
+		//System.out.println(monster1.getHitpoints());
+		//System.out.println(monster1.getMaxHitpoints());
+		//assertTrue(monster1.getHitpoints() <= monster1.getMaxHitpoints());
+		assertTrue(monster1.canHitCreature(monster2));
+	}
+	
+	@Test
+	public void testIllegalHitpointsFighting(){
+		assertFalse(hero1.canHaveAsHitpointsFighting(-5));
+		assertFalse(hero2.canHaveAsHitpointsNotFighting(-2));
+		assertFalse(monster1.canHaveAsHitpointsNotFighting(6));
+	}
+	
+	@Test
+	public void testInvalidStrength(){
+		assertFalse(Creature.isValidStrength(new BigDecimal(-5.23)));
+		assertFalse(Creature.isValidStrength(null));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testAddToAnchorException() throws IllegalArgumentException {
+		hero1.addToAnchor(monster1, "Right hand");
+	}
+	
+	@Test
+	public void testCannotAddToAnchor(){
+		Ducat ducat = new Ducat(3);
+		assertFalse(monster2.canAddToAnchor(ducat, "Left hand"));
+		hero1.passToStorage(weapon1, backpack);
+		backpack.removeFromStorageAndTerminate(weapon1);
+		assertFalse(hero1.canAddToAnchor(weapon1, "Left hand"));
+		Backpack rugzak = new Backpack(100, 5000, 1, Unit.KG);
+		Weapon wapen1 = new Weapon(4500, Unit.KG, 49);
+		rugzak.addToStorage(wapen1);
+		assertFalse(monster2.canAddToAnchor(rugzak, "Right hand"));
+		Weapon wapen2 = new Weapon(800000000, Unit.KG, 77);
+		assertFalse(monster2.canAddToAnchor(wapen2, "Right hand"));
 	}
 }

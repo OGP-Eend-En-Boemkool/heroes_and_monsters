@@ -835,14 +835,16 @@ public abstract class Creature implements Capacity{
 	 * 		   	| }	
 	 */
 	protected void addToPossessions(Object object, HashMap<String, ArrayList<Object>> opponentsPossessions){
-		String classObject = object.getClass().toString();
-		if (opponentsPossessions.containsKey(classObject)){
-			opponentsPossessions.get(classObject).add(object);
-		}
-		else {
-			ArrayList<Object> arraylist = new ArrayList<Object>();
-			arraylist.add(object);
-			opponentsPossessions.put(classObject, arraylist);
+		if (object != null){
+			String classObject = object.getClass().getSimpleName();
+			if (opponentsPossessions.containsKey(classObject)){
+				opponentsPossessions.get(classObject).add(object);
+			}
+			else {
+				ArrayList<Object> arraylist = new ArrayList<Object>();
+				arraylist.add(object);
+				opponentsPossessions.put(classObject, arraylist);
+			}
 		}
 	}
 	
