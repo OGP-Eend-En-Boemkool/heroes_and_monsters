@@ -429,6 +429,7 @@ public abstract class Creature implements Capacity{
 	public void addToAnchor(Object object, String anchor)
 			throws IllegalArgumentException {
 		if (!canAddToAnchor(object, anchor)){
+			System.out.println(object);
 			throw new IllegalArgumentException("The object can't be added to this anchor.");
 		}
 		this.anchors.put(anchor, object);
@@ -823,6 +824,40 @@ public abstract class Creature implements Capacity{
 			}
 		}
 		return opponentsPossessions;
+	}
+	
+	/**
+	 * Return a hashmap with all the possessions of this hero and the monster that was its opponent, with the classname as keys
+	 * and an arraylist of all the possessions of this class as a value.
+	 * 
+	 * @param  	opponent
+	 * 			The monster that was beaten.
+	 * @post   	If there was a mapping between a key and an arraylist in the hashmap with all the possessions of the monster, 
+	 * 			this key will be a key in the new hashmap, and the associated new arraylist will have the associated old arraylist
+	 * 			as subarraylist.
+	 * 			| if this.getOpponentsPossessions(opponent).containsKey(key){
+	 * 			|		this.getAllPossessions(opponent).containsKey(key)
+	 * 			|		&& this.getAllPossessions(opponent).get(key).containsAll(this.getOpponentsPossessions(opponent).get(key))
+	 * @post   	If there was a mapping between a key and an arraylist in the hashmap with all the possessions of this hero, 
+	 * 			this key will be a key in the new hashmap, and the associated new arraylist will have the associated old arraylist
+	 * 			as subarraylist.
+	 * 			| if this.getOpponentsPossessions(this).containsKey(key){
+	 * 			|		this.getAllPossessions(opponent).containsKey(key)
+	 * 			|		&& this.getAllPossessions(opponent).get(key).containsAll(this.getOpponentsPossessions(this).get(key))
+	 */
+	protected HashMap<String, ArrayList<Object>> getAllPossessions(Creature opponent){
+		HashMap<String, ArrayList<Object>> allPossessions = this.getOpponentsPossessions(opponent);
+		Iterator<String> iterator = opponent.getOpponentsPossessions(this).keySet().iterator();
+		while (iterator.hasNext()){
+			String key = iterator.next();
+			if (allPossessions.containsKey(key)){
+				allPossessions.get(key).addAll(opponent.getOpponentsPossessions(this).get(key));
+			}
+			else {
+				allPossessions.put(key, opponent.getOpponentsPossessions(this).get(key));
+			}
+		}
+		return allPossessions;
 	}
 		
 	/**

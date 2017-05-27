@@ -75,7 +75,7 @@ public class HeroTest {
 	
 	@Test
 	public void testCannotAddToAnchor(){
-		Purse p = new Purse(1, Unit.KG, 5);
+		Purse p = new Purse(30, Unit.KG, 5);
 		hero2.dropFromAnchorAndTerminate(armor2);
 		assertFalse(hero2.canAddToAnchor(p, "Back"));
 		Weapon w = new Weapon(0, Unit.KG, 42);

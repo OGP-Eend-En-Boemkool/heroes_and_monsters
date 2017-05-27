@@ -67,7 +67,7 @@ public class Hero extends Creature {
 	 */
 	@Raw
 	public Hero(String name, int maxHitpoints, Armor armor){
-		this(name, getDefaultStrength(), maxHitpoints, new ArrayList<Object>(Arrays.asList(null, null, null, armor, null)));
+		this(name, new BigDecimal(2.00), maxHitpoints, new ArrayList<Object>(Arrays.asList(null, null, null, armor, null)));
 	}
 	
 	/****************************************
@@ -403,39 +403,6 @@ public class Hero extends Creature {
 	 * collect Treasures
 	 **********************************/
 	
-	/**
-	 * Return a hashmap with all the possessions of this hero and the monster that was its opponent, with the classname as keys
-	 * and an arraylist of all the possessions of this class as a value.
-	 * 
-	 * @param  	opponent
-	 * 			The monster that was beaten.
-	 * @post   	If there was a mapping between a key and an arraylist in the hashmap with all the possessions of the monster, 
-	 * 			this key will be a key in the new hashmap, and the associated new arraylist will have the associated old arraylist
-	 * 			as subarraylist.
-	 * 			| if this.getOpponentsPossessions(opponent).containsKey(key){
-	 * 			|		this.getAllPossessions(opponent).containsKey(key)
-	 * 			|		&& this.getAllPossessions(opponent).get(key).containsAll(this.getOpponentsPossessions(opponent).get(key))
-	 * @post   	If there was a mapping between a key and an arraylist in the hashmap with all the possessions of this hero, 
-	 * 			this key will be a key in the new hashmap, and the associated new arraylist will have the associated old arraylist
-	 * 			as subarraylist.
-	 * 			| if this.getOpponentsPossessions(this).containsKey(key){
-	 * 			|		this.getAllPossessions(opponent).containsKey(key)
-	 * 			|		&& this.getAllPossessions(opponent).get(key).containsAll(this.getOpponentsPossessions(this).get(key))
-	 */
-	private HashMap<String, ArrayList<Object>> getAllPossessions(Creature opponent){
-		HashMap<String, ArrayList<Object>> allPossessions = this.getOpponentsPossessions(opponent);
-		Iterator<String> iterator = this.getOpponentsPossessions(this).keySet().iterator();
-		while (iterator.hasNext()){
-			String key = iterator.next();
-			if (allPossessions.containsKey(key)){
-				allPossessions.get(key).addAll(this.getOpponentsPossessions(this).get(key));
-			}
-			else {
-				allPossessions.put(key, this.getOpponentsPossessions(this).get(key));
-			}
-		}
-		return allPossessions;
-	}
 	
 	/**
 	 * Adds a few of the possessions of the opponent to its own possessions.

@@ -17,7 +17,7 @@ public class PurseTest {
 	
 	@Before
 	public void setUpFixture(){
-		purse = new Purse(1, Unit.KG, 23);
+		purse = new Purse(0, Unit.KG, 4);
 		ducat = new Ducat(79);
 		backpack = new Backpack(132, 40, 1, Unit.KG);
 		armor = new Armor(2477, 84, 752, 0, Unit.KG);
@@ -28,13 +28,13 @@ public class PurseTest {
 	@Test
 	public void testPurse_LegalCase(){
 		assertTrue(Purse.canHaveAsIdentification(8));
-		assertTrue(purse.getMaximumCapacity(Unit.KG) == 23);
+		assertTrue(purse.getMaximumCapacity(Unit.KG) == 4);
 		purse.addToStorage(ducat);
-		assertTrue(purse.getUsedCapacity(Unit.KG) == (1 + 0.050*79));
+		assertTrue(purse.getUsedCapacity(Unit.KG) == (0.050*79));
 		assertTrue(purse.getValue() == 79);
 		purse.removeFromStorageAndTerminate(new Ducat(20));
 		assertTrue(purse.getValue() == 59);
-		assertTrue(purse.getTotalWeight(Unit.KG) == (1 + 0.050*59));
+		assertTrue(purse.getTotalWeight(Unit.KG) == (0.050*59));
 		assertFalse(backpack.canTakeOutOfStorage(new Ducat(26)));
 		purse.addToStorage(new Ducat(2));
 		purse.transferToStorage(backpack, new Ducat(26));
@@ -42,11 +42,11 @@ public class PurseTest {
 		assertTrue(backpack.canTakeOutOfStorage(new Ducat(26)));
 		backpack.addToStorage(purse);
 		assertTrue(purse.getHolder() == backpack);
-		purse.addToStorage(new Ducat(430));
+		purse.addToStorage(new Ducat(130));
 		assertTrue(purse.getBroken());
 		assertTrue(purse.getValue() == 0);
-		assertTrue(backpack.canTakeOutOfStorage(new Ducat(463)));
-		assertTrue(purse.getTotalWeight(Unit.KG) == 1);
+		assertTrue(backpack.canTakeOutOfStorage(new Ducat(163)));
+		assertTrue(purse.getTotalWeight(Unit.KG) == 0);
 	}
 	
 	@Test
@@ -60,8 +60,9 @@ public class PurseTest {
 		backpack.addToStorage(purse);
 		backpack.addToStorage(weapon);
 		assertFalse(purse.canAddToStorage(new Ducat(100)));
+		System.out.println('1');
 		hero.addToAnchor(purse, "Belt");
-		assertFalse(purse.canAddToStorage(new Ducat(2)));
+		assertFalse(purse.canAddToStorage(new Ducat(100)));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
@@ -85,19 +86,22 @@ public class PurseTest {
 	public void testTransferToOtherPurseAllContent1(){
 		purse.addToStorage(ducat);
 		backpack.addToStorage(purse);
-		assertTrue(purse.getHolder() == backpack);
+		assertTrue(backpack.getValue() == 211);
+		assertTrue(purse.getValue() == 79);
 		Purse other = new Purse(1, Unit.KG, 23);
-		purse.transferToStorage(other, ducat);
-		assertFalse(purse.getHolder() == backpack);
+		purse.transferToStorage(other, new Ducat (79));
+		assertTrue(backpack.getValue() == backpack.getStandardValue());
+		assertTrue(purse.getValue() == 0);
 	}
 	
 	@Test
 	public void testTransferToOtherPurseAllContent2(){
-		purse.addToStorage(ducat);
+		purse.addToStorage(new Ducat(1));
+		System.out.println('2');
 		hero.addToAnchor(purse, "Belt");
 		assertTrue(purse.getHolder() == hero);
 		Purse other = new Purse(1, Unit.KG, 23);
-		purse.transferToStorage(other, ducat);
+		purse.transferToStorage(other, new Ducat(1));
 		assertFalse(purse.getHolder() == hero);
 	}
 }

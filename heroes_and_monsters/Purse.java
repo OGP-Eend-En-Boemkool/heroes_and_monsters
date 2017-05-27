@@ -152,7 +152,7 @@ public class Purse extends Storage {
 	 */
 	@Override
 	public double getUsedCapacity(Unit unit) {
-		return this.getTotalWeight(unit);
+		return (this.getTotalWeight(unit)-this.getOwnWeight(unit));
 	}
 
 
@@ -279,10 +279,10 @@ public class Purse extends Storage {
 				backpack.addToStorage(getContent());
 			}
 			else {
-				((Ducat) object).add(this.getContent());
-				setContent(getContent().subtract(this));
-				setBroken(true);
+				((Ducat) object).add(this.getContent());	
 			}
+			setContent(getContent().subtract(this));
+			setBroken(true);
 		}
 	}
 	

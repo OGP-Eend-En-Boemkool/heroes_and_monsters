@@ -462,8 +462,9 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 			possessions that are left from the opponent.
 	 */
 	private void collectTreasures(Creature opponent){
-		HashMap<String, ArrayList<Object>> possessions = getOpponentsPossessions(opponent);
+		HashMap<String, ArrayList<Object>> possessions = getAllPossessions(opponent);
 		opponent.emptyAllAnchors();
+		this.emptyAllAnchors();
 		for (int i = 0; i <= 5; i++){
 			Object treasure = chooseTreasure(opponent, possessions);
 			Iterator<ArrayList<Object>> iterator1 = possessions.values().iterator();
@@ -482,7 +483,9 @@ public class Monster extends Creature implements Damage, Protection {
 						ArrayList<Object> next = iterator2.next();
 						if (next.contains(element)){
 							next.remove(element);
+							possessions.get(element.getClass().getSimpleName()).remove(element);
 						}
+					}
 				}
 			}
 			if (treasure instanceof Purse){
@@ -490,11 +493,13 @@ public class Monster extends Creature implements Damage, Protection {
 					possessions.get("Purse").remove(((Purse) treasure).getContent());
 				}
 			}
+			if (treasure != null){
 			addTreasure(treasure, opponent);
+			possessions.get(treasure.getClass().getSimpleName()).remove(treasure);
+			}
 		}
 		this.terminateRemainingObjectsFromClass("Armor", possessions);
 		this.terminateRemainingObjectsFromClass("Weapon", possessions);
-		}
 	}
 	
 	/**
@@ -516,7 +521,7 @@ public class Monster extends Creature implements Damage, Protection {
 	@Override
 	protected  void addTreasure(Object object, Creature opponent){
 		if (object != null){
-			if (object instanceof Ownable){
+			if (object instanceof Ownable ){
 				if (((Ownable) object).getHolder() instanceof Storage){
 					(((Storage) (((Ownable) object).getHolder()))).takeOutOfStorage(object);
 				}

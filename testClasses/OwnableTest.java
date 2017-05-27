@@ -14,16 +14,16 @@ public class OwnableTest {
 	
 	@Before
 	public void setUpFixture(){
-		weapon = new Weapon(20, Unit.KG, 42);
-		backpack = new Backpack(132, 261, 1, Unit.KG);
-		armor = new Armor(2477, 84, 752, 73, Unit.KG);
+		weapon = new Weapon(2, Unit.KG, 42);
+		backpack = new Backpack(132, 261, 0.1, Unit.KG);
+		armor = new Armor(2477, 84, 752, 0.1, Unit.KG);
 		hero = new Hero("Hero", 89, armor);
 		backpack.addToStorage(weapon);
 	}
 	
 	@Test
 	public void testOwnable_LegalCase(){
-		assertTrue(weapon.getOwnWeight(Unit.KG) == 20);
+		assertTrue(weapon.getOwnWeight(Unit.KG) == 2);
 		assertTrue(Ownable.isValidOwnWeight(weapon.getOwnWeight(Unit.KG)));
 		assertTrue(weapon.getHolder() == backpack);
 		assertTrue(weapon.getUltimateHolder() == backpack);
