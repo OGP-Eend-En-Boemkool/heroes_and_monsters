@@ -41,7 +41,7 @@ public class StorageTest {
 		assertTrue(backpack2.ownableInBackpack(armor));
 		backpack1.addToStorage(ducat);
 		backpack1.transferToStorage(backpack2, ducat);
-		assertTrue(backpack1.getValue() == backpack1.getStandardValue());
+		assertTrue(backpack1.getValue() >= backpack1.getStandardValue());
 		backpack2.transferToStorage(purse, ducat);
 		assertTrue(backpack2.getValue() == backpack2.getStandardValue() + armor.getValue());
 		assertTrue(purse.getValue() == ducat.getValue());
