@@ -277,8 +277,8 @@ public abstract class Ownable{
 	 * 		   | if (value < 0) return False
 	 * @note   This return must be left open in order for the subclasses to be able to change it.
 	 */
-	public boolean isValidValue(int value){
-		return (value >= 0);
+	public boolean isValidValue(Ducat value){
+		return (value.compareTo(new Ducat(0)) >= 0);
 	}
 	
 	/**
@@ -287,7 +287,7 @@ public abstract class Ownable{
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)
 	 */
-	public abstract int getValue();
+	public abstract Ducat getValue();
 	
 	/********************************
 	 * Containers

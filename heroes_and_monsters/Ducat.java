@@ -110,7 +110,7 @@ public class Ducat implements Comparable<Ducat>{
 		if (purse == null){
 			throw new IllegalArgumentException("Other Ducat is not effective");
 		}
-		this.value = (this.getValue() + purse.getValue());
+		this.value = (this.getValue() + purse.getValue().getValue());
 		return this;
 	}
 	
@@ -157,10 +157,10 @@ public class Ducat implements Comparable<Ducat>{
 		if (purse == null){
 			throw new IllegalArgumentException("Purse is not effective");
 		}
-		if (purse.getValue() > this.getValue()){
+		if (purse.getValue().getValue() > this.getValue()){
 			throw new IllegalArgumentException("The result would be negative, which is invalid");
 		}
-		this.value = (this.getValue() - purse.getValue());
+		this.value = (this.getValue() - purse.getValue().getValue());
 		return this;
 	}
 	
@@ -182,6 +182,14 @@ public class Ducat implements Comparable<Ducat>{
  		}
  		Ducat otherDucat = (Ducat) other;
  		return (this.getValue() == otherDucat.getValue());		
+ 	}
+ 	
+ 	/**
+ 	 * Return the value of this ducat as a string.
+ 	 */
+ 	@Override
+ 	public String toString(){
+ 		return String.valueOf(getValue());
  	}
  	
  	/**********************************

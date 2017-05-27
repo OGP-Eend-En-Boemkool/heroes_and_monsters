@@ -167,8 +167,8 @@ public class Purse extends Storage {
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	public int getValue() {
-		return this.content.getValue();
+	public Ducat getValue() {
+		return this.content;
 	}
 	
 	/*********************************

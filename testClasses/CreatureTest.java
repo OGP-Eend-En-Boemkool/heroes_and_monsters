@@ -18,13 +18,13 @@ public class CreatureTest {
 	
 	@Before
 	public void setUpFixture(){
-		armor1 = new Armor(2477, 84, 752, 73, Unit.KG);
-		armor2 = new Armor(13, 64, 654, 12, Unit.KG);
+		armor1 = new Armor(2477, 84, new Ducat(752), 73, Unit.KG);
+		armor2 = new Armor(13, 64, new Ducat(654), 12, Unit.KG);
 		weapon1 = new Weapon(20, Unit.KG, 42);
 		weapon2 = new Weapon(12, Unit.KG, 84);
 		weapon3 = new Weapon(15, Unit.KG, 21);
 		purse = new Purse(1, Unit.KG, 5);
-		backpack = new Backpack(132, 261, 1, Unit.KG);
+		backpack = new Backpack(new Ducat(132), 261, 1, Unit.KG);
 		hero1 = new Hero("Superman", new BigDecimal(219.23), 127, new ArrayList<Object>(Arrays.asList(weapon1, null, null, armor1, purse)));
 		hero2 = new Hero("Spiderman", new BigDecimal(256.49), 163, new ArrayList<Object>(Arrays.asList(null, weapon2, backpack, armor2, null)));
 		monster1 = new Monster("Frankenstein", new BigDecimal(321.64), 7, new ArrayList<String>(Arrays.asList("Left hand", "Right hand", "Back", "Tail")), new ArrayList<Object>(Arrays.asList(weapon3)), 77, 52);
@@ -56,7 +56,7 @@ public class CreatureTest {
 	public void testAnchors_LegalCase(){
 		assertTrue(monster1.getAnchors().keySet().equals(new HashSet<Object>(Arrays.asList("Left hand", "Right hand", "Back", "Tail"))));
 		assertTrue(hero1.getAnchors().values().containsAll(new HashSet<Object>(Arrays.asList(weapon1, armor1, purse))));
-		Armor armor = new Armor(19, 54, 546, 16, Unit.KG);
+		Armor armor = new Armor(19, 54, new Ducat(546), 16, Unit.KG);
 		monster2.addToAnchor(armor, "Left hand");
 		assertTrue(armor.getHolder() == monster2);
 		Weapon weapon = new Weapon(10, Unit.KG, 7);
@@ -93,7 +93,7 @@ public class CreatureTest {
 	
 	@Test
 	public void testHit_Hero2_Monster2_LegalCase(){
-		Armor a = new Armor(83, 84, 752, 41, Unit.KG);
+		Armor a = new Armor(83, 84, new Ducat(752), 41, Unit.KG);
 		Purse p = new Purse(12, Unit.KG, 5);
 		Ducat d = new Ducat(7);
 		monster2.addToAnchor(p, "Left hand");
@@ -130,8 +130,8 @@ public class CreatureTest {
 	@Test
 	public void testHit_Monster2_Hero1_LegalCase(){
 		Weapon w = new Weapon(60, Unit.KG, 49);
-		Armor a = new Armor(53, 84, 752, 46, Unit.KG);
-		Backpack b = new Backpack(132, 261, 1, Unit.KG);
+		Armor a = new Armor(53, 84, new Ducat(752), 46, Unit.KG);
+		Backpack b = new Backpack(new Ducat(132), 261, 1, Unit.KG);
 		Ducat d1 = new Ducat(12);
 		Ducat d2 = new Ducat(74);
 		hero1.addToAnchor(b, "Back");
@@ -180,7 +180,7 @@ public class CreatureTest {
 		hero1.passToStorage(weapon1, backpack);
 		backpack.removeFromStorageAndTerminate(weapon1);
 		assertFalse(hero1.canAddToAnchor(weapon1, "Left hand"));
-		Backpack rugzak = new Backpack(100, 5000, 1, Unit.KG);
+		Backpack rugzak = new Backpack(new Ducat(100), 5000, 1, Unit.KG);
 		Weapon wapen1 = new Weapon(4500, Unit.KG, 49);
 		rugzak.addToStorage(wapen1);
 		assertFalse(monster2.canAddToAnchor(rugzak, "Right hand"));

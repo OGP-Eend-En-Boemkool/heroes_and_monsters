@@ -12,9 +12,9 @@ public class ArmorTest {
 	
 	@Before
 	public void setUpFixture(){
-		armor = new Armor(2477, 84, 752, 73, Unit.KG);
-		armor2 = new Armor(65, 84, 752, 73, Unit.KG);
-		backpack = new Backpack(132, 261, 1, Unit.KG);
+		armor = new Armor(2477, 84, new Ducat(752), 73, Unit.KG);
+		armor2 = new Armor(65, 84, new Ducat(752), 73, Unit.KG);
+		backpack = new Backpack(new Ducat(132), 261, 1, Unit.KG);
 		backpack.addToStorage(armor);
 	}
 	
@@ -26,7 +26,7 @@ public class ArmorTest {
 		assertTrue(armor.getCurrentProtection() == 24);
 		armor.decreaseProtection(5);
 		assertTrue(armor.getCurrentProtection() == 19);
-		assertTrue(armor.getMaxValue() == 752);
+		assertTrue(armor.getMaxValue().getValue() == 752);
 		assertTrue(armor.isValidValue(armor.getValue()));
 	}
 	
@@ -109,11 +109,9 @@ public class ArmorTest {
 	
 	@Test
 	public void testInvalidValue(){
-		assertFalse(armor.isValidValue(-2));
-		assertFalse(armor.isValidValue(0));
-		assertFalse(armor.isValidValue(-2));
-		assertFalse(armor.isValidValue(1002));
-		assertFalse(armor.isValidValue(501));
+		assertFalse(armor.isValidValue(new Ducat(0)));
+		assertFalse(armor.isValidValue(new Ducat(1002)));
+		assertFalse(armor.isValidValue(new Ducat(501)));
 	}
 	
 	@Test

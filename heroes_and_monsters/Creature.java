@@ -429,7 +429,6 @@ public abstract class Creature implements Capacity{
 	public void addToAnchor(Object object, String anchor)
 			throws IllegalArgumentException {
 		if (!canAddToAnchor(object, anchor)){
-			System.out.println(object);
 			throw new IllegalArgumentException("The object can't be added to this anchor.");
 		}
 		this.anchors.put(anchor, object);
@@ -581,6 +580,10 @@ public abstract class Creature implements Capacity{
 	 * 			| this.dropFromAnchor(object)
 	 * @effect	The object is added to the given anchor from the given creature.
 	 * 			| creature.addToAnchor(object, anchor)
+	 * @post	If the given object can't be added to the given anchor from the given creature, it's added
+	 * 			back to were it was before. Unless it's a ducat, then it's added randomly where possible.
+	 * 			| if (!canAddToAnchor(object, anchor))
+	 * 			| then (this.addToAnchor(object, oldAnchor))
 	 * @throws 	IllegalArgumentException
 	 * 			The given object cannot be dropped.
 	 * 			| !canDropFromAnchor(object)
@@ -590,8 +593,37 @@ public abstract class Creature implements Capacity{
 	 */
 	public void passAlong(Object object, Creature creature, String anchor)
 			throws IllegalArgumentException {
+		String oldAnchor = "";
+		if (this.getAnchors().values().contains(object) && !(object instanceof Ducat)){
+			Iterator<String> iterator1 = this.getAnchors().keySet().iterator();
+			while (iterator1.hasNext()){
+				String next = iterator1.next();
+				if (this.getAnchors().get(next) == object){
+					oldAnchor = next;
+				}
+			}
+		}
 		this.dropFromAnchor(object);
-		creature.addToAnchor(object, anchor);
+		try {
+			creature.addToAnchor(object, anchor);
+		} catch (Exception e) {
+			if (!(object instanceof Ducat)){
+				this.addToAnchor(object, oldAnchor);
+			}
+			else {
+				Iterator<String> iterator2 = this.getAnchors().keySet().iterator();
+				boolean added = false;
+				while (iterator2.hasNext() && !added){
+					String next = iterator2.next();
+					if (this.canAddToAnchor(object, next)){
+						this.addToAnchor(object, next);
+						added = true;
+					}
+				}
+			}
+			throw e;
+		}
+		
 	}
 	
 	/**
@@ -605,6 +637,10 @@ public abstract class Creature implements Capacity{
 	 * 			| this.dropFromAnchor(object)
 	 * @effect	Add the given object to the given storage.
 	 * 			| storage.addToStorage(object)
+	 * @post	If the given object can't be added to the given storage, it's added back to were it was
+	 * 			before. Unless it's a ducat, then it's added randomly where possible.
+	 * 			| if (!canAddToStorage(object))
+	 * 			| then (this.addToAnchor(object, oldAnchor))
 	 * @throws 	IllegalArgumentException
 	 * 			The given object cannot be dropped.
 	 * 			| !canDropFromAnchor(object)
@@ -614,8 +650,37 @@ public abstract class Creature implements Capacity{
 	 */
 	public void passToStorage(Object object, Storage storage)
 			throws IllegalArgumentException {
+		String oldAnchor = "";
+		if (this.getAnchors().values().contains(object)){
+			Iterator<String> iterator = this.getAnchors().keySet().iterator();
+			while (iterator.hasNext()){
+				String next = iterator.next();
+				if (this.getAnchors().get(next) == object){
+					oldAnchor = next;
+				}
+			}
+		}
 		this.dropFromAnchor(object);
-		storage.addToStorage(object);
+		try {
+			storage.addToStorage(object);
+		} catch (Exception e) {
+			if (!(object instanceof Ducat)){
+				this.addToAnchor(object, oldAnchor);
+			}
+			else {
+				Iterator<String> iterator2 = this.getAnchors().keySet().iterator();
+				boolean added = false;
+				while (iterator2.hasNext() && !added){
+					String next = iterator2.next();
+					if (this.canAddToAnchor(object, next)){
+						this.addToAnchor(object, next);
+						added = true;
+					}
+				}
+			}
+			throw e;
+		}
+		
 	}
 	
 	/**

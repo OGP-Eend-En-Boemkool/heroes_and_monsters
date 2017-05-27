@@ -47,7 +47,7 @@ public class Backpack extends Storage{
 	 * 			| new.getMaximumCapacity(unit) == maximumCapacity
 	 */
 	@Raw
-	public Backpack(int standardValue, double maxCapacity, double ownWeight, Unit unit){
+	public Backpack(Ducat standardValue, double maxCapacity, double ownWeight, Unit unit){
 		super(calculateValidIdentification(), ownWeight, unit);
 		setStandardValue(standardValue);
 		setMaxCapacity(maxCapacity, unit);
@@ -386,7 +386,7 @@ public class Backpack extends Storage{
 					newDucat = newDucat.add(other);
 				}
 				if (objectInBackpack instanceof Purse){
-					Ducat other = new Ducat(((Purse)objectInBackpack).getValue());
+					Ducat other = new Ducat(((Purse) objectInBackpack).getValue().getValue());
 					newDucat = newDucat.add(other);
 				}
 			}
@@ -725,7 +725,7 @@ public class Backpack extends Storage{
 	/**
 	 * Variable registering the standard value of the backpack in itself.
 	 */
-	private int standardValue = 0;
+	private Ducat standardValue = new Ducat(0);
 	
 	/**
 	 * Sets the standard value of the backpack to the given integer 'standardValue'.
@@ -740,12 +740,12 @@ public class Backpack extends Storage{
 	 * 		  	| if !this.isValidValue(standardValue) then this.setStandardValue(0)
 	 */
 	@Raw
-	private void setStandardValue(int standardValue){
+	private void setStandardValue(Ducat standardValue){
 		if (this.isValidStandardValue(standardValue)){
 			this.standardValue = standardValue;
 		}
 		else {
-			this.setStandardValue(0);
+			this.setStandardValue(new Ducat(0));
 		}
 	}
 	
@@ -756,7 +756,7 @@ public class Backpack extends Storage{
 	 * 		   | this.isValidValue(result)
 	 */
 	@Basic
-	public int getStandardValue(){
+	public Ducat getStandardValue(){
 		return this.standardValue;
 	}
 	
@@ -769,8 +769,8 @@ public class Backpack extends Storage{
 	 * 		   | result == ((standardValue >= 0)&&(standardValue <= 500))
 	 */
 	@Raw
-	protected boolean isValidStandardValue(int standardValue){
-		return ((standardValue >= 0)&&(standardValue <= 500));
+	protected boolean isValidStandardValue(Ducat standardValue){
+		return ((standardValue.getValue() >= 0)&&(standardValue.getValue() <= 500));
 	}
 	
 	/**
@@ -785,7 +785,7 @@ public class Backpack extends Storage{
 	 * 		  | if !(this.isValidStandardValue(standardValue)) 
 	 * 		  | then new.getStandardValue().equals(this.getStandardValue())
 	 */
-	protected void changeStandardValue(int standardValue){
+	protected void changeStandardValue(Ducat standardValue){
 		if (this.isValidStandardValue(standardValue)){
 			this.setStandardValue(standardValue);
 		}
@@ -798,22 +798,22 @@ public class Backpack extends Storage{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	public int getValue() {
-		int value = this.standardValue;
+	public Ducat getValue() {
+		Ducat value = this.standardValue;
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();
 			if (object instanceof Ducat){
 				Ducat ducat = (Ducat) object;
-				value = value + ducat.getValue();
+				value.add(ducat);
 			}
 			else if (object instanceof Backpack){
 				Backpack backpack = (Backpack) object;
-				value = value + backpack.getStandardValue();
+				value.add(backpack.getStandardValue());
 			}
 			else if (object instanceof Ownable){
 				Ownable ownable = (Ownable) object;
-				value = value + ownable.getValue();
+				value.add(ownable.getValue());
 			}
 		}
 		return value;

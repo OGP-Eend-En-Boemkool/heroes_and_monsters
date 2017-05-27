@@ -43,7 +43,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * @post	If the given value isn't valid, maxProtecion is set to the default.
 	 */
 	@Raw
-	public Armor(long identification, int maxProtection, int maxValue,
+	public Armor(long identification, int maxProtection, Ducat maxValue,
 			double weight, Unit unit){
 		super(identification, weight, unit);
 		this.setMaxValue(maxValue);
@@ -315,7 +315,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	/**
 	 * Variable registering the maximum value in ducats of this armor.
 	 */
-	private int maxValue = 2;
+	private Ducat maxValue = new Ducat(2);
 	
 	/**
 	 * Sets the maximum value of the armor to the given integer 'maxValue'.
@@ -327,11 +327,11 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * @post  If the given value isn't valid, maxValue is set to the default.
 	 * 		  | if !this.isValidValue(maxValue) then this.setMaxValue(2)
 	 */
-	private void setMaxValue(int maxValue){
+	private void setMaxValue(Ducat maxValue){
 		if (this.isValidValue(maxValue)){
 			this.maxValue = maxValue;
 		}
-		else this.setMaxValue(2);
+		else this.setMaxValue(new Ducat(2));
 	}
 	
 	/**
@@ -341,7 +341,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 		   | this.isValidValue(result)
 	 */
 	@Basic
-	public int getMaxValue(){
+	public Ducat getMaxValue(){
 		return this.maxValue;
 	}
 	
@@ -354,8 +354,9 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0)
 	 */
 	@Override
-	public boolean isValidValue(int value){
-		return (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0));
+	public boolean isValidValue(Ducat value){
+		return (super.isValidValue(value) && (value.getValue()>=1) &&
+				(value.getValue()<=1000) && (value.getValue() % 2 == 0));
 	}
 	
 	/**
@@ -365,16 +366,16 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	public int getValue() {
-		int value = (int)Math.floor(this.getMaxValue()*(this.getCurrentProtection()/this.getMaxProtection()));
-		if (value == 0){
-			return 2;
+	public Ducat getValue() {
+		Ducat value = new Ducat((int)Math.floor(this.getMaxValue().getValue()*(this.getCurrentProtection()/this.getMaxProtection())));
+		if (value.compareTo(new Ducat(0)) == 0){
+			return new Ducat(2);
 		}
 		if (this.isValidValue(value)){
 			return value;
 		}
 		else{
-			return value + 1;
+			return value.add(new Ducat(1));
 		}
 	}
 	

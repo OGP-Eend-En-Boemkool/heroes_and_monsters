@@ -15,8 +15,8 @@ public class OwnableTest {
 	@Before
 	public void setUpFixture(){
 		weapon = new Weapon(2, Unit.KG, 42);
-		backpack = new Backpack(132, 261, 0.1, Unit.KG);
-		armor = new Armor(2477, 84, 752, 0.1, Unit.KG);
+		backpack = new Backpack(new Ducat(132), 261, 0.1, Unit.KG);
+		armor = new Armor(2477, 84, new Ducat(752), 0.1, Unit.KG);
 		hero = new Hero("Hero", 89, armor);
 		backpack.addToStorage(weapon);
 	}

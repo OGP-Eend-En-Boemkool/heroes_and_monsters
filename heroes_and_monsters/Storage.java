@@ -135,6 +135,10 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 * 			| this.takeOutOfStorage(object)
 	 * @effect	The given object is added to the other storage.
 	 * 			| other.addToStorage(object)
+	 * @post	If the given object can't be added to the given storage, it's added back where it came
+	 * 			from (possibly indirect storage). Unless it's a ducat, the it's added in this storage.
+	 * 			| if (!canAddToStorage(object))
+	 * 			| then (holder.addToStorage(object))
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this storage.
 	 * 			| !this.canTakeOutOfStorage(object)
@@ -144,8 +148,20 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 */
 	public void transferToStorage(Storage other, Object object)
 			throws IllegalArgumentException {
+		Object holder;
+		if (object instanceof Ownable){
+			holder = ((Ownable) object).getHolder();
+		}
+		else {
+			holder = this;
+		}
 		this.takeOutOfStorage(object);
-		other.addToStorage(object);
+		try {
+			other.addToStorage(object);
+		} catch (Exception e) {
+			((Storage) holder).addToStorage(object);
+			throw e;
+		}
 	}
 	
 	/**
@@ -162,6 +178,11 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 * 			| this.takeOutOfStorage(object)
 	 * @effect	The given object is added to the given anchor from the given creature.
 	 * 			| creature.addToAnchor(object, anchor)
+	 * @post	If the given object can't be added to the given anchor from the given object, it's added
+	 * 			back where it came from (possibly indirect storage). Unless it's a ducat, the it's added in
+	 * 			this storage.
+	 * 			| if (!canAddToAnchor(object, anchor))
+	 * 			| then (holder.addToStorage(object))
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this storage.
 	 * 			| !this.canTakeOutOfStorage(object)
@@ -171,8 +192,20 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 */
 	public void transferToCreature(Object object, Creature creature, String anchor)
 			throws IllegalArgumentException {
+		Object holder;
+		if (object instanceof Ownable){
+			holder = ((Ownable) object).getHolder();
+		}
+		else {
+			holder = this;
+		}
 		this.takeOutOfStorage(object);
-		creature.addToAnchor(object, anchor);
+		try {
+			creature.addToAnchor(object, anchor);
+		} catch (Exception e) {
+			((Storage) holder).addToStorage(object);
+			throw e;
+		}
 	}
 	
 	/**

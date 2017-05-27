@@ -13,7 +13,7 @@ public class WeaponTest {
 	@Before
 	public void setUpFixture(){
 		weapon = new Weapon(20, Unit.KG, 42);
-		backpack = new Backpack(132, 261, 1, Unit.KG);
+		backpack = new Backpack(new Ducat(132), 261, 1, Unit.KG);
 		backpack.addToStorage(weapon);
 	}
 	
@@ -23,7 +23,7 @@ public class WeaponTest {
 		assertTrue(weapon.getMaximumDamage() == 100);
 		assertTrue(weapon.canHaveAsDamage(weapon.getCurrentDamage()));
 		assertTrue(weapon.isValidMaximumDamage(weapon.getMaximumDamage()));
-		assertTrue(weapon.getValue() == 84);
+		assertTrue(weapon.getValue().getValue() == 84);
 		assertTrue(weapon.isValidValue(weapon.getValue()));
 	}
 	
@@ -71,7 +71,6 @@ public class WeaponTest {
 	
 	@Test
 	public void testInvalidValue(){
-		assertFalse(weapon.isValidValue(-1));
-		assertFalse(weapon.isValidValue(201));
+		assertFalse(weapon.isValidValue(new Ducat(201)));
 	}
 }

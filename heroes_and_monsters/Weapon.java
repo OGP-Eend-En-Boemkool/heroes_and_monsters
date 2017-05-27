@@ -221,8 +221,8 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=200)
 	 */
 	@Override
-	public boolean isValidValue(int value){
-		return (super.isValidValue(value)&&(value>=1)&&(value<=2*this.getMaximumDamage()));
+	public boolean isValidValue(Ducat value){
+		return (super.isValidValue(value)&&(value.getValue()>=1)&&(value.getValue()<=2*this.getMaximumDamage()));
 	}
 	
 	/**
@@ -232,13 +232,13 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 		   | isValidValue(result)
 	 */
 	@Override
-	public int getValue() {
-		int value = (this.getCurrentDamage()*2);
+	public Ducat getValue() {
+		Ducat value = new Ducat(this.getCurrentDamage()*2);
 		if (this.isValidValue(value)){
 			return value;
 		}
 		else{
-			return 1;
+			return new Ducat(1);
 		}
 	}
 	

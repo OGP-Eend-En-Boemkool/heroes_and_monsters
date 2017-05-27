@@ -19,17 +19,17 @@ public class BackpackTest {
 	
 	@Before
 	public void setUpFixture(){
-		backpack1 = new Backpack(10, 500, 10, Unit.KG);
-		backpack2 = new Backpack(200, 1000, 600, Unit.GRAM);
-		backpack3 = new Backpack(15, 500, 0.7, Unit.KG);
+		backpack1 = new Backpack(new Ducat(10), 500, 10, Unit.KG);
+		backpack2 = new Backpack(new Ducat(200), 1000, 600, Unit.GRAM);
+		backpack3 = new Backpack(new Ducat(15), 500, 0.7, Unit.KG);
 		purse = new Purse(100, Unit.GRAM, 5000);
 		ducat1 = new Ducat(2);
 		ducat2 = new Ducat(20);
 		ducat3 = new Ducat(5);
-		armor1 = new Armor(13, 90, 830, 26, Unit.KG);
-		armor2 = new Armor(7, 92, 850, 27, Unit.KG);
-		armor3 = new Armor(17, 99, 710, 2, Unit.KG);
-		armor4 = new Armor(19, 80, 615, 8, Unit.KG);
+		armor1 = new Armor(13, 90, new Ducat(830), 26, Unit.KG);
+		armor2 = new Armor(7, 92, new Ducat(850), 27, Unit.KG);
+		armor3 = new Armor(17, 99, new Ducat(710), 2, Unit.KG);
+		armor4 = new Armor(19, 80, new Ducat(615), 8, Unit.KG);
 		weapon1 = new Weapon(5.67, Unit.KG, 84);
 		weapon2 = new Weapon(300, Unit.KG, 84);
 		ArrayList<Object> anchorList = new ArrayList<Object>((Arrays.asList(null, null, null, armor1, null)));
@@ -79,13 +79,13 @@ public class BackpackTest {
 
 	@Test
 	public void testBackpack_valueLegalCase(){
-		assertTrue(backpack3.getStandardValue() == 15);
-		assertTrue(backpack2.getStandardValue() == 200);
-		assertTrue(backpack1.getStandardValue() == 10);
+		assertTrue(backpack3.getStandardValue().getValue() == 15);
+		assertTrue(backpack2.getStandardValue().getValue() == 200);
+		assertTrue(backpack1.getStandardValue().getValue() == 10);
 		backpack3.addToStorage(ducat3);
 		backpack1.addToStorage(armor4);
 		backpack3.addToStorage(backpack1);
-		assertTrue(backpack3.getValue() == 32);
+		assertTrue(backpack3.getValue().getValue() == 32);
 	}
 	
 	@Test

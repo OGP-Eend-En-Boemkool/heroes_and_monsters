@@ -18,13 +18,13 @@ public class MonsterTest {
 	
 	@Before
 	public void setUpFixture(){
-		armor1 = new Armor(2477, 84, 752, 73, Unit.KG);
-		armor2 = new Armor(13, 64, 654, 12, Unit.KG);
+		armor1 = new Armor(2477, 84, new Ducat(752), 73, Unit.KG);
+		armor2 = new Armor(13, 64, new Ducat(654), 12, Unit.KG);
 		weapon1 = new Weapon(20, Unit.KG, 42);
 		weapon2 = new Weapon(12, Unit.KG, 56);
 		weapon3 = new Weapon(15, Unit.KG, 21);
 		purse = new Purse(1, Unit.KG, 5);
-		backpack = new Backpack(132, 261, 1, Unit.KG);
+		backpack = new Backpack(new Ducat(132), 261, 1, Unit.KG);
 		hero1 = new Hero("Superman", new BigDecimal(219.23), 127, new ArrayList<Object>(Arrays.asList(weapon1, null, null, armor1, purse)));
 		hero2 = new Hero("Spiderman", new BigDecimal(156.49), 163, new ArrayList<Object>(Arrays.asList(null, weapon2, backpack, armor2, null)));
 		monster1 = new Monster("Frankenstein", new BigDecimal(321.64), 97, new ArrayList<String>(Arrays.asList("Left hand", "Right hand", "Back", "Tail")), new ArrayList<Object>(Arrays.asList(weapon3)), 77, 52);

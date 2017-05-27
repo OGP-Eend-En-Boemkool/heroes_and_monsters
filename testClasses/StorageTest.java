@@ -18,13 +18,13 @@ public class StorageTest {
 	
 	@Before
 	public void setUpFixture(){
-		backpack1 = new Backpack(132, 261, 1, Unit.KG);
-		backpack2 = new Backpack(74, 194, 0.5, Unit.KG);
+		backpack1 = new Backpack(new Ducat(132), 261, 1, Unit.KG);
+		backpack2 = new Backpack(new Ducat(74), 194, 0.5, Unit.KG);
 		purse = new Purse(1, Unit.KG, 5);
 		ducat = new Ducat(61);
 		weapon = new Weapon(20, Unit.KG, 42);
-		armor = new Armor(2477, 84, 752, 73, Unit.KG);
-		armor2 = new Armor(13, 64, 654, 12, Unit.KG);
+		armor = new Armor(2477, 84, new Ducat(752), 73, Unit.KG);
+		armor2 = new Armor(13, 64, new Ducat(654), 12, Unit.KG);
 		hero = new Hero("Hero", new BigDecimal(219.23), 137, new ArrayList<Object>(Arrays.asList(null, null, null, armor2, null)));
 	}
 	
@@ -41,10 +41,10 @@ public class StorageTest {
 		assertTrue(backpack2.ownableInBackpack(armor));
 		backpack1.addToStorage(ducat);
 		backpack1.transferToStorage(backpack2, ducat);
-		assertTrue(backpack1.getValue() >= backpack1.getStandardValue());
+		assertTrue(backpack1.getValue().getValue() >= backpack1.getStandardValue().getValue());
 		backpack2.transferToStorage(purse, ducat);
-		assertTrue(backpack2.getValue() == backpack2.getStandardValue() + armor.getValue());
-		assertTrue(purse.getValue() == ducat.getValue());
+		assertTrue(backpack2.getValue().getValue() == backpack2.getStandardValue().getValue() + armor.getValue().getValue());
+		assertTrue(purse.getValue().getValue() == ducat.getValue());
 	}
 	
 	@Test

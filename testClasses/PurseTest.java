@@ -19,8 +19,8 @@ public class PurseTest {
 	public void setUpFixture(){
 		purse = new Purse(0, Unit.KG, 4);
 		ducat = new Ducat(79);
-		backpack = new Backpack(132, 40, 1, Unit.KG);
-		armor = new Armor(2477, 84, 752, 0, Unit.KG);
+		backpack = new Backpack(new Ducat(132), 40, 1, Unit.KG);
+		armor = new Armor(2477, 84, new Ducat(752), 0, Unit.KG);
 		hero = new Hero("Hero", 101, armor);
 		weapon = new Weapon(38, Unit.KG, 21);
 	}
@@ -31,20 +31,20 @@ public class PurseTest {
 		assertTrue(purse.getMaximumCapacity(Unit.KG) == 4);
 		purse.addToStorage(ducat);
 		assertTrue(purse.getUsedCapacity(Unit.KG) == (0.050*79));
-		assertTrue(purse.getValue() == 79);
+		assertTrue(purse.getValue().getValue() == 79);
 		purse.removeFromStorageAndTerminate(new Ducat(20));
-		assertTrue(purse.getValue() == 59);
+		assertTrue(purse.getValue().getValue() == 59);
 		assertTrue(purse.getTotalWeight(Unit.KG) == (0.050*59));
 		assertFalse(backpack.canTakeOutOfStorage(new Ducat(26)));
 		purse.addToStorage(new Ducat(2));
 		purse.transferToStorage(backpack, new Ducat(26));
-		assertTrue(purse.getValue() == 35);
+		assertTrue(purse.getValue().getValue() == 35);
 		assertTrue(backpack.canTakeOutOfStorage(new Ducat(26)));
 		backpack.addToStorage(purse);
 		assertTrue(purse.getHolder() == backpack);
 		purse.addToStorage(new Ducat(130));
 		assertTrue(purse.getBroken());
-		assertTrue(purse.getValue() == 0);
+		assertTrue(purse.getValue().getValue() == 0);
 		assertTrue(backpack.canTakeOutOfStorage(new Ducat(163)));
 		assertTrue(purse.getTotalWeight(Unit.KG) == 0);
 	}
@@ -86,12 +86,12 @@ public class PurseTest {
 	public void testTransferToOtherPurseAllContent1(){
 		purse.addToStorage(ducat);
 		backpack.addToStorage(purse);
-		assertTrue(backpack.getValue() == 211);
-		assertTrue(purse.getValue() == 79);
+		assertTrue(backpack.getValue().getValue() == 211);
+		assertTrue(purse.getValue().getValue() == 79);
 		Purse other = new Purse(1, Unit.KG, 23);
 		purse.transferToStorage(other, new Ducat (79));
 		assertTrue(backpack.getValue() == backpack.getStandardValue());
-		assertTrue(purse.getValue() == 0);
+		assertTrue(purse.getValue().getValue() == 0);
 	}
 	
 	@Test
