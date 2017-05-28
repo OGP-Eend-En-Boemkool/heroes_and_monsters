@@ -96,7 +96,7 @@ public abstract class Creature implements Capacity{
 	 * 			This creature is dead.
 	 * 			| getKilled()
 	 */
-	@Raw @Basic
+	@Raw @Basic @Immutable
 	public String getName() throws CreatureIsDeadException {
 		if (getKilled()){
 			throw new CreatureIsDeadException(this);

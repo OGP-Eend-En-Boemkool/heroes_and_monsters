@@ -23,7 +23,7 @@ public class Backpack extends Storage{
 	 ******************************************
 	
 	/**
-	 * Initialize this new backpack with an identification, own weight and unit.
+	 * Initialize this new backpack with a standard value, maximum capacity, own weight and unit.
 	 * 
 	 * @param	standardValue
 	 * 			The standard value of this backpack.
@@ -132,6 +132,7 @@ public class Backpack extends Storage{
 	 * @post	The maximum capacity of this backpack is set to maximumCapacity.
 	 * 			| new.getMaximumCapacity(unit) == maximumCapacity
 	 */
+	@Raw
 	private void setMaxCapacity(double maximumCapacity, Unit unit){
 		this.maximumCapacity = unit.convertToKilogram(maximumCapacity);
 	}
@@ -139,13 +140,15 @@ public class Backpack extends Storage{
 	/**
 	 * Return the maximum capacity of the object.
 	 * 
-	 * @return the resulting number cannot be negative
-	 * 		   | result > 0
+	 * @param	unit
+	 * 			The unit to get the maximum capacity in.
+	 * @return 	the resulting number cannot be negative
+	 * 		   	| result > 0
 	 * @throws	OwnableIsTerminatedException
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Override
+	@Override @Immutable
 	public double getMaximumCapacity(Unit unit) throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -156,6 +159,8 @@ public class Backpack extends Storage{
 	/**
 	 * Return the used part of the total capacity of the object.
 	 * 
+	 * @param	unit
+	 * 			The unit to get the used capacity in.
 	 * @return the resulting number cannot be negative
 	 * 		   | result > 0
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
@@ -222,22 +227,20 @@ public class Backpack extends Storage{
 	 * @param 	object
 	 * 			The object to add.
 	 * @post	The object is added to this backpack.
-	 * 			| if (object instanceof Ducat){
-	 * 			|		if one of the objects in content already is a ducat {
-	 * 			|			d.add(object) } }
-	 * 			| else {
-	 * 			| 		content.add(object) }
+	 * 			| if (object instanceof Ducat)
+	 * 			| then		if one of the objects in content already is a ducat 
+	 * 			|			then (d.add(object))
+	 * 			| else 		(content.add(object))
 	 * @post	The size of content is increased by 1. Unless there is a ducat added and
 	 * 			there already is a ducat in this backpack, then the value of that ducat is
 	 * 			just increased.
-	 * 			| if (object instanceof Ducat){
-	 * 			|		if one of the objects in content already is a ducat {
-	 * 			|				this.getContent().size() == new.getContent().size() } }
-	 * 			| else {
-	 * 			| 		this.getContent().size() + 1 == new.getContent().size() }
+	 * 			| if (object instanceof Ducat)
+	 * 			| then		if one of the objects in content already is a ducat
+	 * 			|			then	(this.getContent().size() == new.getContent().size())
+	 * 			| else 		(this.getContent().size() + 1 == new.getContent().size())
 	 * @effect	If the given object is an ownable, its holder is set to this.
-	 * 			| if (object instanceof Ownable){
-	 * 			| 		object.setHolder(this) }
+	 * 			| if (object instanceof Ownable)
+	 * 			| then	(object.setHolder(this))
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be added to this backpack.
 	 * 			| !canAddToStorage(object)
@@ -352,19 +355,14 @@ public class Backpack extends Storage{
 	 * 			Also true if the given object is a ducat and the value of all the ducats
 	 * 			in this backpack is greater than or equal to the given ducat. False
 	 * 			otherwise.
-	 * 			| if (!super.canTakeOutOfStorage(object)){
-	 *			|		result == false
-	 *			| }
-	 * 			| if (object instanceof Ownable){
-	 * 			|		result == this.OwnableInBackpack(object)
-	 * 			| }
-	 * 			| else if (object instanceof Ducat) {
-	 * 			|		ducat = total value of ducats in this backpack
-	 * 			|		result == ducat.getValue() >= object.getValue() )
-	 * 			| }
-	 * 			| else {
-	 * 			| 		result == false
-	 * 			| }
+	 * 			| if (!super.canTakeOutOfStorage(object))
+	 *			| then		result == false
+	 * 			| if (object instanceof Ownable)
+	 * 			| then		result == this.OwnableInBackpack(object)
+	 * 			| else if (object instanceof Ducat)
+	 * 			| then		ducat = total value of ducats in this backpack
+	 * 			|			result == ducat.getValue() >= object.getValue()
+	 * 			| else (result == false)
 	 */
 	@Override
 	public boolean canTakeOutOfStorage(Object object){
@@ -404,19 +402,18 @@ public class Backpack extends Storage{
 	 * 			this backpack or a backpack direct or indirect in this backpack or a purse
 	 * 			direct or indirect in this backpack or a combination of these possibilities.
 	 * 			If it's not, the given object is taken out of its holder.
-	 * 			| if (object instanceof Ducat){
-	 * 			|			for all ducats and purses {
+	 * 			| if (object instanceof Ducat)
+	 * 			| then		for all ducats and purses:
 	 * 			|				ducat.subtract(object) or purse.takeOutOfStorage(object)
-	 * 			|				(until enough is subtracted) } }
-	 * 			| else {
-	 * 			|			object.getHolder().content.remove(object) }
+	 * 			|				(until enough is subtracted)
+	 * 			| else (object.getHolder().content.remove(object))
 	 * @post	If the given object is an ownable, the size of the content of its holder
 	 * 			is decreased by 1.
-	 * 			| if (object instanceof Ownable){
-	 * 			|			(new object.getHolder()).getContent().size() == object.getHolder().getContent().size() - 1 }
+	 * 			| if (object instanceof Ownable)
+	 * 			| then		(new object.getHolder()).getContent().size() == object.getHolder().getContent().size() - 1
 	 * @effect	If the given object is an ownable, its holder is set to null.
-	 * 			| if (object instanceof Ownable){
-	 * 			| 			object.setHolder() }
+	 * 			| if (object instanceof Ownable)
+	 * 			| then		object.setHolder()
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this backpack.
 	 * 			| !canTakeOutOfStorage(object)
@@ -516,24 +513,18 @@ public class Backpack extends Storage{
 	 *        	|		}
 	 *        	| }
 	 * @post 	the hashmaps identificationNumbers of all the containers of this backpack will contain the identificationnumber of the ownable as one of the keys.
-	 * 		  	| for all container in this.getContainersSet(){
+	 * 		  	| for all container in this.getContainersSet():
 	 * 			|	container.getIdNumber().containsKey(ownable.getIdentification())
-	 * 			| }
 	 * @post  	the hashmaps identificationNumbers of all the containers of this backpack will map the identificationnumber of the ownable to an arraylist that contains the ownabale.
-	 * 		  	| for all container in this.getContainersSet(){
+	 * 		  	| for all container in this.getContainersSet():
 	 * 			| 	container.getIdNumber().get(ownable.getIdentification()).contains(ownable)
-	 * 			| }
 	 * @post  	if the ownable object is a backpack, all the ownable objects in this backpack are also added to the hashmaps of all the containers of this backpack in the same way.
 	 *        	| for all container in this.getContainersSet(){
-	 *        	| 	if (ownable instanceof Backpack){
-	 *        	| 		for all object in ownable{
-	 *        	|				if (object instanceof Ownable){
-	 *        	|					container.getIdNumber().containsKey(object.getIdentification())
-	 *        	|					container.getIdNumber().get(object.getIdentification()).contains(object)
-	 *        	|				}
-	 *        	|		}
-	 *        	| 	}
-	 *        	| }
+	 *        	| 	if (ownable instanceof Backpack)
+	 *        	| 	then	for all object in ownable:
+	 *        	|				if (object instanceof Ownable)
+	 *        	|				then	container.getIdNumber().containsKey(object.getIdentification())
+	 *        	|						container.getIdNumber().get(object.getIdentification()).contains(object)
 	 */
 	private void addToIdentificationNumbers(Ownable ownable){
 		if (this.getIdNumber().containsKey(ownable.getIdentification())){
@@ -569,38 +560,26 @@ public class Backpack extends Storage{
 	 * 		  the ownable object that needs to be removed from the hashmap.
 	 * @post  the hashmap identificationNumbers of this backpack no longer map the identificationnumber of the ownable to an arraylist that contains the ownable.
 	 * 		  If the identification number of the ownable is still used as key, the arraylist to which this key is mapped will not contain the ownable.
-	 * 		  | if (this.getIdNumber().containsKey(ownable.getIdentification())){
-	 * 		  |		!(this.getIdNumber().get(ownable.getIdentification()).contains(ownable))
-	 * 		  | }
+	 * 		  | if (this.getIdNumber().containsKey(ownable.getIdentification()))
+	 * 		  |	then	!(this.getIdNumber().get(ownable.getIdentification()).contains(ownable))
 	 * @post  if the ownable object is a backpack, all the ownable objects in that backpack are also removed from the hashmap of this backpack in the same way.
-	 *        | if (ownable instanceof Backpack){
-	 *        | 	for all object in ownable{
-	 *        |			if (object instanceof Ownable){
-	 *        |				if (this.getIdNumber().containsKey(object.getIdentification())){
-	 *        |					!(this.getIdNumber().get(object.getIdentification()).contains(object))
-	 *        |				}
-	 *        |			}
-	 *        |		}
-	 *        | }
+	 *        | if (ownable instanceof Backpack)
+	 *        | then	for all object in ownable:
+	 *        |				if (object instanceof Ownable)
+	 *        |					then: if (this.getIdNumber().containsKey(object.getIdentification()))
+	 *        |							then: !(this.getIdNumber().get(object.getIdentification()).contains(object))
 	 * @post  the hashmaps identificationNumbers of all the containers of this backpack no longer map the identificationnumber of the ownable to an arraylist that contains the ownable.
 	 * 		  If the identification number of the ownable is still used as key, the arraylist to which this key is mapped will not contain the ownable.
-	 * 		  | for all container in this.getContainersSet(){
-	 * 		  |		if (container.getIdNumber().containsKey(ownable.getIdentification())){
-	 * 		  |			!(container.getIdNumber().get(ownable.getIdentification()).contains(ownable))
-	 * 		  |		}
-	 * 		  | }
+	 * 		  | for all container in this.getContainersSet():
+	 * 		  |		if (container.getIdNumber().containsKey(ownable.getIdentification()))
+	 * 		  |		then	!(container.getIdNumber().get(ownable.getIdentification()).contains(ownable))
 	 * @post  if the ownable object is a backpack, all the ownable objects in that backpack are also removed from the hashmaps of all the containers of this backpack in the same way.
-	 *  	  | for all container in this.getContainersSet(){
-	 *        | 	if (ownable instanceof Backpack){
-	 *        | 		for all object in ownable{
-	 *        |				if (object instanceof Ownable){
-	 *        |					if (container.getIdNumber().containsKey(object.getIdentification())){
-	 *        |						!(container.getIdNumber().get(object.getIdentification()).contains(object))
-	 *        |					}
-	 *        |				}
-	 *        |			}
-	 *        |		}
-	 *        | }
+	 *  	  | for all container in this.getContainersSet():
+	 *        | 	if (ownable instanceof Backpack)
+	 *        | 		then:	for all object in ownable:
+	 *        |						if (object instanceof Ownable)
+	 *        |						then: if (container.getIdNumber().containsKey(object.getIdentification())){
+	 *        |								then: !(container.getIdNumber().get(object.getIdentification()).contains(object))
 	 */
 	private void removeFromIdentificationNumbers(Ownable ownable){
 		(this.getIdNumber().get(ownable.getIdentification())).remove(ownable);
@@ -683,7 +662,7 @@ public class Backpack extends Storage{
 			}
 
 			/**
-			 * Variable referencing 
+			 * Variable referencing the index of the element in a backpack in this backpack.
 			 */
 			private int indexBackpack = 1;
 			
@@ -755,7 +734,7 @@ public class Backpack extends Storage{
 	 * @return The resulting number must be a valid value.
 	 * 		   | this.isValidValue(result)
 	 */
-	@Basic
+	@Basic @Raw
 	public Ducat getStandardValue(){
 		return new Ducat(this.standardValue.getValue());
 	}

@@ -20,15 +20,19 @@ public class Purse extends Storage {
 	 ******************************************
 	
 	/**
-	 * Initialize this new purse with an identification, own weight and unit.
+	 * Initialize this new purse with an own weight, unit and maximum capacity.
 	 * 
 	 * @param	ownWeight
 	 * 			The weight of this purse.
 	 * @param	unit
 	 * 			The unit in which the weight is set.
+	 * @param	maxCapacity
+	 * 			The maximum capacity of this purse.
 	 * @effect	This purse is initialized as a storage with a calculated identification
 	 * 			and the given ownWeight and unit.
 	 * 			| super(calculateValidIdentification(), ownWeight, unit)
+	 * @effect	The maximum capacity is set to the given maxCapacity in the given unit.
+	 * 			| setMaxCapacity(maxCapacity, unit)
 	 */
 	@Raw
 	public Purse(double ownWeight, Unit unit, double maxCapacity){
@@ -48,9 +52,9 @@ public class Purse extends Storage {
 	 * 			The identification of this purse.
 	 * @effect	The identification is added to the list of identifications. The size of
 	 * 			this list is increased by 1.
+	 * 			| addPurse(identification)
+	 * @effect	The identification of this purse is set to identification.
 	 * 			| super.setIdentification(identification)
-	 * @post	The identification of this purse is set to identification.
-	 * 			| new.getIdentification() = identification
 	 */
 	@Raw @Override
 	protected void setIdentification(long identification){
@@ -126,6 +130,17 @@ public class Purse extends Storage {
 	 */
 	private double maximumCapacity;
 	
+	/**
+	 * Set the maximum capacity to the given maxCapacity in the given unit.
+	 * 
+	 * @param 	maxCapacity
+	 * 			The maximum capacity of this purse.
+	 * @param 	unit
+	 * 			The unit the capacity is given in.
+	 * @post	The maximum capacity is set to the given value converted to kilogram.
+	 * 			| new.getMaximumCapacity == unit.convertToKilogram(maxCapacity)
+	 */
+	@Raw
 	private void setMaxCapacity(double maxCapacity, Unit unit){
 		this.maximumCapacity = unit.convertToKilogram(maxCapacity);
 	}
@@ -136,7 +151,7 @@ public class Purse extends Storage {
 	 * @return the resulting number cannot be negative
 	 * 		   | result > 0
 	 */
-	@Override
+	@Override @Raw
 	public double getMaximumCapacity(Unit unit) {
 		return unit.convertFromKilogram(maximumCapacity);
 	}
@@ -148,7 +163,6 @@ public class Purse extends Storage {
 	 * 		   | result > 0
 	 * @return the resulting number cannot be larger than the maximum capacity of the object.
 	 * 		   | result <= this.getMaximumCapacity()
-	 * @effect 
 	 */
 	@Override
 	public double getUsedCapacity(Unit unit) {
@@ -226,6 +240,14 @@ public class Purse extends Storage {
 		return new Ducat(content.getValue());
 	}
 	
+	/**
+	 * Set the content of this purse to the given ducat.
+	 * 
+	 * @param 	ducat
+	 * 			The ducat to set the content of this purse to.
+	 * @post	The content of this purse is set to content.
+	 * 			| new.getContent() == ducat
+	 */
 	private void setContent(Ducat ducat){
 		this.content = ducat;
 	}
@@ -346,11 +368,11 @@ public class Purse extends Storage {
 	 * @post	If this purse is empty after the transfer and it was transferred to another purse, this
 	 * 			purse is taken out of the backpack it's in or dropped from the anchor it's on (if it is any
 	 * 			of those).
-	 * 			| if (this.getContent().getValue() == 0 && other instanceof Purse) {
-	 * 			|		if (this.getHolder() instanceof Backpack) {
-	 * 			|				getHolder()).takeOutOfStorage(this) }
-	 * 			|		else if (this.getHolder() instanceof Creature) {
-	 * 			|				getHolder()).dropFromAnchor(this) } }
+	 * 			| if (this.getContent().getValue() == 0 && other instanceof Purse)
+	 * 			| then:		if (this.getHolder() instanceof Backpack)
+	 * 			|				then (getHolder()).takeOutOfStorage(this))
+	 * 			|			else if (this.getHolder() instanceof Creature)
+	 * 			|				then (getHolder()).dropFromAnchor(this))
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this storage.
 	 * 			| !this.canTakeOutOfStorage(object)

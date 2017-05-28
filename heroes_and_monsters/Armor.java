@@ -62,6 +62,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	/**
 	 * Return the type of the armor.
 	 */
+	@Immutable
 	private ArmorType getType(){
 		return this.type;
 	}
@@ -107,7 +108,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Basic
+	@Basic @Immutable @Raw
 	public int getMaxProtection() throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -148,6 +149,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * @post  The number to which the maximum protection is set is equal to the given number.
 	 * 		  | new.getMaxProtection().equals(maxProtection)
 	 */
+	@Raw
 	private void setMaxProtection(int maxProtection) {
 		if (canHaveAsMaxProtection(protection)){
 			this.maxProtection = maxProtection;
@@ -168,8 +170,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * @throws IllegalArgumentException
 	 * 		   Throws an IllegalArgumentException when the integer 'decrease' is not positive or when 
 	 * 		   'decrease' is bigger or equal to the original protection.
-	 * 		   | if ((decrease <= 0)||(decrease >= this.getCurrentProtection()))
-	 * 		   | 	throw new IllegalArgumentException()
+	 * 		   | (decrease <= 0)||(decrease >= this.getCurrentProtection())
 	 * @throws	OwnableIsTerminatedException
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
@@ -211,7 +212,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 		   Throws an IllegalArgumentException when the integer 'increase' is not positive
 	 *  	   or when 'increase' is bigger than the maximum protection decreased with the original 
 	 *  	   protection.
-	 *  	   | if ((increase <= 0)||(increase >= (this.getMaxProtection() - this.getCurrentProtection())))
+	 *  	   | (increase <= 0)||(increase >= (this.getMaxProtection() - this.getCurrentProtection()))
 	 * @throws	OwnableIsTerminatedException
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
@@ -247,7 +248,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 		   false otherwise.
 	 * 		   | result == ((protection >= 1) && (protection <= this.getMaxProtection()))
 	 */
-	@Override
+	@Override @Raw
 	public boolean canHaveAsProtection(int protection) {
 		return ((protection >= 1)&&(protection <= this.getMaxProtection()));
 	}
@@ -261,6 +262,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * 		   false otherwise.
 	 * 		   | result == ((protection >= 1) && (protection <= this.getType().getMaxProtection()))
 	 */
+	@Raw
 	public boolean canHaveAsMaxProtection(int maxProtection) {
 		return ((maxProtection >= 1)&&(maxProtection <= this.getType().getMaxProtection()));
 	}
@@ -289,14 +291,14 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	
 	/**
 	 * Set the identification to the given identification if it is valid, otherwise it will
-	 * be set to a random valid value. The first thousand armors have a unique number.
+	 * be set to the next valid value. The first thousand armors have a unique number.
 	 * 
 	 * @param 	identification
 	 * 			The identification of this armor.
 	 * @effect	The identification is added to the list of identifications. The size of
 	 * 			this list is increased by one.
-	 * @post	If the given identification is unvalid, the identification is set to a
-	 * 			random valid identification. If it is valid, it is set to the given
+	 * @effect	If the given identification is unvalid, the identification is set to the
+	 * 			next valid identification. If it is valid, it is set to the given
 	 * 			identification.
 	 */
 	@Raw @Override
@@ -318,15 +320,16 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	private Ducat maxValue = new Ducat(2);
 	
 	/**
-	 * Sets the maximum value of the armor to the given integer 'maxValue'.
+	 * Sets the maximum value of the armor to the given ducat 'maxValue'.
 	 *
 	 * @param maxValue
-	 * 		  The integer to which the maxValue needs to be set.
-	 * @post  maxValue will be set to the given integer.
+	 * 		  The ducat to which the maxValue needs to be set.
+	 * @post  maxValue will be set to the given ducat.
 	 * 		  | new.getMaxValue().equals(maxValue)
 	 * @post  If the given value isn't valid, maxValue is set to the default.
-	 * 		  | if !this.isValidValue(maxValue) then this.setMaxValue(2)
+	 * 		  | if !this.isValidValue(maxValue) then this.setMaxValue(new Ducat(2))
 	 */
+	@Raw
 	private void setMaxValue(Ducat maxValue){
 		if (this.isValidValue(maxValue)){
 			this.maxValue = maxValue;
@@ -340,7 +343,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 * @return The resulting number must be a valid value.
 	 * 		   | this.isValidValue(result)
 	 */
-	@Basic
+	@Basic @Raw @Immutable
 	public Ducat getMaxValue(){
 		return new Ducat(this.maxValue.getValue());
 	}
@@ -348,10 +351,11 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	/**
 	 * Checks whether or not the given integer is a valid value.
 	 * 
-	 * @param  value
-	 * 		   The integer that needs to be checked.
-	 * @return True if the integer 'value' is smaller than or equal to 1000 and bigger than or equal to 1 and the value is even.
-	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=1000)&&(value % 2 == 0)
+	 * @param  	value
+	 * 		   	The integer that needs to be checked.
+	 * @return 	True if the integer 'value' is smaller than or equal to 1000 and bigger than or equal to 1 and the value is even.
+	 * 		   	| result == (super.isValidValue(value)&&(value.getValue()>=1)&&
+	 * 			|			(value.getValue()<=1000)&&(value.getValue() % 2 == 0)
 	 */
 	@Override
 	public boolean isValidValue(Ducat value){
@@ -360,7 +364,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	}
 	
 	/**
-	 * Calculates the value in the ducats of the armor.
+	 * Calculates the value in ducats of the armor.
 	 * 
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)

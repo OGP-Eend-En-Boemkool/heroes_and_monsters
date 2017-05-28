@@ -24,7 +24,7 @@ public abstract class Ownable{
 	 ******************************************
 	
 	/**
-	 * Initialize an ownable with an identification.
+	 * Initialize an ownable with an identification, weight and unit.
 	 * 
 	 * @param 	identification
 	 * 			The identification of this ownable.
@@ -67,6 +67,7 @@ public abstract class Ownable{
 	 * @post	The size of the list is increased by one.
 	 * 			| new.idListArmors.size() = this.idListArmors.size() + 1
 	 */
+	@Raw
 	protected void addArmor(long identification){
 		idListArmors.add(identification);
 	}
@@ -74,6 +75,7 @@ public abstract class Ownable{
 	/**
 	 * Return the arraylist with the identifications of all armors.
 	 */
+	@Raw
 	protected static ArrayList<Long> getArmors(){
 		return new ArrayList<Long>(idListArmors);
 	}
@@ -93,6 +95,7 @@ public abstract class Ownable{
 	 * @post	The size of the list is increased by one.
 	 * 			| new.idListWeapons.size() = this.idListWeapons.size() + 1
 	 */
+	@Raw
 	protected void addWeapon(long identification){
 		idListWeapons.add(identification);
 	}
@@ -100,6 +103,7 @@ public abstract class Ownable{
 	/**
 	 * Return the arraylist with the identifications of all weapons.
 	 */
+	@Raw
 	protected static ArrayList<Long> getWeapons(){
 		return new ArrayList<Long>(idListWeapons);
 	}
@@ -119,6 +123,7 @@ public abstract class Ownable{
 	 * @post	The size of the list is increased by one.
 	 * 			| new.idListArmorBackpacks.size() = this.idListBackpacks.size() + 1
 	 */
+	@Raw
 	protected void addBackpack(long identification){
 		idListBackpacks.add(identification);
 	}
@@ -126,6 +131,7 @@ public abstract class Ownable{
 	/**
 	 * Return the arraylist with the identifications of all backpacks.
 	 */
+	@Raw
 	protected static ArrayList<Long> getBackpacks(){
 		return new ArrayList<Long>(idListBackpacks);
 	}
@@ -145,6 +151,7 @@ public abstract class Ownable{
 	 * @post	The size of the list is increased by one.
 	 * 			| new.idListPurses.size() = this.idListPurses.size() + 1
 	 */
+	@Raw
 	protected void addPurse(long identification){
 		idListPurses.add(identification);
 	}
@@ -152,6 +159,7 @@ public abstract class Ownable{
 	/**
 	 * Return the arraylist with the identifications of all purses.
 	 */
+	@Raw
 	protected static ArrayList<Long> getPurses(){
 		return new ArrayList<Long>(idListPurses);
 	}
@@ -163,7 +171,7 @@ public abstract class Ownable{
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Raw @Basic
+	@Raw @Basic @Immutable
 	public long getIdentification() throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -176,13 +184,11 @@ public abstract class Ownable{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this ownable.
-	 * @post	The identification of this ownabke is set to the given identification.
+	 * @post	The identification of this ownable is set to the given identification.
 	 * 			| new.getIdentification() == identification
 	 * @effect	The ownable is added to the list of identifications (every ownable
-	 * 			has its own list).
+	 * 			has its own list) and the size of that list is increased by 1.
 	 * 			| addClass(identification)
-	 * @effect	The size of the list of identifications is increased by 1.
-	 * 			| new.idListClass.size() = this.idListClass.size() + 1
 	 */
 	@Raw
 	protected void setIdentification(long identification){
@@ -199,13 +205,14 @@ public abstract class Ownable{
 	private double ownWeight = 0;
 	
 	/**
-	 * Return the weight of the ownable object. 
+	 * Return the weight of the ownable object in the given unit. 
 	 * 
 	 * @param  unit
 	 * 		   The weight in unit in which the weight should be returned.
 	 * @return The resulting number must be bigger than or equal to 0.
 	 * 		   | result >= 0
 	 */
+	@Raw @Basic @Immutable
 	public double getOwnWeight(Unit unit){
 		return (unit.convertFromKilogram(this.ownWeight));
 	}
@@ -214,16 +221,17 @@ public abstract class Ownable{
 	 * Sets the weight of the ownable object to the given value.
 	 *
 	 * @param weight
-	 * 		  The integer to which the weight needs to be set.
+	 * 		  The number to which the weight needs to be set.
 	 * @param unit
 	 * 		  The unit in which the parameter weight is given.
-	 * @post  If the given value is valid, weight will be set to the given integer.
+	 * @post  If the given value is valid, weight will be set to the given number.
 	 * 		  | if isValidOwnWeight(weight)
 	 * 		  | then new.getOwnWeight().equals(weight)
 	 * @post  If the given value isn't valid, weight is set to the default.
 	 * 		  | if !this.isValidOwnWeight(weight) 
 	 * 		  | then new.getOwnWeight().equals(0)
 	 */
+	@Raw
 	protected void setOwnWeight(double weight, Unit unit){
 		if (isValidOwnWeight(weight)){
 			this.ownWeight = unit.convertToKilogram(weight);
@@ -231,13 +239,14 @@ public abstract class Ownable{
 	}
 	
 	/**
-	 * Checks whether or not the given integer is a valid weight.
+	 * Checks whether or not the given number is a valid weight.
 	 * 
 	 * @param  weight
-	 * 		   The integer that needs to be checked.
-	 * @return False if the given integer is negative, true otherwise.
+	 * 		   The number that needs to be checked.
+	 * @return False if the given number is negative, true otherwise.
 	 * 		   | result == (weight >= 0)
 	 */
+	@Raw
 	public static boolean isValidOwnWeight(double weight){
 		return (weight >= 0);
 	}	
@@ -259,7 +268,6 @@ public abstract class Ownable{
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Raw @Basic
 	public Object getHolder() throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -273,7 +281,6 @@ public abstract class Ownable{
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Raw
 	public Object getUltimateHolder() throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -303,7 +310,7 @@ public abstract class Ownable{
 	 * @param 	holder
 	 * 			The holder of this ownable.
 	 * @post	The holder of this ownable is set to the given holder.
-	 * 			| this.getHolder() = holder
+	 * 			| new.getHolder() = holder
 	 */
 	@Raw
 	protected void setHolder(Creature holder){
@@ -316,7 +323,7 @@ public abstract class Ownable{
 	 * @param 	holder
 	 * 			The holder of this ownable.
 	 * @post	The holder of this ownable is set to the given holder.
-	 * 			| this.getHolder() = holder 
+	 * 			| new.getHolder() = holder 
 	 */
 	@Raw
 	protected void setHolder(Backpack holder){
@@ -327,7 +334,7 @@ public abstract class Ownable{
 	 * Set the holder of this ownable to null.
 	 * 
 	 * @post	The holder of this ownable is set to null.
-	 * 			| this.getHolder() = null 
+	 * 			| new.getHolder() = null 
 	 */
 	@Raw
 	protected void setHolder(){
@@ -362,9 +369,10 @@ public abstract class Ownable{
 	 * @param  value
 	 * 		   The integer that needs to be checked.
 	 * @return False if the given integer is negative.
-	 * 		   | if (value < 0) return False
+	 * 		   | if (value < 0) then return false
 	 * @note   This return must be left open in order for the subclasses to be able to change it.
 	 */
+	@Raw
 	public boolean isValidValue(Ducat value){
 		return (value.compareTo(new Ducat(0)) >= 0);
 	}

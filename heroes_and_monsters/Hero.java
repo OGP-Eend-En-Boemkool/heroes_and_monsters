@@ -420,9 +420,8 @@ public class Hero extends Creature {
 	 * @param 	opponent
 	 * 		  	The creature that was the opponent from which this creature steals.
 	 * @post  	The opponents anchors will be emptied.
-	 * 			| For all object in opponent.anchors.values(){
+	 * 			| For all object in opponent.anchors.values():
 	 * 			|	object == null
-	 * 			| }
 	 * @effect	addToAnchor, the given objects will be added to the given anchors.
 	 * 			| this.addToAnchor(this.chooseArmor(allPossessions),"Body")
 	 * 			| this.addToAnchor(this.chooseWeapon(allPossessions), "Right hand")
@@ -430,40 +429,31 @@ public class Hero extends Creature {
 	 * 			| this.addToAnchor(this.chooseBackpack(allPossessions), "Back")
 	 * 			| this.addToAnchor(this.choosePurse(allPossessions), "Belt")
 	 * @effect	addToStorage, If there is a purse, as many ducats as possible will be added to the purse.
-	 * 			| if purse != null {
-	 * 			|	while (purse.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= purse.getMaximumCapacity(Unit.KG)){
-	 * 			|		purse.addToStorage(this.chooseDucat(allPossesions))
-	 * 			|	}
-	 * 			| }
+	 * 			| if purse != null
+	 * 			| then	while (purse.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= purse.getMaximumCapacity(Unit.KG)):
+	 * 			|			purse.addToStorage(this.chooseDucat(allPossesions))
 	 * @effect	addToStorage, If there is a backpack, a armor will be added to the backpack if the hero and the backpack have enough capacity.
-	 * 			| if backpack != null {
-	 * 			|	if (backpack.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
-	 * 			|		backpack.addToStorage(this.chooseArmor(allPossessions))
-	 * 			|	}
-	 * 			| }
+	 * 			| if backpack != null
+	 * 			| then	if (backpack.getUsedCapacity(Unit.KG) + armor.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG))
+	 * 			|		then	backpack.addToStorage(this.chooseArmor(allPossessions))
 	 * @effect	addToStorage, If there is a backpack, as many weapons as possible will be added to the backpack if the hero and the backpack have enough capacity.
-	 * 			| if backpack != null {
-	 * 			|	while (backpack.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
-	 * 			|		backpack.addToStorage(this.chooseWeapon(allPossessions))
-	 * 			|	}
-	 * 			| }
+	 * 			| if backpack != null
+	 * 			| then	while (backpack.getUsedCapacity(Unit.KG) + weapon.getOwnWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)):
+	 * 			|			backpack.addToStorage(this.chooseWeapon(allPossessions))
 	 * @effect	addToStorage, If there is a backpack, as many ducats as possible will be added to the backpack if the hero and the backpack have enough capacity.
-	 * 			| if backpack != null {
-	 * 			|	while (backpack.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)){
-	 * 			|		backpack.addToStorage(this.chooseDucat(allPossessions))
-	 * 			|	}
-	 * 			| }
+	 * 			| if backpack != null
+	 * 			| then	while (backpack.getUsedCapacity(Unit.KG) + ducat.getWeight(Unit.KG) <= backpack.getMaximumCapacity(Unit.KG)):
+	 * 			|			backpack.addToStorage(this.chooseDucat(allPossessions))
 	 * @effect	terminateRemainingObjectsFromClass, The remaining armors and weapons that the hero doesn't take with him will be destroyed.
 	 * 			| terminateRemainingObjectsFromClass("Armor", allPossessions);
 	 * 			| terminateRemainingObjectsFromClass("Weapon", allPossessions);
 	 * @post	If the hero had some items on him before he stole the treasures, he will have some items on him afterwards too.
-	 * 			| if (!( for all anchor in this.getAnchors().keySet(){
-	 * 			|			this.getAnchors().get(anchor) == null
-	 * 			|		 })){
-	 * 			| 				(!(for all anchorSub in new.getAnchors.keySet(){
+	 * 			| if (!( for all anchor in this.getAnchors().keySet()
+	 * 			| then			this.getAnchors().get(anchor) == null
+	 * 			|		 )){
+	 * 			| 				(!(for all anchorSub in new.getAnchors.keySet():
 	 * 			|						new.getAnchors().get(anchorSub) == null
 	 * 			|				   }))
-	 * 			| }
 	 */
 	@Override
 	protected void addTreasure(Object object, Creature opponent){
@@ -538,9 +528,8 @@ public class Hero extends Creature {
 	 * 		   this requirements, null is returned.
 	 * @post   If the hero isn't capable of wearing the armor with the highest protection, 
 	 * 		   this armor is removed from the hashmap and it is terminated.
-	 * 		   | if this.getUsedCapacity(unit) + armor.getOwnWeight(unit) > this.getMaximumCapacity(unit){
-	 * 		   | 	(armor.isTerminated)&& !(allPossessions.get("Armor").contains(armor))
-	 * 		   | }
+	 * 		   | if this.getUsedCapacity(unit) + armor.getOwnWeight(unit) > this.getMaximumCapacity(unit)
+	 * 		   | then 	(armor.isTerminated)&& !(allPossessions.get("Armor").contains(armor))
 	 * @post   The hashmap will no longer contain the armor that was returned.
 	 * 		   | !(new.allPossessions.get("Armor").contains(armor))
 	 */
@@ -582,9 +571,8 @@ public class Hero extends Creature {
 	 * 		   this requirements, null is returned.
 	 * @post   If the hero isn't capable of wearing the weapon with the highest damage, 
 	 * 		   this weapon is removed from the hashmap and it is terminated.
-	 * 		   | if this.getUsedCapacity(unit) + weapon.getOwnWeight(unit) > this.getMaximumCapacity(unit){
-	 * 		   | 	(weapon.isTerminated)&& !(allPossessions.get("Weapon").contains(weapon))
-	 * 		   | }
+	 * 		   | if this.getUsedCapacity(unit) + weapon.getOwnWeight(unit) > this.getMaximumCapacity(unit)
+	 * 		   | then	(weapon.terminate)&& !(allPossessions.get("Weapon").contains(weapon))
 	 * @post   The hashmap will no longer contain the weapon that was returned.
 	 * 		   | !(new.allPossessions.get("Weapon").contains(weapon))
 	 */
@@ -627,9 +615,8 @@ public class Hero extends Creature {
 	 * 		   this requirements, null is returned.
 	 * @post   If the hero isn't capable of wearing the backpack with the highest capacity, 
 	 * 		   this backpack is removed from the hashmap.
-	 * 		   | if this.getUsedCapacity(unit) + backpack.getOwnWeight(unit) > this.getMaximumCapacity(unit){
-	 * 		   | 	!(allPossessions.get("Backpack").contains(backpack))
-	 * 		   | }
+	 * 		   | if this.getUsedCapacity(unit) + backpack.getOwnWeight(unit) > this.getMaximumCapacity(unit)
+	 * 		   | then	!(allPossessions.get("Backpack").contains(backpack))
 	 * @post   The hashmap will no longer contain the backpack that was returned.
 	 * 		   | !(new.allPossessions.get("Backpack").contains(backpack))
 	 * @post   The backpack that was returned will be empty.
@@ -674,9 +661,8 @@ public class Hero extends Creature {
 	 * 		   this requirements, null is returned.
 	 * @post   If the hero isn't capable of wearing the purse with the highest capacity, 
 	 * 		   this purse is removed from the hashmap.
-	 * 		   | if this.getUsedCapacity(unit) + purse.getOwnWeight(unit) > this.getMaximumCapacity(unit){
-	 * 		   | 	!(allPossessions.get("Purse").contains(purse))
-	 * 		   | }
+	 * 		   | if this.getUsedCapacity(unit) + purse.getOwnWeight(unit) > this.getMaximumCapacity(unit)
+	 * 		   | then	!(allPossessions.get("Purse").contains(purse))
 	 * @post   The hashmap will no longer contain the purse that was returned.
 	 * 		   | !(new.allPossessions.get("Purse").contains(purse))
 	 * @post   The purse that was returned will be empty.
@@ -721,9 +707,8 @@ public class Hero extends Creature {
 	 * 		   this requirements, null is returned.
 	 * @post   If the hero isn't capable of wearing the ducat with the highest value, 
 	 * 		   this ducat is removed from the hashmap.
-	 * 		   | if ((this.getUsedCapacity(unit) + ducat.getOwnWeight(unit) > this.getMaximumCapacity(unit)){
-	 * 		   | 	!(allPossessions.get("Ducat").contains(ducat))
-	 * 		   | }
+	 * 		   | if ((this.getUsedCapacity(unit) + ducat.getOwnWeight(unit) > this.getMaximumCapacity(unit))
+	 * 		   | then	!(allPossessions.get("Ducat").contains(ducat))
 	 * @post   The hashmap will no longer contain the ducat that was returned.
 	 * 		   | !(new.allPossessions.get("Ducat").contains(ducat))
 	 */

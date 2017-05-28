@@ -67,7 +67,7 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Override @Basic
+	@Override @Basic @Raw
 	public int getCurrentDamage() throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -105,7 +105,7 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 			This ownable is terminated.
 	 * 			| getTerminated()
 	 */
-	@Override
+	@Override @Raw
 	public void setCurrentDamage(int damage) throws OwnableIsTerminatedException {
 		if (getTerminated()){
 			throw new OwnableIsTerminatedException(this);
@@ -145,7 +145,7 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 		   multiple of 7, false otherwise.
 	 * 		   | result == ((damage >= 1) && (damage <= maximumDamage) && (damage % 7 == 0))
 	 */
-	@Override
+	@Override @Raw
 	public boolean canHaveAsDamage(int damage) {
 		return ((damage >= 1)&&(damage <= Weapon.maxDamage)&&(damage % 7 == 0));
 	}
@@ -186,6 +186,7 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * @return	False if the number cannot be divided by 6. Also false if there are not
 	 * 			made 1000 weapons yet and the identification already exists. True otherwise.
 	 */
+	@Raw
 	public static boolean canHaveAsIdentification(long identification){
 		return (identification%6 == 0 && (Ownable.getWeapons().size() >= 1000 ||
 				!Ownable.getWeapons().contains(identification)));
@@ -199,7 +200,7 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 			The identification of this weapon.
 	 * @effect	The identification is added to the list of identifications. The size of
 	 * 			this list is increased by one.
-	 * @post	The identification is set to a positive even number that can be divided
+	 * @effect	The identification is set to a positive even number that can be divided
 	 * 			by 3.
 	 */
 	@Override @Raw
@@ -215,18 +216,19 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	/**
 	 * Checks whether or not the given integer is a valid value.
 	 * 
-	 * @param  value
-	 * 		   The integer that needs to be checked.
-	 * @return True if the integer 'value' is smaller than or equal to 200 and bigger than or equal to 1.
-	 * 		   | result == (super.isValidValue(value)&&(value>=1)&&(value<=200)
+	 * @param  	value
+	 * 		   	The integer that needs to be checked.
+	 * @return 	True if the integer 'value' is smaller than or equal to 200 and bigger than or equal to 1.
+	 * 		   	| result == (super.isValidValue(value)&&(value.getValue()>=1)
+	 * 			|			&&(value.getValue()<=2*this.getMaximumDamage())
 	 */
-	@Override
+	@Override @Raw
 	public boolean isValidValue(Ducat value){
 		return (super.isValidValue(value)&&(value.getValue()>=1)&&(value.getValue()<=2*this.getMaximumDamage()));
 	}
 	
 	/**
-	 * Calculates the value in the ducats of the weapon.
+	 * Calculates the value in ducats of the weapon.
 	 * 
 	 * @return The resulting number must be a valid value
 	 * 		   | isValidValue(result)

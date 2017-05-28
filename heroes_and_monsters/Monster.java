@@ -25,7 +25,7 @@ public class Monster extends Creature implements Damage, Protection {
 
 	/**
 	 * Initialize this new monster with a name, a strength, a maximum hitpoints a
-	 * current hitpoints, anchors and anchorObjects.
+	 * current hitpoints, anchors, anchorObjects, damage and protection.
 	 * 
 	 * @param 	name
 	 * 			The name of this monster.
@@ -216,11 +216,11 @@ public class Monster extends Creature implements Damage, Protection {
 	 * 		   the number that needs to be checked.
 	 * @return true if the integer is bigger than 1 and smaller than the maximum damage and it's a 
 	 * 		   multiple of 7, false otherwise.
-	 * 		   | result == ((damage >= 1) && (damage <= maximumDamage) && (damage % 7 == 0))
+	 * 		   | result == ((damage >= 1) && (damage <= getMaximumDamage()) && (damage % 7 == 0))
 	 */
 	@Override
 	public boolean canHaveAsDamage(int damage) {
-		return ((damage >= 1)&&(damage <= Monster.maxDamage)&&(damage % 7 == 0));
+		return ((damage >= 1)&&(damage <= getMaximumDamage())&&(damage % 7 == 0));
 	}
 
 	/**

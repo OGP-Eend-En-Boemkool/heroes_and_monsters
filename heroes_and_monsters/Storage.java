@@ -59,12 +59,14 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	/**
 	 * Checks whether or not the given weight is a legal value for the total weight.
 	 * 
-	 * @param  weight
-	 * 		   The value that needs to be checked.
-	 * @return True if the given value is bigger than or equal to the own weight of the storage object.
+	 * @param  	weight
+	 * 		   	The value that needs to be checked.
+	 * @return 	True if the given value is bigger than or equal to the own weight of the storage object.
+	 * 			| result == weight>=this.getOwnWeight(Unit.KG)
 	 */
+	@Raw
 	public boolean canHaveAsTotalWeight(double weight){
-		return ((weight>=this.getOwnWeight(Unit.KG)));
+		return (weight>=this.getOwnWeight(Unit.KG));
 	}
 	
 	/**
@@ -215,7 +217,7 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 * The content of this storage is emptied.
 	 * 
 	 * @throws 	IllegalArgumentException
-	 * 			One of the objects can't be taken out of this storage. This can't happen.
+	 * 			One of the objects can't be taken out of this storage.
 	 * 			| !canTakeOutOfStorage(object)
 	 */
 	protected abstract void emptyStorage() throws IllegalArgumentException;
@@ -229,8 +231,8 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 * 			| takeOutOfStorage(object)
 	 * @effect	If the given object is an ownable, it is terminated (only armors and
 	 * 			weapons really get terminated, backpacks and purses will still exist)
-	 * 			| if (object instanceof Ownable) {
-	 *			|		((Ownable) object).terminate() }
+	 * 			| if (object instanceof Ownable)
+	 *			| then ((Ownable) object).terminate()
 	 * @throws 	IllegalArgumentException
 	 * 			The given object can't be taken out of this storage.
 	 * 			| !canTakeOutOfStorage(object)
