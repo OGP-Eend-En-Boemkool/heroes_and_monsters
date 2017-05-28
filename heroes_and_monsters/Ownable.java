@@ -50,27 +50,111 @@ public abstract class Ownable{
 	/**
 	 * Variable referencing the identification of an ownable.
 	 */
-	protected long identification;
+	private long identification;
 	
 	/**
 	 * Variable where we can store all the id's of armors.
 	 */
-	protected static ArrayList<Long> idListArmors = new ArrayList<Long>();
+	private static ArrayList<Long> idListArmors = new ArrayList<Long>();
+	
+	/**
+	 * Add the given identification to the list of identifications of armors.
+	 * 
+	 * @param 	identification
+	 * 			The identification to add.
+	 * @post	The given identification is added to the list.
+	 * 			| idListArmors.add(identification)
+	 * @post	The size of the list is increased by one.
+	 * 			| new.idListArmors.size() = this.idListArmors.size() + 1
+	 */
+	protected void addArmor(long identification){
+		idListArmors.add(identification);
+	}
+	
+	/**
+	 * Return the arraylist with the identifications of all armors.
+	 */
+	protected static ArrayList<Long> getArmors(){
+		return new ArrayList<Long>(idListArmors);
+	}
 	
 	/**
 	 * Variable where we can store all the id's of weapons.
 	 */
-	protected static ArrayList<Long> idListWeapons = new ArrayList<Long>();
+	private static ArrayList<Long> idListWeapons = new ArrayList<Long>();
+	
+	/**
+	 * Add the given identification to the list of identifications of weapons.
+	 * 
+	 * @param 	identification
+	 * 			The identification to add.
+	 * @post	The given identification is added to the list.
+	 * 			| idListWeapons.add(identification)
+	 * @post	The size of the list is increased by one.
+	 * 			| new.idListWeapons.size() = this.idListWeapons.size() + 1
+	 */
+	protected void addWeapon(long identification){
+		idListWeapons.add(identification);
+	}
+	
+	/**
+	 * Return the arraylist with the identifications of all weapons.
+	 */
+	protected static ArrayList<Long> getWeapons(){
+		return new ArrayList<Long>(idListWeapons);
+	}
 	
 	/**
 	 * Variable where we can store all the id's of backpacks.
 	 */
-	protected static ArrayList<Long> idListBackpacks = new ArrayList<Long>();
+	private static ArrayList<Long> idListBackpacks = new ArrayList<Long>();
+	
+	/**
+	 * Add the given identification to the list of identifications of backpacks.
+	 * 
+	 * @param 	identification
+	 * 			The identification to add.
+	 * @post	The given identification is added to the list.
+	 * 			| idListBackpacks.add(identification)
+	 * @post	The size of the list is increased by one.
+	 * 			| new.idListArmorBackpacks.size() = this.idListBackpacks.size() + 1
+	 */
+	protected void addBackpack(long identification){
+		idListBackpacks.add(identification);
+	}
+	
+	/**
+	 * Return the arraylist with the identifications of all backpacks.
+	 */
+	protected static ArrayList<Long> getBackpacks(){
+		return new ArrayList<Long>(idListBackpacks);
+	}
 	
 	/**
 	 * Variable where we can store all the id's of purses.
 	 */
-	protected static ArrayList<Long> idListPurses = new ArrayList<Long>();
+	private static ArrayList<Long> idListPurses = new ArrayList<Long>();
+	
+	/**
+	 * Add the given identification to the list of identifications of purses.
+	 * 
+	 * @param 	identification
+	 * 			The identification to add.
+	 * @post	The given identification is added to the list.
+	 * 			| idListPurses.add(identification)
+	 * @post	The size of the list is increased by one.
+	 * 			| new.idListPurses.size() = this.idListPurses.size() + 1
+	 */
+	protected void addPurse(long identification){
+		idListPurses.add(identification);
+	}
+	
+	/**
+	 * Return the arraylist with the identifications of all purses.
+	 */
+	protected static ArrayList<Long> getPurses(){
+		return new ArrayList<Long>(idListPurses);
+	}
 	
 	/**
 	 * Return the identification of this ownable.
@@ -92,14 +176,18 @@ public abstract class Ownable{
 	 * 
 	 * @param 	identification
 	 * 			The identification of this ownable.
-	 * @post	The ownable is added to the list of identifications (every ownable
+	 * @post	The identification of this ownabke is set to the given identification.
+	 * 			| new.getIdentification() == identification
+	 * @effect	The ownable is added to the list of identifications (every ownable
 	 * 			has its own list).
-	 * 			| idListClass.add(this)
-	 * @post	The size of the list of identifications is increased by 1.
+	 * 			| addClass(identification)
+	 * @effect	The size of the list of identifications is increased by 1.
 	 * 			| new.idListClass.size() = this.idListClass.size() + 1
 	 */
 	@Raw
-	protected abstract void setIdentification(long identification);
+	protected void setIdentification(long identification){
+		this.identification = identification;
+	}
 	
 	/********************************
 	 * Weight
@@ -108,7 +196,7 @@ public abstract class Ownable{
 	/**
 	 * Variable referencing the weight in kilogram of the ownable object.
 	 */
-	protected double ownWeight = 0;
+	private double ownWeight = 0;
 	
 	/**
 	 * Return the weight of the ownable object. 
@@ -162,7 +250,7 @@ public abstract class Ownable{
 	/**
 	 * Variable referencing the holder of an ownable.
 	 */
-	protected Object holder = null;
+	private Object holder = null;
 	
 	/**
 	 * Return the holder of this ownable.
@@ -296,7 +384,7 @@ public abstract class Ownable{
 	/**
 	 * Set that references all the backpacks in which the ownable is located.
 	 */
-	protected HashSet<Backpack> containersSet = new HashSet<Backpack>() ;
+	private HashSet<Backpack> containersSet = new HashSet<Backpack>() ;
 	
 	/**
 	 * Return a set with all the backpacks that contain this ownable object.
@@ -342,7 +430,7 @@ public abstract class Ownable{
 	/**
 	 * Variable referencing if this ownable is terminated or not.
 	 */
-	protected boolean terminated = false;
+	private boolean terminated = false;
 	
 	/**
 	 * Return if this ownable is terminated or not.
@@ -355,4 +443,16 @@ public abstract class Ownable{
 	 * Terminate this ownable if possible.
 	 */
 	protected abstract void terminate();
+	
+	/**
+	 * Set the flag of terminated to the given flag.
+	 * 
+	 * @param 	terminated
+	 * 			The given flag of terminated.
+	 * @post	The flag of terminated of this ownable is ste to the given flag.
+	 * 			| this.terminated = terminated
+	 */
+	protected void setTerminate(boolean terminated){
+		this.terminated = terminated;
+	}
 }

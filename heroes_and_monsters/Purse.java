@@ -54,8 +54,8 @@ public class Purse extends Storage {
 	 */
 	@Raw @Override
 	protected void setIdentification(long identification){
-		this.identification = identification;
-		idListPurses.add(identification);
+		super.setIdentification(identification);
+		addPurse(identification);
 	}
 	
 
@@ -100,8 +100,8 @@ public class Purse extends Storage {
 	 * 			|				!idListPurses.contains(identification) )
 	 */
 	public static boolean canHaveAsIdentification(long identification){
-		return (isFibonacci(identification) && ( idListPurses.size() >= 1000 ||
-	 				!idListPurses.contains(identification) ));
+		return (isFibonacci(identification) && (getPurses().size() >= 1000 ||
+	 				!getPurses().contains(identification) ));
 	}
 	
 	/**
@@ -168,7 +168,7 @@ public class Purse extends Storage {
 	 */
 	@Override
 	public Ducat getValue() {
-		return this.content;
+		return new Ducat(this.content.getValue());
 	}
 	
 	/*********************************
@@ -409,6 +409,6 @@ public class Purse extends Storage {
 	 * Terminating a purse is impossible.
 	 */
 	protected void terminate(){
-		this.terminated = false;
+		setTerminate(false);
 	}
 }

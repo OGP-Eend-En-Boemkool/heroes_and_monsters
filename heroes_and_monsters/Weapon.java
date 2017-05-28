@@ -187,8 +187,8 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 * 			made 1000 weapons yet and the identification already exists. True otherwise.
 	 */
 	public static boolean canHaveAsIdentification(long identification){
-		return (identification%6 == 0 && (idListWeapons.size() >= 1000 ||
-				!idListWeapons.contains(identification)));
+		return (identification%6 == 0 && (Ownable.getWeapons().size() >= 1000 ||
+				!Ownable.getWeapons().contains(identification)));
 	}
 	
 	/**
@@ -204,8 +204,8 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	 */
 	@Override @Raw
 	protected void setIdentification(long identification){
-		this.identification = identification;
-		idListWeapons.add(identification);
+		super.setIdentification(identification);
+		super.addWeapon(identification);
 	}
 
 	/******************************
@@ -249,11 +249,11 @@ public class Weapon extends Ownable implements Damage, Comparable<Weapon>{
 	/**
 	 * Terminate this weapon.
 	 * 
-	 * @post	Terminated is set to true.
-	 * 			| this.terminated = true
+	 * @effect	Terminated is set to true.
+	 * 			| setTerminated(true)
 	 */
 	protected void terminate(){
-		this.terminated = true;
+		setTerminate(true);
 	}
 
 	/**********************************

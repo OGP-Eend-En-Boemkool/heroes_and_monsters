@@ -25,7 +25,7 @@ public class CreatureTest {
 		weapon3 = new Weapon(15, Unit.KG, 21);
 		purse = new Purse(1, Unit.KG, 5);
 		backpack = new Backpack(new Ducat(132), 261, 1, Unit.KG);
-		hero1 = new Hero("Superman", new BigDecimal(219.23), 127, new ArrayList<Object>(Arrays.asList(weapon1, null, null, armor1, purse)));
+		hero1 = new Hero("Superman", new BigDecimal(219.23), 20, new ArrayList<Object>(Arrays.asList(weapon1, null, null, armor1, purse)));
 		hero2 = new Hero("Spiderman", new BigDecimal(256.49), 163, new ArrayList<Object>(Arrays.asList(null, weapon2, backpack, armor2, null)));
 		monster1 = new Monster("Frankenstein", new BigDecimal(321.64), 7, new ArrayList<String>(Arrays.asList("Left hand", "Right hand", "Back", "Tail")), new ArrayList<Object>(Arrays.asList(weapon3)), 77, 52);
 		monster2 = new Monster("Dracula", new BigDecimal(41.23), 73, new ArrayList<String>(Arrays.asList("Left hand", "Right hand")), new ArrayList<Object>(), 49, 46);

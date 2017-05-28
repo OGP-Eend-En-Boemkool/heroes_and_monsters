@@ -87,7 +87,7 @@ public abstract class Creature implements Capacity{
 	/**
 	 * Variable referencing the name of a creature.
 	 */
-	protected String name;
+	private String name;
 	
 	/**
 	 * Return the name of this creature.
@@ -114,7 +114,9 @@ public abstract class Creature implements Capacity{
 	 * 			| !canHaveAsName(name)
 	 */
 	@Raw
-	protected abstract void setName(String name) throws IllegalArgumentException;
+	protected void setName(String name) throws IllegalArgumentException{
+		this.name = name;
+	}
 	
 	/**
 	 * Checks whether this creature can have the given name as name.
@@ -145,12 +147,12 @@ public abstract class Creature implements Capacity{
 	/**
 	 * Variable referencing the current hitpoints of a creature.
 	 */
-	protected int hitpoints;
+	private int hitpoints;
 	
 	/**
 	 * Variable referencing the maximum hitpoints of this creature.
 	 */
-	protected int maxHitpoints;
+	private int maxHitpoints;
 	
 	/**
 	 * Return the current hitpoints of this creature.
@@ -257,7 +259,7 @@ public abstract class Creature implements Capacity{
 	/**
 	 * Variable referencing the strength of a creature.
 	 */
-	protected BigDecimal strength;
+	private BigDecimal strength;
 	
 	/**
 	 * Constant with the default value of strength.
@@ -365,7 +367,7 @@ public abstract class Creature implements Capacity{
 	/**
 	 * Variable referencing the anchors with their object of a creature.
 	 */
-	protected HashMap<String, Object> anchors = new HashMap<String, Object>();
+	private HashMap<String, Object> anchors = new HashMap<String, Object>();
 	
 	/**
 	 * Return the anchors and what's in the anchor of this creature.
@@ -765,7 +767,6 @@ public abstract class Creature implements Capacity{
 	
 	/**
 	 * Return the resulting damage of a certain hit of this creature
-	 * 
 	 */
 	protected abstract int getResultingDamage();
 	

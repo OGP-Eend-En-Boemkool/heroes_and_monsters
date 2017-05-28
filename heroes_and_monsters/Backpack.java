@@ -70,8 +70,8 @@ public class Backpack extends Storage{
 	 */
 	@Raw @Override
 	protected void setIdentification(long identification){
-		this.identification = identification;
-		idListBackpacks.add(identification);
+		super.setIdentification(identification);
+		addBackpack(identification);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class Backpack extends Storage{
 	 * every new term of the sum).
 	 */
 	private static long calculateValidIdentification(){
-		long n = idListBackpacks.size() + 1;
+		long n = getBackpacks().size() + 1;
 		long id = 0;
 		for (int i = 0; i <= n; i++){
 			id += calculateBinomial(n,i);
@@ -757,7 +757,7 @@ public class Backpack extends Storage{
 	 */
 	@Basic
 	public Ducat getStandardValue(){
-		return this.standardValue;
+		return new Ducat(this.standardValue.getValue());
 	}
 	
 	/**
@@ -799,7 +799,7 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	public Ducat getValue() {
-		Ducat value = this.standardValue;
+		Ducat value = this.getStandardValue();
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();
@@ -833,7 +833,7 @@ public class Backpack extends Storage{
 	 */
 	@Override
 	public double getTotalWeight(Unit unit) {
-		double weight = unit.convertFromKilogram(this.ownWeight);
+		double weight = unit.convertFromKilogram(this.getOwnWeight(unit));
 		Enumeration<Object> iterator = this.getBackpackIterator();
 		while (iterator.hasMoreElements()){
 			Object object = iterator.nextElement();

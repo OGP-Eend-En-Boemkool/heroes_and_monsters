@@ -283,8 +283,8 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 				return false;
 			}
 		}
-		return (identification >= 2 && (idListArmors.size() >= 1000 ||
-				!idListArmors.contains(identification)));
+		return (identification >= 2 && (Ownable.getArmors().size() >= 1000 ||
+				!Ownable.getArmors().contains(identification)));
 	}
 	
 	/**
@@ -304,8 +304,8 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 		while (!canHaveAsIdentification(identification)){
 			identification++;
 		}
-		this.identification = identification;
-		Ownable.idListArmors.add(identification);
+		super.setIdentification(identification);
+		super.addArmor(identification);
 	}
 
 	/******************************
@@ -342,7 +342,7 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	 */
 	@Basic
 	public Ducat getMaxValue(){
-		return this.maxValue;
+		return new Ducat(this.maxValue.getValue());
 	}
 	
 	/**
@@ -386,11 +386,11 @@ public class Armor extends Ownable implements Protection, Comparable<Armor>{
 	/**
 	 * Terminate this armor.
 	 * 
-	 * @post	Terminated is set to true.
-	 * 			| this.terminated = true
+	 * @effect	Terminated is set to true.
+	 * 			| setTerminate(true)
 	 */
 	protected void terminate(){
-		this.terminated = true;
+		setTerminate(true);
 	}
 
 	/**********************************

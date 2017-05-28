@@ -41,12 +41,15 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	/**
 	 * Set the identification to the given identification.
 	 * 
-	 * @effect	The identification is added to the list of identifications (each storage
-	 * 			has its own list). The sizes of the lists are increased by one.
+	 * @effect	The identification is added to the list of identifications (each storage has its own list).
+	 * 			The sizes of the lists are increased by one. The identification of this storage is set to
+	 * 			the given identification.
 	 * 			| super.setIdentification(identification)
 	 */
 	@Raw @Override
-	protected abstract void setIdentification(long identification);
+	protected void setIdentification(long identification){
+		super.setIdentification(identification);
+	}
 	
 	
 	/*****************************************
@@ -248,7 +251,7 @@ public abstract class Storage extends Ownable implements Capacity, Comparable<St
 	 * Terminating a storage is impossible.
 	 */
 	protected void terminate(){
-		this.terminated = false;
+		setTerminate(false);
 	}
 	
 	/**********************************

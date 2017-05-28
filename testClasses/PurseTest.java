@@ -60,7 +60,6 @@ public class PurseTest {
 		backpack.addToStorage(purse);
 		backpack.addToStorage(weapon);
 		assertFalse(purse.canAddToStorage(new Ducat(100)));
-		System.out.println('1');
 		hero.addToAnchor(purse, "Belt");
 		assertFalse(purse.canAddToStorage(new Ducat(100)));
 	}
@@ -90,14 +89,13 @@ public class PurseTest {
 		assertTrue(purse.getValue().getValue() == 79);
 		Purse other = new Purse(1, Unit.KG, 23);
 		purse.transferToStorage(other, new Ducat (79));
-		assertTrue(backpack.getValue() == backpack.getStandardValue());
+		assertTrue(backpack.getValue().equals(backpack.getStandardValue()));
 		assertTrue(purse.getValue().getValue() == 0);
 	}
 	
 	@Test
 	public void testTransferToOtherPurseAllContent2(){
 		purse.addToStorage(new Ducat(1));
-		System.out.println('2');
 		hero.addToAnchor(purse, "Belt");
 		assertTrue(purse.getHolder() == hero);
 		Purse other = new Purse(1, Unit.KG, 23);

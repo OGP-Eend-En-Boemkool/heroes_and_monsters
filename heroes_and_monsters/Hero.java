@@ -78,14 +78,14 @@ public class Hero extends Creature {
 	 * Set the name of this hero to the given name.
 	 * 
 	 * @effect	The name of this hero is set to the given name.
-	 * 			| new.getName() == name
+	 * 			| super.setName(name)
 	 */
 	@Raw @Override
 	protected void setName(String name) throws IllegalArgumentException {
 		if (!canHaveAsName(name)){
 			throw new IllegalArgumentException("This is not a valid name for a hero");
 		}
-		this.name = name;
+		super.setName(name);
 	}
 	
 	/**

@@ -73,7 +73,7 @@ public class Monster extends Creature implements Damage, Protection {
 		if (!canHaveAsName(name)){
 			throw new IllegalArgumentException("This is not a valid name for a monster");
 		}
-		this.name = name;
+		super.setName(name);
 	}
 	
 
@@ -118,13 +118,13 @@ public class Monster extends Creature implements Damage, Protection {
 	@Raw @Override
 	protected void setAnchorObjects(ArrayList<Object> anchorObjects)
 			throws IllegalArgumentException{
-		if (anchorObjects.size() > anchors.size()){
+		if (anchorObjects.size() > getAnchors().size()){
 			throw new IllegalArgumentException("There can't be more objects than anchors.");
 		}
 		if (anchorObjects != null && anchorObjects.size() != 0){
 			ArrayList<Integer> full = new ArrayList<>();
 			ArrayList<String> anchors = new ArrayList<String>();
-			Iterator<String> iterator1 = this.anchors.keySet().iterator();
+			Iterator<String> iterator1 = getAnchors().keySet().iterator();
 			while (iterator1.hasNext()){
 				anchors.add(iterator1.next());
 			}
